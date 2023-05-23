@@ -1,0 +1,602 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		934AA3502A1BE41C001C7FF9 /* Score_HellApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA34F2A1BE41C001C7FF9 /* Score_HellApp.swift */; };
+		934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA3512A1BE41C001C7FF9 /* GameView.swift */; };
+		934AA3542A1BE41E001C7FF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934AA3532A1BE41E001C7FF9 /* Assets.xcassets */; };
+		934AA3572A1BE41E001C7FF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934AA3562A1BE41E001C7FF9 /* Preview Assets.xcassets */; };
+		934AA3612A1BE41E001C7FF9 /* Score_HellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA3602A1BE41E001C7FF9 /* Score_HellTests.swift */; };
+		934AA36B2A1BE41E001C7FF9 /* Score_HellUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA36A2A1BE41E001C7FF9 /* Score_HellUITests.swift */; };
+		934AA36D2A1BE41E001C7FF9 /* Score_HellUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA36C2A1BE41E001C7FF9 /* Score_HellUITestsLaunchTests.swift */; };
+		934AA37A2A1BE95A001C7FF9 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA3792A1BE95A001C7FF9 /* Game.swift */; };
+		934AA37D2A1BF95B001C7FF9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */; };
+		934AA3832A1C2169001C7FF9 /* FullScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA3822A1C2169001C7FF9 /* FullScoreView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		934AA35D2A1BE41E001C7FF9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 934AA3442A1BE41C001C7FF9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 934AA34B2A1BE41C001C7FF9;
+			remoteInfo = "Score Hell";
+		};
+		934AA3672A1BE41E001C7FF9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 934AA3442A1BE41C001C7FF9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 934AA34B2A1BE41C001C7FF9;
+			remoteInfo = "Score Hell";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		934AA34C2A1BE41C001C7FF9 /* Score Hell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Score Hell.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		934AA34F2A1BE41C001C7FF9 /* Score_HellApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score_HellApp.swift; sourceTree = "<group>"; };
+		934AA3512A1BE41C001C7FF9 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		934AA3532A1BE41E001C7FF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		934AA3562A1BE41E001C7FF9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		934AA35C2A1BE41E001C7FF9 /* Score HellTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Score HellTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		934AA3602A1BE41E001C7FF9 /* Score_HellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score_HellTests.swift; sourceTree = "<group>"; };
+		934AA3662A1BE41E001C7FF9 /* Score HellUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Score HellUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		934AA36A2A1BE41E001C7FF9 /* Score_HellUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score_HellUITests.swift; sourceTree = "<group>"; };
+		934AA36C2A1BE41E001C7FF9 /* Score_HellUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score_HellUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		934AA3792A1BE95A001C7FF9 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		934AA3822A1C2169001C7FF9 /* FullScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScoreView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		934AA3492A1BE41C001C7FF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934AA3592A1BE41E001C7FF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934AA3632A1BE41E001C7FF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		934AA3432A1BE41C001C7FF9 = {
+			isa = PBXGroup;
+			children = (
+				934AA34E2A1BE41C001C7FF9 /* Score Hell */,
+				934AA35F2A1BE41E001C7FF9 /* Score HellTests */,
+				934AA3692A1BE41E001C7FF9 /* Score HellUITests */,
+				934AA34D2A1BE41C001C7FF9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		934AA34D2A1BE41C001C7FF9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				934AA34C2A1BE41C001C7FF9 /* Score Hell.app */,
+				934AA35C2A1BE41E001C7FF9 /* Score HellTests.xctest */,
+				934AA3662A1BE41E001C7FF9 /* Score HellUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		934AA34E2A1BE41C001C7FF9 /* Score Hell */ = {
+			isa = PBXGroup;
+			children = (
+				934AA37B2A1BE967001C7FF9 /* Models */,
+				934AA34F2A1BE41C001C7FF9 /* Score_HellApp.swift */,
+				934AA3512A1BE41C001C7FF9 /* GameView.swift */,
+				934AA3532A1BE41E001C7FF9 /* Assets.xcassets */,
+				934AA3552A1BE41E001C7FF9 /* Preview Content */,
+				934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */,
+				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
+			);
+			path = "Score Hell";
+			sourceTree = "<group>";
+		};
+		934AA3552A1BE41E001C7FF9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				934AA3562A1BE41E001C7FF9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		934AA35F2A1BE41E001C7FF9 /* Score HellTests */ = {
+			isa = PBXGroup;
+			children = (
+				934AA3602A1BE41E001C7FF9 /* Score_HellTests.swift */,
+			);
+			path = "Score HellTests";
+			sourceTree = "<group>";
+		};
+		934AA3692A1BE41E001C7FF9 /* Score HellUITests */ = {
+			isa = PBXGroup;
+			children = (
+				934AA36A2A1BE41E001C7FF9 /* Score_HellUITests.swift */,
+				934AA36C2A1BE41E001C7FF9 /* Score_HellUITestsLaunchTests.swift */,
+			);
+			path = "Score HellUITests";
+			sourceTree = "<group>";
+		};
+		934AA37B2A1BE967001C7FF9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				934AA3792A1BE95A001C7FF9 /* Game.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		934AA34B2A1BE41C001C7FF9 /* Score Hell */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 934AA3702A1BE41E001C7FF9 /* Build configuration list for PBXNativeTarget "Score Hell" */;
+			buildPhases = (
+				934AA3482A1BE41C001C7FF9 /* Sources */,
+				934AA3492A1BE41C001C7FF9 /* Frameworks */,
+				934AA34A2A1BE41C001C7FF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Score Hell";
+			productName = "Score Hell";
+			productReference = 934AA34C2A1BE41C001C7FF9 /* Score Hell.app */;
+			productType = "com.apple.product-type.application";
+		};
+		934AA35B2A1BE41E001C7FF9 /* Score HellTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 934AA3732A1BE41E001C7FF9 /* Build configuration list for PBXNativeTarget "Score HellTests" */;
+			buildPhases = (
+				934AA3582A1BE41E001C7FF9 /* Sources */,
+				934AA3592A1BE41E001C7FF9 /* Frameworks */,
+				934AA35A2A1BE41E001C7FF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				934AA35E2A1BE41E001C7FF9 /* PBXTargetDependency */,
+			);
+			name = "Score HellTests";
+			productName = "Score HellTests";
+			productReference = 934AA35C2A1BE41E001C7FF9 /* Score HellTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		934AA3652A1BE41E001C7FF9 /* Score HellUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 934AA3762A1BE41E001C7FF9 /* Build configuration list for PBXNativeTarget "Score HellUITests" */;
+			buildPhases = (
+				934AA3622A1BE41E001C7FF9 /* Sources */,
+				934AA3632A1BE41E001C7FF9 /* Frameworks */,
+				934AA3642A1BE41E001C7FF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				934AA3682A1BE41E001C7FF9 /* PBXTargetDependency */,
+			);
+			name = "Score HellUITests";
+			productName = "Score HellUITests";
+			productReference = 934AA3662A1BE41E001C7FF9 /* Score HellUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		934AA3442A1BE41C001C7FF9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					934AA34B2A1BE41C001C7FF9 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					934AA35B2A1BE41E001C7FF9 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 934AA34B2A1BE41C001C7FF9;
+					};
+					934AA3652A1BE41E001C7FF9 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 934AA34B2A1BE41C001C7FF9;
+					};
+				};
+			};
+			buildConfigurationList = 934AA3472A1BE41C001C7FF9 /* Build configuration list for PBXProject "Score Hell" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 934AA3432A1BE41C001C7FF9;
+			productRefGroup = 934AA34D2A1BE41C001C7FF9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				934AA34B2A1BE41C001C7FF9 /* Score Hell */,
+				934AA35B2A1BE41E001C7FF9 /* Score HellTests */,
+				934AA3652A1BE41E001C7FF9 /* Score HellUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		934AA34A2A1BE41C001C7FF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934AA3572A1BE41E001C7FF9 /* Preview Assets.xcassets in Resources */,
+				934AA3542A1BE41E001C7FF9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934AA35A2A1BE41E001C7FF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934AA3642A1BE41E001C7FF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		934AA3482A1BE41C001C7FF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */,
+				934AA37A2A1BE95A001C7FF9 /* Game.swift in Sources */,
+				934AA3502A1BE41C001C7FF9 /* Score_HellApp.swift in Sources */,
+				934AA37D2A1BF95B001C7FF9 /* PlayerView.swift in Sources */,
+				934AA3832A1C2169001C7FF9 /* FullScoreView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934AA3582A1BE41E001C7FF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934AA3612A1BE41E001C7FF9 /* Score_HellTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934AA3622A1BE41E001C7FF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934AA36D2A1BE41E001C7FF9 /* Score_HellUITestsLaunchTests.swift in Sources */,
+				934AA36B2A1BE41E001C7FF9 /* Score_HellUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		934AA35E2A1BE41E001C7FF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 934AA34B2A1BE41C001C7FF9 /* Score Hell */;
+			targetProxy = 934AA35D2A1BE41E001C7FF9 /* PBXContainerItemProxy */;
+		};
+		934AA3682A1BE41E001C7FF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 934AA34B2A1BE41C001C7FF9 /* Score Hell */;
+			targetProxy = 934AA3672A1BE41E001C7FF9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		934AA36E2A1BE41E001C7FF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		934AA36F2A1BE41E001C7FF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		934AA3712A1BE41E001C7FF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Score Hell/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.G-Prgm.Score-Hell";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		934AA3722A1BE41E001C7FF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Score Hell/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.G-Prgm.Score-Hell";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		934AA3742A1BE41E001C7FF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.G-Prgm.Score-HellTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Score Hell.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Score Hell";
+			};
+			name = Debug;
+		};
+		934AA3752A1BE41E001C7FF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.G-Prgm.Score-HellTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Score Hell.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Score Hell";
+			};
+			name = Release;
+		};
+		934AA3772A1BE41E001C7FF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.G-Prgm.Score-HellUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Score Hell";
+			};
+			name = Debug;
+		};
+		934AA3782A1BE41E001C7FF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.G-Prgm.Score-HellUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Score Hell";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		934AA3472A1BE41C001C7FF9 /* Build configuration list for PBXProject "Score Hell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934AA36E2A1BE41E001C7FF9 /* Debug */,
+				934AA36F2A1BE41E001C7FF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		934AA3702A1BE41E001C7FF9 /* Build configuration list for PBXNativeTarget "Score Hell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934AA3712A1BE41E001C7FF9 /* Debug */,
+				934AA3722A1BE41E001C7FF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		934AA3732A1BE41E001C7FF9 /* Build configuration list for PBXNativeTarget "Score HellTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934AA3742A1BE41E001C7FF9 /* Debug */,
+				934AA3752A1BE41E001C7FF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		934AA3762A1BE41E001C7FF9 /* Build configuration list for PBXNativeTarget "Score HellUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934AA3772A1BE41E001C7FF9 /* Debug */,
+				934AA3782A1BE41E001C7FF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 934AA3442A1BE41C001C7FF9 /* Project object */;
+}
