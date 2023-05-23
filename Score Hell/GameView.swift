@@ -78,6 +78,7 @@ struct GameView: View {
                         }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
     

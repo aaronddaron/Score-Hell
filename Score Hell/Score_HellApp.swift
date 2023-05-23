@@ -12,7 +12,8 @@ struct Score_HellApp: App {
     @State private var game = Game.sampleData
     var body: some Scene {
         WindowGroup {
-            GameView(game: $game)
+            //GameView(game: $game)
+            StartGameView()
         }
     }
 }
