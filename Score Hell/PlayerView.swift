@@ -13,6 +13,7 @@ struct PlayerView: View {
     @Binding var game: Game
     
     @State private var showingAlert = false
+    @State private var tempTotal = 0
         
     var body: some View {
         VStack (alignment: .leading){
@@ -25,31 +26,37 @@ struct PlayerView: View {
                 Image(systemName: "crown")
                 Text("\(player.score)")
             }
+            .foregroundColor(.black)
             HStack{
                 if phase == 0 {
                     TextField("Bid", value: $player.newBid, formatter: NumberFormatter())
                         .textFieldStyle(.roundedBorder)
-                    Button(action: {
-                        game.bidTotal = game.bidTotal - player.bid
-                        player.bid = player.newBid
-                        player.newBid = 0
-                        game.bidTotal = game.bidTotal + player.bid
-                        game.calcOhellNum()
+                        .onChange(of: player.newBid, perform: { newBid in
+                            tempTotal = game.bidTotal - player.bid
+                            tempTotal = tempTotal + newBid
                         
-                        if game.bidTotal == game.numCards && player.name == "Aaron" {
+                        if tempTotal == game.numCards && player.name == "Aaron" {
                             showingAlert = true
                         }
+                        else {
+                            game.bidTotal = tempTotal
+                            player.bid = newBid
+                            game.calcOhellNum()
+                        }
 
-                    }) {
-                        Image(systemName: "chevron.right.circle.fill")
-                    }
-                    .alert("Aaron Can't Bid That", isPresented: $showingAlert) {
-                                Button("OK", role: .cancel) { }
+                    })
+                        .alert("Cannot bid \(player.newBid)", isPresented: $showingAlert) {
+                        Button("OK", role: .cancel) { }
                             }
+                        
                 }
                 else if phase == 1{
-                    TextField("Trick", value: $player.tricksTaken, formatter: NumberFormatter())
-                        .onChange(of: player.tricksTaken, perform: { newtrick in
+                    TextField("Trick", value: $player.newTricksTaken, formatter: NumberFormatter())
+                        .onChange(of: player.newTricksTaken, perform: { newTrick in
+                            
+                            game.trickTotal = game.trickTotal - player.tricksTaken
+                            player.tricksTaken = newTrick
+                            game.trickTotal = game.trickTotal + player.tricksTaken
                             
                         })
                         .textFieldStyle(.roundedBorder)
@@ -57,7 +64,6 @@ struct PlayerView: View {
             }
         }
         .font(.title3)
-        .foregroundColor(.black)
     }
 }
 

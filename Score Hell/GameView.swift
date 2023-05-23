@@ -56,8 +56,8 @@ struct GameView: View {
                         phase = 0
                         game.numCards = game.cards[round]
                         round = round + 1
-                        let count = 0...game.players.count-1
                         
+                        let count = 0...game.players.count-1
                         for number in count{
                             game.players[number].updateScore()
                             game.players[number].bid = 0
@@ -65,6 +65,7 @@ struct GameView: View {
                             game.players[number].tricksTaken = 0
                         }
                         game.bidTotal = 0
+                        game.trickTotal = 0
                         game.calcOhellNum()
                     }
                     
@@ -72,7 +73,7 @@ struct GameView: View {
                     Text("Score")
                 }
                 .buttonStyle(.borderedProminent)
-                .alert("Something", isPresented: $showingAlert) {
+                .alert("Only \(game.trickTotal) tricks accounted for", isPresented: $showingAlert) {
                             Button("OK", role: .cancel) { }
                         }
             }

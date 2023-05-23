@@ -50,6 +50,7 @@ extension Game {
         var dealer: Bool
         var ohell: Bool
         var newBid: Int
+        var newTricksTaken: Int
         
         init(id: UUID = UUID(), name: String, theme: Color) {
             self.id = id
@@ -57,6 +58,7 @@ extension Game {
             self.score = 0
             self.bid = 0
             self.newBid = 0
+            self.newTricksTaken = 0
             self.tricksTaken = 0
             self.theme = theme
             self.dealer = false
