@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Game: Identifiable {
     var players: [Player]
+    var themes: [Theme]
     var id: UUID
     var dealer: Int
     var ohellNum: Int
@@ -17,6 +18,7 @@ struct Game: Identifiable {
     var trickTotal: Int
     var numCards: Int
     var cards: [Int]
+    var numPlayers: Int
     
     init(id: UUID = UUID(), players: [Player]) {
         self.id = id
@@ -26,11 +28,18 @@ struct Game: Identifiable {
         self.bidTotal = 0
         self.trickTotal = 0
         self.numCards = 7
+        self.numPlayers = 0
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
+        self.themes = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "periwinkle", index: 4), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "sky", index: 7), Theme(name: "tan", index: 8), Theme(name: "teal", index: 9), Theme(name: "yellow", index: 10)]
     }
     
     mutating func setDealer() {
-        self.dealer = Int.random(in: 0...players.count)
+        if numPlayers > 0 {
+            self.dealer = Int.random(in: 0...numPlayers-1)
+        }
+    }
+    mutating func setNumPlayers() {
+        self.numPlayers = self.players.count
     }
     
     mutating func calcOhellNum() {
@@ -48,9 +57,10 @@ extension Game {
         var tricksTaken: Int
         var theme: Color
         var dealer: Bool
-        var ohell: Bool
+        var leader: Bool
         var newBid: Int
         var newTricksTaken: Int
+        var streak: Int
         
         init(id: UUID = UUID(), name: String, theme: Color) {
             self.id = id
@@ -61,9 +71,9 @@ extension Game {
             self.newTricksTaken = 0
             self.tricksTaken = 0
             self.theme = theme
+            self.streak = 0
             self.dealer = false
-            self.ohell = false
-        }
+            self.leader = false        }
         mutating func updateScore()
         {
             if tricksTaken == bid{

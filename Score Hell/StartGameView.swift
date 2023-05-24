@@ -8,18 +8,23 @@
 import SwiftUI
 
 struct StartGameView: View {
-    @State private var game = Game(players: [])
-    //@State private var game = Game.sampleData
+    //@State private var game = Game(players: [])
+    @State private var game = Game.sampleData
     @State private var playerName = ""
+    @State private var playerTheme = "bubblegum"
+    @State private var newCheck = 0
+    
     var body: some View {
         NavigationStack
         {
             Form{
                 Section (header: Text("Players")){
                     ForEach(game.players) { player in
-                        HStack {
+                        HStack{
                             Label(player.name, systemImage: "person")
-                            
+                            Spacer()
+                            Text("     ")
+                                .background(player.theme)
                         }
                         
                     }
@@ -28,21 +33,40 @@ struct StartGameView: View {
                     HStack{
                         TextField("New Player", text: $playerName)
                             .padding(.leading)
+                        
                         Button(action: {
-                            game.players.append(Game.Player(name: playerName, theme: Color("poppy")))
+                            game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
                             playerName = ""
                         }) {
-                                Image(systemName: "plus")
-                            }
+                            Image(systemName: "plus")
+                        }
+                        .disabled(playerName.isEmpty)
+                        
                     }
+                }
+                Section(){
                     NavigationLink(destination: GameView(game: $game)) {
                         Label("Start Game", systemImage: "arrowtriangle.forward.fill")
+                            .foregroundColor(.accentColor)
                     }
-            
                 }
-            
+                
+                Section(header: Text("New Player Color")){
+                    List($game.themes) { $theme in
+                        Button (action: {
+                            game.themes[newCheck].check = false
+                            playerTheme = theme.name
+                            theme.check = true
+                            newCheck = theme.index
+                        }){
+                            ColorView(color: theme.name, check: theme.check)
+                        }
+                    }
+                }
+                
             }
             .navigationTitle("New Game")
+            
         }
     }
 }

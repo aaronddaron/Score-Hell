@@ -11,8 +11,38 @@ struct GameView: View {
     @State var phase = 0
     @Binding var game: Game
     @State var round = 1
-    @State private var showingAlert = false
+    @State private var showingFullScore = false
     
+    private func updateGame() {
+        phase = 0
+        game.numCards = game.cards[round]
+        round = round + 1
+        
+        let count = 0...game.players.count-1
+        for number in count{
+            game.players[number].updateScore()
+            game.players[number].bid = 0
+            game.players[number].newBid = 0
+            game.players[number].tricksTaken = 0
+            game.players[number].newTricksTaken = 0
+        }
+        game.bidTotal = 0
+        game.trickTotal = 0
+        game.calcOhellNum()
+        
+        game.players[game.dealer].dealer = false
+        game.players[(game.dealer + 1) % game.numPlayers].leader = false
+        game.dealer = (game.dealer + 1) % game.numPlayers
+        game.players[game.dealer].dealer = true
+        game.players[(game.dealer + 1) % game.numPlayers].leader = true
+    }
+    
+    private func setUpGame() {
+        game.setNumPlayers()
+        game.setDealer()
+        game.players[game.dealer].dealer = true
+        game.players[(game.dealer + 1) % game.numPlayers].leader = true
+    }
     
     var body: some View {
         VStack {
@@ -21,16 +51,19 @@ struct GameView: View {
                     Text("Round \(round)")
                         .font(.title)
                     Spacer()
-                    Text("\(game.cards[round - 1]) cards")
-                        .font(.headline)
-                }
-                HStack {
-                    Text("Aaron cannot bid \(game.ohellNum)")
-                        .font(.headline)
-                    Spacer()
                     Button(action: {}) {
                         Text("Full Score")
+                        .font(.headline)
                     }
+                    .sheet(isPresented: $showingFullScore) {
+                    }
+                }
+                HStack {
+                    Text("\(game.players[game.dealer].name) cannot bid \(game.ohellNum)")
+                        .font(.headline)
+                    Spacer()
+                    Text("\(game.cards[round - 1]) cards")
+                        .font(.headline)
                 }
             }
             .padding(.horizontal)
@@ -38,47 +71,28 @@ struct GameView: View {
                 PlayerView(player: $player, phase: phase, game: $game)
                     .listRowBackground(player.theme)
             }
-            if phase == 0
-            {
+            if phase == 0 {
                 Button(action: { phase = 1}) {
-                    Text("Get Tricks")
+                    Text("Play Round")
                 }
                 .buttonStyle(.borderedProminent)
-            }
-            else
-            {
+                .disabled(game.bidTotal == game.numCards)
+            } else {
                 Button(action: {
-                    
-                    if game.trickTotal != game.numCards{
-                        showingAlert = true
+                    if game.trickTotal == game.numCards {
+                        updateGame()
                     }
-                    else {
-                        phase = 0
-                        game.numCards = game.cards[round]
-                        round = round + 1
-                        
-                        let count = 0...game.players.count-1
-                        for number in count{
-                            game.players[number].updateScore()
-                            game.players[number].bid = 0
-                            game.players[number].newBid = 0
-                            game.players[number].tricksTaken = 0
-                        }
-                        game.bidTotal = 0
-                        game.trickTotal = 0
-                        game.calcOhellNum()
-                    }
-                    
-                    }) {
+                }) {
                     Text("Score")
                 }
                 .buttonStyle(.borderedProminent)
-                .alert("Only \(game.trickTotal) tricks accounted for", isPresented: $showingAlert) {
-                            Button("OK", role: .cancel) { }
-                        }
+                .disabled(game.trickTotal != game.numCards)
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            setUpGame()
+        }
     }
 }
     

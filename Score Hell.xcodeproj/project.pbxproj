@@ -18,6 +18,9 @@
 		934AA37D2A1BF95B001C7FF9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */; };
 		934AA3832A1C2169001C7FF9 /* FullScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AA3822A1C2169001C7FF9 /* FullScoreView.swift */; };
 		939E32942A1D44C1002EF184 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E32932A1D44C1002EF184 /* StartGameView.swift */; };
+		939E32962A1D5D11002EF184 /* FinishGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E32952A1D5D11002EF184 /* FinishGameView.swift */; };
+		939E329E2A1D8A0D002EF184 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E329D2A1D8A0D002EF184 /* Theme.swift */; };
+		939E32A02A1D8E31002EF184 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E329F2A1D8E31002EF184 /* ColorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +55,9 @@
 		934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		934AA3822A1C2169001C7FF9 /* FullScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScoreView.swift; sourceTree = "<group>"; };
 		939E32932A1D44C1002EF184 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
+		939E32952A1D5D11002EF184 /* FinishGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishGameView.swift; sourceTree = "<group>"; };
+		939E329D2A1D8A0D002EF184 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		939E329F2A1D8E31002EF184 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,8 @@
 				934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */,
 				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
 				939E32932A1D44C1002EF184 /* StartGameView.swift */,
+				939E32952A1D5D11002EF184 /* FinishGameView.swift */,
+				939E329F2A1D8E31002EF184 /* ColorView.swift */,
 			);
 			path = "Score Hell";
 			sourceTree = "<group>";
@@ -143,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				934AA3792A1BE95A001C7FF9 /* Game.swift */,
+				939E329D2A1D8A0D002EF184 /* Theme.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -277,8 +286,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				939E329E2A1D8A0D002EF184 /* Theme.swift in Sources */,
 				934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */,
 				939E32942A1D44C1002EF184 /* StartGameView.swift in Sources */,
+				939E32962A1D5D11002EF184 /* FinishGameView.swift in Sources */,
+				939E32A02A1D8E31002EF184 /* ColorView.swift in Sources */,
 				934AA37A2A1BE95A001C7FF9 /* Game.swift in Sources */,
 				934AA3502A1BE41C001C7FF9 /* Score_HellApp.swift in Sources */,
 				934AA37D2A1BF95B001C7FF9 /* PlayerView.swift in Sources */,

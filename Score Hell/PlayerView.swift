@@ -19,7 +19,12 @@ struct PlayerView: View {
         VStack (alignment: .leading){
             
             HStack {
-                Image(systemName: "flame")
+                if player.dealer == true {
+                    Image(systemName: "flame")
+                } else if player.leader == true {
+                    Image(systemName: "1.circle")
+                }
+                
                 Text("\(player.name)")
                 Text("\(player.bid)")
                 Spacer()
@@ -32,38 +37,27 @@ struct PlayerView: View {
                     TextField("Bid", value: $player.newBid, formatter: NumberFormatter())
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: player.newBid, perform: { newBid in
-                            tempTotal = game.bidTotal - player.bid
-                            tempTotal = tempTotal + newBid
-                        
-                        if tempTotal == game.numCards && player.name == "Aaron" {
-                            showingAlert = true
-                        }
-                        else {
-                            game.bidTotal = tempTotal
+                            game.bidTotal = game.bidTotal - player.bid
+                            game.bidTotal = game.bidTotal + newBid
                             player.bid = newBid
                             game.calcOhellNum()
-                        }
-
                     })
-                        .alert("Cannot bid \(player.newBid)", isPresented: $showingAlert) {
-                        Button("OK", role: .cancel) { }
-                            }
-                        
                 }
                 else if phase == 1{
                     TextField("Trick", value: $player.newTricksTaken, formatter: NumberFormatter())
                         .onChange(of: player.newTricksTaken, perform: { newTrick in
-                            
                             game.trickTotal = game.trickTotal - player.tricksTaken
                             player.tricksTaken = newTrick
                             game.trickTotal = game.trickTotal + player.tricksTaken
-                            
                         })
                         .textFieldStyle(.roundedBorder)
                 }
+                Spacer()
+                Image(systemName: "flame.fill")
+                Text("\(player.streak)")
             }
         }
-        .font(.title3)
+        .font(.title)
     }
 }
 
