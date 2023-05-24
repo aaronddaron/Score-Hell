@@ -11,16 +11,14 @@ struct GameView: View {
     @State var phase = 0
     @Binding var game: Game
     @State var round = 1
-    @State private var showingAlert = false
+    @State private var showingFinish = false
     @State private var showingFullScore = false
     
     private func updateGame() {
         phase = 0
         game.numCards = game.cards[round]
         round = round + 1
-        
-        let count = 0...game.players.count-1
-        for number in count{
+                for number in 0...game.players.count-1{
             game.players[number].updateScore()
             game.players[number].bid = 0
             game.players[number].newBid = 0
@@ -36,65 +34,91 @@ struct GameView: View {
         game.dealer = (game.dealer + 1) % game.players.count
         game.players[game.dealer].dealer = true
         game.players[(game.dealer + 1) % game.players.count].leader = true
+        
+        game.calcWinner()
+        if round == 14 {
+            showingFinish = true
+        }
     }
     
     var body: some View {
-        VStack {
+        ZStack{
+            /*Rectangle()
+                .fill(.gray)
+                .frame(maxHeight: .infinity)
+                .ignoresSafeArea()*/
             VStack {
-                HStack{
-                    Text("Round \(round)")
-                        .font(.title)
-                    Spacer()
-                    Button(action: {}) {
-                        Text("Full Score")
-                        .font(.headline)
+                VStack {
+                    HStack{
+                        Text("\(game.cards[round - 1]) cards")
+                            .font(.title)
+                        Spacer()
+                        Text("Round \(round)")
+                            .font(.title)
                     }
-                    .sheet(isPresented: $showingFullScore) {
-                    }
-                }
-                HStack {
-                    Text("\(game.players[game.dealer].name) cannot bid \(game.ohellNum)")
-                        .font(.headline)
-                    Spacer()
-                    Text("\(game.cards[round - 1]) cards")
-                        .font(.headline)
-                }
-            }
-            .padding(.horizontal)
-            List($game.players) { $player in
-                PlayerView(player: $player, phase: phase, game: $game)
-                    .listRowBackground(player.theme)
-            }
-            HStack{
-                if phase == 0 {
-                    Button(action: { phase = 1}) {
-                        Text("Play Round")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(game.bidTotal == game.numCards)
-                } else {
-                    Button(action: {
-                        if game.trickTotal == game.numCards {
-                            updateGame()
+                    HStack {
+                        Text("\(game.players[game.dealer].name) cannot bid \(game.ohellNum)")
+                            .font(.headline)
+                        Spacer()
+                        Button(action: { showingFullScore = true }) {
+                            Text("Full Score")
                         }
-                    }) {
-                        Text("Score")
+                        .sheet(isPresented: $showingFullScore) {
+                            NavigationStack {
+                                FullScoreView(game: $game)
+                                    .toolbar{
+                                        ToolbarItem(placement: .confirmationAction) {
+                                            Button("Done") {
+                                                showingFullScore = false
+                                            }
+                                        }
+                                    }
+                            }
+                        }
                     }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(game.trickTotal != game.numCards)
                 }
-                Button(action: {}) {
-                    Text("Finish")
+                .padding(.horizontal)
+            
+                List($game.players) { $player in
+                    PlayerView(player: $player, phase: phase, game: $game)
+                        .listRowBackground(player.theme)
                 }
+                //.scrollContentBackground(.hidden)
+                //.background(.gray)
+                
+                HStack{
+                    if phase == 0 {
+                        Button(action: { phase = 1}) {
+                            Text("Play Round")
+                        }
+                        .disabled(game.bidTotal == game.numCards)
+                    } else {
+                        Button(action: {
+                            if game.trickTotal == game.numCards {
+                                updateGame()
+                            }
+                        }) {
+                            Text("Score")
+                        }
+                        .disabled(game.trickTotal != game.numCards)
+                    }
+                    Button(action: { showingFinish = true }) {
+                        Text("Finish")
+                    }
+                    .alert("", isPresented: $showingFinish) {
+                       Text("Won")
+                    }
+                }
+                .padding()
                 .buttonStyle(.borderedProminent)
             }
-            .padding(.horizontal, 25)
-        }
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            game.setDealer()
-            game.players[game.dealer].dealer = true
-            game.players[(game.dealer + 1) % game.players.count].leader = true
+            //.tint(Color("orange"))
+            .navigationBarBackButtonHidden(true)
+            .onAppear {
+                game.setDealer()
+                game.players[game.dealer].dealer = true
+                game.players[(game.dealer + 1) % game.players.count].leader = true
+            }
         }
     }
 }

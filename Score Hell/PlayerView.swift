@@ -20,7 +20,7 @@ struct PlayerView: View {
             
             HStack {
                 if player.dealer == true {
-                    Image(systemName: "flame")
+                    Image(systemName: "flame.circle")
                 } else if player.leader == true {
                     Image(systemName: "1.circle")
                 }
@@ -28,7 +28,10 @@ struct PlayerView: View {
                 Text("\(player.name)")
                 Text("\(player.bid)")
                 Spacer()
-                Image(systemName: "crown")
+                
+                if player.winner == true {
+                    Image(systemName: "crown")
+                }
                 Text("\(player.score)")
             }
             .foregroundColor(.black)
@@ -56,6 +59,7 @@ struct PlayerView: View {
                 Image(systemName: "flame.fill")
                 Text("\(player.streak)")
             }
+            .foregroundColor(.black)
         }
         .font(.title)
     }

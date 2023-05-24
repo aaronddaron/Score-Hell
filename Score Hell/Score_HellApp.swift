@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Score_HellApp: App {
-    @State private var game = Game.sampleData
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
             //GameView(game: $game)

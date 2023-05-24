@@ -15,58 +15,54 @@ struct StartGameView: View {
     @State private var newCheck = 0
     
     var body: some View {
-        NavigationStack
-        {
-            Form{
-                Section (header: Text("Players")){
-                    ForEach(game.players) { player in
+            NavigationStack{
+                List{
+                    Section (header: Text("Players")){
+                        ForEach(game.players) { player in
+                            HStack{
+                                Label(player.name, systemImage: "person")
+                                Spacer()
+                                Rectangle()
+                                    .fill(player.theme)
+                                    .frame(maxWidth: 20, maxHeight: 20)
+                            }
+                        }
+                        .onDelete { indices in
+                            game.players.remove(atOffsets: indices)}
                         HStack{
-                            Label(player.name, systemImage: "person")
-                            Spacer()
-                            Text("     ")
-                                .background(player.theme)
+                            TextField("New Player", text: $playerName)
+                                .padding(.leading)
+                            Button(action: {
+                                game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
+                                playerName = ""
+                            }) {
+                                Image(systemName: "plus")
+                            }
+                            .disabled(playerName.isEmpty)
+                            
                         }
-                        
                     }
-                    .onDelete { indices in
-                        game.players.remove(atOffsets: indices)}
-                    HStack{
-                        TextField("New Player", text: $playerName)
-                            .padding(.leading)
-                        
-                        Button(action: {
-                            game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
-                            playerName = ""
-                        }) {
-                            Image(systemName: "plus")
+                   Section(header: Text("New Player Color")){
+                        ForEach($game.themes) { $theme in
+                            Button (action: {
+                                game.themes[newCheck].check = false
+                                playerTheme = theme.name
+                                theme.check = true
+                                newCheck = theme.index
+                            }){
+                                ColorView(color: theme.name, check: theme.check)
+                            }
                         }
-                        .disabled(playerName.isEmpty)
-                        
                     }
                 }
-                Section(){
+                .navigationTitle("New Game")
+                //.scrollContentBackground(.hidden)
+                //.background(Color("poppy"))
+                .toolbar{
                     NavigationLink(destination: GameView(game: $game)) {
                         Label("Start Game", systemImage: "arrowtriangle.forward.fill")
-                            .foregroundColor(.accentColor)
                     }
                 }
-                
-                Section(header: Text("New Player Color")){
-                    List($game.themes) { $theme in
-                        Button (action: {
-                            game.themes[newCheck].check = false
-                            playerTheme = theme.name
-                            theme.check = true
-                            newCheck = theme.index
-                        }){
-                            ColorView(color: theme.name, check: theme.check)
-                        }
-                    }
-                }
-                
-            }
-            .navigationTitle("New Game")
-            
         }
     }
 }

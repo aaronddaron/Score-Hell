@@ -12,8 +12,9 @@ struct ColorView: View {
     var check: Bool
     var body: some View {
         HStack{
-            Text("    ")
-                .background(Color(color))
+            Rectangle()
+                .fill(Color(color))
+                .frame(maxWidth: 20, maxHeight: 20)
             Text(color)
             Spacer()
             if check == true { Image(systemName: "checkmark") }

@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct FinishGameView: View {
+    //@State private var newGame = Game(players: [])
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationLink (destination: StartGameView()){
+            Text("New Game")
+        }
     }
 }
 
