@@ -34,9 +34,9 @@ struct Game: Identifiable {
     }
     
     mutating func setDealer() {
-        if numPlayers > 0 {
-            self.dealer = Int.random(in: 0...numPlayers-1)
-        }
+        
+        self.dealer = Int.random(in: 0...self.players.count-1)
+        
     }
     mutating func setNumPlayers() {
         self.numPlayers = self.players.count
@@ -73,7 +73,9 @@ extension Game {
             self.theme = theme
             self.streak = 0
             self.dealer = false
-            self.leader = false        }
+            self.leader = false
+            
+        }
         mutating func updateScore()
         {
             if tricksTaken == bid{

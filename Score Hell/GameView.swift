@@ -11,6 +11,7 @@ struct GameView: View {
     @State var phase = 0
     @Binding var game: Game
     @State var round = 1
+    @State private var showingAlert = false
     @State private var showingFullScore = false
     
     private func updateGame() {
@@ -31,17 +32,10 @@ struct GameView: View {
         game.calcOhellNum()
         
         game.players[game.dealer].dealer = false
-        game.players[(game.dealer + 1) % game.numPlayers].leader = false
-        game.dealer = (game.dealer + 1) % game.numPlayers
+        game.players[(game.dealer + 1) % game.players.count].leader = false
+        game.dealer = (game.dealer + 1) % game.players.count
         game.players[game.dealer].dealer = true
-        game.players[(game.dealer + 1) % game.numPlayers].leader = true
-    }
-    
-    private func setUpGame() {
-        game.setNumPlayers()
-        game.setDealer()
-        game.players[game.dealer].dealer = true
-        game.players[(game.dealer + 1) % game.numPlayers].leader = true
+        game.players[(game.dealer + 1) % game.players.count].leader = true
     }
     
     var body: some View {
@@ -71,27 +65,36 @@ struct GameView: View {
                 PlayerView(player: $player, phase: phase, game: $game)
                     .listRowBackground(player.theme)
             }
-            if phase == 0 {
-                Button(action: { phase = 1}) {
-                    Text("Play Round")
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(game.bidTotal == game.numCards)
-            } else {
-                Button(action: {
-                    if game.trickTotal == game.numCards {
-                        updateGame()
+            HStack{
+                if phase == 0 {
+                    Button(action: { phase = 1}) {
+                        Text("Play Round")
                     }
-                }) {
-                    Text("Score")
+                    .buttonStyle(.borderedProminent)
+                    .disabled(game.bidTotal == game.numCards)
+                } else {
+                    Button(action: {
+                        if game.trickTotal == game.numCards {
+                            updateGame()
+                        }
+                    }) {
+                        Text("Score")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(game.trickTotal != game.numCards)
+                }
+                Button(action: {}) {
+                    Text("Finish")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(game.trickTotal != game.numCards)
             }
+            .padding(.horizontal, 25)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            setUpGame()
+            game.setDealer()
+            game.players[game.dealer].dealer = true
+            game.players[(game.dealer + 1) % game.players.count].leader = true
         }
     }
 }
