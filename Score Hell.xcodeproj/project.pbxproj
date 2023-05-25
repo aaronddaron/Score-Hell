@@ -23,6 +23,7 @@
 		939E32A42A1E6AD5002EF184 /* TableInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E32A32A1E6AD5002EF184 /* TableInfo.swift */; };
 		939E32A62A1EA895002EF184 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E32A52A1EA895002EF184 /* AppDelegate.swift */; };
 		939E32AA2A1EC9FC002EF184 /* FinishGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E32A92A1EC9FC002EF184 /* FinishGameView.swift */; };
+		939E32AC2A1EE398002EF184 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 939E32AB2A1EE398002EF184 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		939E32A32A1E6AD5002EF184 /* TableInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableInfo.swift; sourceTree = "<group>"; };
 		939E32A52A1EA895002EF184 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		939E32A92A1EC9FC002EF184 /* FinishGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FinishGameView.swift; path = ../../../../Desktop/FinishGameView.swift; sourceTree = "<group>"; };
+		939E32AB2A1EE398002EF184 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				939E32A92A1EC9FC002EF184 /* FinishGameView.swift */,
 				939E32932A1D44C1002EF184 /* StartGameView.swift */,
 				939E329F2A1D8E31002EF184 /* ColorView.swift */,
+				939E32AB2A1EE398002EF184 /* Launch Screen.storyboard */,
 			);
 			path = "Score Hell";
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				939E32AC2A1EE398002EF184 /* Launch Screen.storyboard in Resources */,
 				934AA3572A1BE41E001C7FF9 /* Preview Assets.xcassets in Resources */,
 				934AA3542A1BE41E001C7FF9 /* Assets.xcassets in Resources */,
 			);
