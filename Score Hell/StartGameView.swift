@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct StartGameView: View {
-    @State private var game = Game(players: [])
-    //@State private var game = Game.sampleData
+    //@State private var game = Game(players: [])
+    @State private var game = Game.sampleData
     @State private var playerName = ""
     @State private var playerTheme = ""
     //@State private var newCheck = 0

@@ -107,7 +107,7 @@ struct GameView: View {
                             .disabled(game.trickTotal != game.numCards)
                         }
                         NavigationLink(destination: FinishGameView(game: $game)){
-                            Text("Finish")
+                            Text("End Game")
                         }
                     }
                     .padding()
@@ -117,9 +117,8 @@ struct GameView: View {
                 //.tint(Color("orange"))
                 .navigationBarBackButtonHidden(true)
                 .onAppear {
-                    let manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3000")!)
-                    let socket = manager.defaultSocket
-                    socket.connect()
+                    
+                    game.socket.connect()
                     game.setDealer()
                     game.players[game.dealer].dealer = true
                     game.players[(game.dealer + 1) % game.players.count].leader = true

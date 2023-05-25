@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SocketIO
 
 struct Game {
     var players: [Player]
@@ -19,6 +20,8 @@ struct Game {
     var cards: [Int]
     var table: [Int]
     var numPlayers: Int
+    var manager: SocketManager
+    var socket: SocketIOClient
     
     init( players: [Player]) {
         self.players = players
@@ -31,6 +34,8 @@ struct Game {
         self.numPlayers = 0
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
         self.themes = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "periwinkle", index: 4), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "sky", index: 7), Theme(name: "tan", index: 8), Theme(name: "teal", index: 9), Theme(name: "yellow", index: 10)]
+        self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3000")!)
+        self.socket = manager.defaultSocket
     }
     
     mutating func setDealer() {
