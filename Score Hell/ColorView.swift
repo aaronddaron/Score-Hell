@@ -17,7 +17,6 @@ struct ColorView: View {
                 .frame(maxWidth: 20, maxHeight: 20)
             Text(color)
             Spacer()
-            if check == true { Image(systemName: "checkmark") }
         }
         
     }

@@ -16,108 +16,110 @@ struct GameView: View {
     
     private func updateGame() {
         phase = 0
-        game.numCards = game.cards[round]
-        round = round + 1
-                for number in 0...game.players.count-1{
+        for number in 0...game.players.count-1{
             game.players[number].updateScore()
             game.players[number].bid = 0
             game.players[number].newBid = 0
             game.players[number].tricksTaken = 0
             game.players[number].newTricksTaken = 0
         }
-        game.bidTotal = 0
-        game.trickTotal = 0
-        game.calcOhellNum()
-        
-        game.players[game.dealer].dealer = false
-        game.players[(game.dealer + 1) % game.players.count].leader = false
-        game.dealer = (game.dealer + 1) % game.players.count
-        game.players[game.dealer].dealer = true
-        game.players[(game.dealer + 1) % game.players.count].leader = true
-        
-        game.calcWinner()
-        if round == 14 {
-            showingFinish = true
+        if round + 1 == 14 {
+            game.bidTotal = game.numCards
+        } else {
+            game.numCards = game.cards[round]
+            round = round + 1
+
+            game.bidTotal = 0
+            game.trickTotal = 0
+            game.calcOhellNum()
+            
+            game.players[game.dealer].dealer = false
+            game.players[(game.dealer + 1) % game.players.count].leader = false
+            game.dealer = (game.dealer + 1) % game.players.count
+            game.players[game.dealer].dealer = true
+            game.players[(game.dealer + 1) % game.players.count].leader = true
+            
         }
+        game.calcWinner()
     }
     
     var body: some View {
-        ZStack{
-            /*Rectangle()
-                .fill(.gray)
-                .frame(maxHeight: .infinity)
-                .ignoresSafeArea()*/
-            VStack {
+        NavigationStack{
+            ZStack{
+                /*Rectangle()
+                    .fill(.gray)
+                    .frame(maxHeight: .infinity)
+                    .ignoresSafeArea()*/
                 VStack {
-                    HStack{
-                        Text("\(game.cards[round - 1]) cards")
-                            .font(.title)
-                        Spacer()
-                        Text("Round \(round)")
-                            .font(.title)
-                    }
-                    HStack {
-                        Text("\(game.players[game.dealer].name) cannot bid \(game.ohellNum)")
-                            .font(.headline)
-                        Spacer()
-                        Button(action: { showingFullScore = true }) {
-                            Text("Full Score")
+                    VStack {
+                        HStack{
+                            Text("\(game.cards[round - 1]) cards")
+                            Spacer()
+                            Text("Round \(round)")
                         }
-                        .sheet(isPresented: $showingFullScore) {
-                            NavigationStack {
-                                FullScoreView(game: $game)
-                                    .toolbar{
-                                        ToolbarItem(placement: .confirmationAction) {
-                                            Button("Done") {
-                                                showingFullScore = false
+                        .font(.largeTitle)
+                        HStack {
+                            Text("\(game.players[game.dealer].name) cannot bid \(game.ohellNum)")
+                            Spacer()
+                            Button(action: { showingFullScore = true }) {
+                                Text("Full Score")
+                            }
+                            .sheet(isPresented: $showingFullScore) {
+                                NavigationStack{
+                                    FullScoreView(game: $game)
+                                        .toolbar{
+                                            ToolbarItem(placement: .confirmationAction) {
+                                                Button("Done") {
+                                                    showingFullScore = false
+                                                    
+                                                }
                                             }
                                         }
-                                    }
+                                }
                             }
                         }
+                        .font(.title2)
                     }
-                }
-                .padding(.horizontal)
-            
-                List($game.players) { $player in
-                    PlayerView(player: $player, phase: phase, game: $game)
-                        .listRowBackground(player.theme)
-                }
-                //.scrollContentBackground(.hidden)
-                //.background(.gray)
+                    .padding(.horizontal)
                 
-                HStack{
-                    if phase == 0 {
-                        Button(action: { phase = 1}) {
-                            Text("Play Round")
-                        }
-                        .disabled(game.bidTotal == game.numCards)
-                    } else {
-                        Button(action: {
-                            if game.trickTotal == game.numCards {
-                                updateGame()
+                    List($game.players) { $player in
+                        PlayerView(player: $player, phase: phase, game: $game)
+                            .listRowBackground(player.theme)
+                    }
+                    //.scrollContentBackground(.hidden)
+                    //.background(.gray)
+                    
+                    HStack{
+                        if phase == 0 {
+                            Button(action: { phase = 1}) {
+                                Text("Play Round")
                             }
-                        }) {
-                            Text("Score")
+                            .disabled(game.bidTotal == game.numCards)
+                        } else {
+                            Button(action: {
+                                if game.trickTotal == game.numCards {
+                                    updateGame()
+                                }
+                            }) {
+                                Text("Score")
+                            }
+                            .disabled(game.trickTotal != game.numCards)
                         }
-                        .disabled(game.trickTotal != game.numCards)
+                        NavigationLink(destination: FinishGameView(game: $game)){
+                            Text("Finish")
+                        }
                     }
-                    Button(action: { showingFinish = true }) {
-                        Text("Finish")
-                    }
-                    .alert("", isPresented: $showingFinish) {
-                       Text("Won")
-                    }
+                    .padding()
+                    .buttonStyle(.borderedProminent)
+                    .font(.title)
                 }
-                .padding()
-                .buttonStyle(.borderedProminent)
-            }
-            //.tint(Color("orange"))
-            .navigationBarBackButtonHidden(true)
-            .onAppear {
-                game.setDealer()
-                game.players[game.dealer].dealer = true
-                game.players[(game.dealer + 1) % game.players.count].leader = true
+                //.tint(Color("orange"))
+                .navigationBarBackButtonHidden(true)
+                .onAppear {
+                    game.setDealer()
+                    game.players[game.dealer].dealer = true
+                    game.players[(game.dealer + 1) % game.players.count].leader = true
+                }
             }
         }
     }

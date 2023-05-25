@@ -65,10 +65,10 @@ struct Game {
             }
         }
     }
-    mutating func samePlayers(game: Game)
+    mutating func clearChecks()
     {
-        for num in 0...game.players.count - 1{
-            self.players[num].name = game.players[num].name;
+        for num in 0...self.themes.count - 1{
+            themes[num].check = false
         }
     }
     
