@@ -17,7 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                         windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientationLock))
                     }
                 }
-                UIViewController.attemptRotationToDeviceOrientation()
+                //UIViewController.attemptRotationToDeviceOrientation()
             } else {
                 if orientationLock == .landscape {
                     UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
@@ -31,4 +31,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return AppDelegate.orientationLock
     }
+    
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SocketIO
 
 struct GameView: View {
     @State var phase = 0
@@ -116,6 +117,9 @@ struct GameView: View {
                 //.tint(Color("orange"))
                 .navigationBarBackButtonHidden(true)
                 .onAppear {
+                    let manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3000")!)
+                    let socket = manager.defaultSocket
+                    socket.connect()
                     game.setDealer()
                     game.players[game.dealer].dealer = true
                     game.players[(game.dealer + 1) % game.players.count].leader = true
