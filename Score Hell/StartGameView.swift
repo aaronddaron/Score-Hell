@@ -73,7 +73,6 @@ struct StartGameView: View {
                     }
                 }
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 

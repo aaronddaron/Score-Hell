@@ -16,13 +16,13 @@ struct PlayerView: View {
     @State private var tempTotal = 0
         
     var body: some View {
-        VStack (alignment: .leading){
+        VStack {
             
             HStack {
                 if player.dealer == true {
                     Image(systemName: "flame.circle")
                 } else if player.leader == true {
-                    Image(systemName: "1.circle")
+                    Image(systemName: "arrowtriangle.forward.fill")
                 }
                 
                 Text("\(player.name)")
@@ -44,6 +44,9 @@ struct PlayerView: View {
                             game.bidTotal = game.bidTotal + newBid
                             player.bid = newBid
                             game.calcOhellNum()
+                        
+                            game.socket.emit("bid", player.name, player.bid, game.ohellNum)
+                            game.socket.emit("ohell", game.ohellNum)
                     })
                 }
                 else if phase == 1{
@@ -52,16 +55,18 @@ struct PlayerView: View {
                             game.trickTotal = game.trickTotal - player.tricksTaken
                             player.tricksTaken = newTrick
                             game.trickTotal = game.trickTotal + player.tricksTaken
+                            
                         })
                         .textFieldStyle(.roundedBorder)
                 }
                 Spacer()
                 Image(systemName: "flame.fill")
+                    .foregroundColor(.black)
                 Text("\(player.streak)")
+                    .foregroundColor(.black)
             }
-            .foregroundColor(.black)
         }
-        .font(.title)
+        .font(.title3)
     }
 }
 

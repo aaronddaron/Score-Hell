@@ -12,6 +12,7 @@ struct GameView: View {
     @State var phase = 0
     @Binding var game: Game
     @State var round = 1
+    @State var leader = 0
     @State private var showingFinish = false
     @State private var showingFullScore = false
     
@@ -23,6 +24,7 @@ struct GameView: View {
             game.players[number].newBid = 0
             game.players[number].tricksTaken = 0
             game.players[number].newTricksTaken = 0
+            game.socket.emit("score", game.players[number].name, game.players[number].score, game.players[number].streak)
         }
         if round + 1 == 14 {
             game.bidTotal = game.numCards
@@ -38,19 +40,16 @@ struct GameView: View {
             game.players[(game.dealer + 1) % game.players.count].leader = false
             game.dealer = (game.dealer + 1) % game.players.count
             game.players[game.dealer].dealer = true
-            game.players[(game.dealer + 1) % game.players.count].leader = true
+            leader = (game.dealer + 1) % game.players.count
+            game.players[leader].leader = true
             
         }
         game.calcWinner()
+        game.socket.emit("game", game.ohellNum, game.players[game.dealer].name, game.players[leader].name)
     }
     
     var body: some View {
         NavigationStack{
-            ZStack{
-                /*Rectangle()
-                    .fill(.gray)
-                    .frame(maxHeight: .infinity)
-                    .ignoresSafeArea()*/
                 VStack {
                     VStack {
                         HStack{
@@ -87,8 +86,6 @@ struct GameView: View {
                         PlayerView(player: $player, phase: phase, game: $game)
                             .listRowBackground(player.theme)
                     }
-                    //.scrollContentBackground(.hidden)
-                    //.background(.gray)
                     
                     HStack{
                         if phase == 0 {
@@ -109,22 +106,25 @@ struct GameView: View {
                         NavigationLink(destination: FinishGameView(game: $game)){
                             Text("End Game")
                         }
+                        Button("dealerLeader") {
+                            game.socket.emit("dealerLeader", game.players[game.dealer].name, game.players[leader].name)
+                        }
                     }
                     .padding()
                     .buttonStyle(.borderedProminent)
-                    .font(.title)
+                    .font(.title3)
                 }
-                //.tint(Color("orange"))
                 .navigationBarBackButtonHidden(true)
                 .onAppear {
-                    
-                    game.socket.connect()
                     game.setDealer()
+                    
                     game.players[game.dealer].dealer = true
-                    game.players[(game.dealer + 1) % game.players.count].leader = true
+                    leader = (game.dealer + 1) % game.players.count
+                    game.players[leader].leader = true
+                    game.socket.connect()
+
                 }
             }
-        }
     }
 }
     

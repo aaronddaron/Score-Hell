@@ -13,7 +13,8 @@ struct Score_HellApp: App {
     var body: some Scene {
         WindowGroup {
             //GameView(game: $game)
-            StartGameView()
+            //StartGameView()
+            HomeScreenView()
         }
     }
 }
