@@ -61,7 +61,7 @@ struct WatchView: View {
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                game.socket.connect()
+                //game.socket.connect()
                 game.socket.on("game") { (data, ack) -> Void in
                     round = round + 1
                     ohell = data[0] as! Int

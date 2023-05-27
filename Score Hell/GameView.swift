@@ -121,7 +121,7 @@ struct GameView: View {
                     game.players[game.dealer].dealer = true
                     leader = (game.dealer + 1) % game.players.count
                     game.players[leader].leader = true
-                    game.socket.connect()
+                    //game.socket.connect()
 
                 }
             }

@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct StartGameView: View {
-    //@State private var game = Game(players: [])
-    @State private var game = Game.sampleData
+    @State private var game = Game(players: [])
+    //@State private var game = Game.sampleData
     @State private var playerName = ""
     @State private var playerTheme = ""
+    @State private var array: [Int] = [0, 0, 0, 0, 0]
     //@State private var newCheck = 0
     
     var body: some View {
@@ -48,6 +49,7 @@ struct StartGameView: View {
                             }
                         }
                     }
+                   Text("\(array[0]), \(array[1]), \(array[2]), \(array[3]), \(array[4])")
                    Section(header: Text("New Player Color")){
                         ForEach($game.themes) { $theme in
                             Button (action: {
@@ -70,6 +72,17 @@ struct StartGameView: View {
                         NavigationLink(destination: GameView(game: $game)) {
                             Label("Start Game", systemImage: "arrowtriangle.forward.fill")
                     }
+                    }
+                }
+                .onAppear{
+                    game.socket.connect()
+                    game.socket.on("newPlayer") { (data, ack) -> Void in
+                        playerName = data[0] as! String
+                        playerTheme = data[1] as! String
+                        array = data[2] as! [Int]
+                        game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
+                        playerName = ""
+                        playerTheme = ""
                     }
                 }
         }

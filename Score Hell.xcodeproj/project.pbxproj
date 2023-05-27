@@ -28,6 +28,7 @@
 		939E33362A206D97002EF184 /* WatchPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E33352A206D97002EF184 /* WatchPlayerView.swift */; };
 		939E33382A2072A0002EF184 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E33372A2072A0002EF184 /* Client.swift */; };
 		939E333A2A20E480002EF184 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E33392A20E480002EF184 /* HomeScreenView.swift */; };
+		939E333C2A214689002EF184 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E333B2A214689002EF184 /* JoinGameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		939E33352A206D97002EF184 /* WatchPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayerView.swift; sourceTree = "<group>"; };
 		939E33372A2072A0002EF184 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		939E33392A20E480002EF184 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
+		939E333B2A214689002EF184 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
 				939E32A92A1EC9FC002EF184 /* FinishGameView.swift */,
 				939E32932A1D44C1002EF184 /* StartGameView.swift */,
+				939E333B2A214689002EF184 /* JoinGameView.swift */,
 				939E329F2A1D8E31002EF184 /* ColorView.swift */,
 				939E33332A206BC0002EF184 /* WatchView.swift */,
 				939E33392A20E480002EF184 /* HomeScreenView.swift */,
@@ -315,6 +318,7 @@
 			files = (
 				939E32A62A1EA895002EF184 /* AppDelegate.swift in Sources */,
 				939E329E2A1D8A0D002EF184 /* Theme.swift in Sources */,
+				939E333C2A214689002EF184 /* JoinGameView.swift in Sources */,
 				934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */,
 				939E32A42A1E6AD5002EF184 /* TableInfo.swift in Sources */,
 				939E32942A1D44C1002EF184 /* StartGameView.swift in Sources */,

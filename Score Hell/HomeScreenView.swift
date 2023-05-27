@@ -15,11 +15,12 @@ struct HomeScreenView: View {
             }
             Divider()
             VStack{
-                NavigationLink (destination: WatchView(game: .constant(Game.sampleData))){
+                NavigationLink (destination: JoinGameView()){
                     Label("Join Game", systemImage: "person.3")
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
         //.buttonStyle(.borderedProminent)
     }
 }

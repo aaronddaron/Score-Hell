@@ -34,7 +34,7 @@ struct Game {
         self.numPlayers = 0
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
         self.themes = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "periwinkle", index: 4), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "sky", index: 7), Theme(name: "tan", index: 8), Theme(name: "teal", index: 9), Theme(name: "yellow", index: 10)]
-        self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3030")!)
+        self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3000")!)
         self.socket = manager.defaultSocket
             }
     
@@ -138,5 +138,5 @@ extension Game {
     static let sampleData: Game = Game( players: [
         Player(name: "Aaron", theme: Color("lavender")),
         Player(name: "Dad", theme: Color("poppy")), Player(name: "Mom", theme: Color("seafoam")),
-        Player(name: "Caroline", theme: Color("buttercup")), Player(name: "Bert", theme: Color("orange")), Player(name: "Suse", theme: Color("teal")) ] )
+        Player(name: "Caroline", theme: Color("buttercup")) ] )
 }
