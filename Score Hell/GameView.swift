@@ -15,6 +15,7 @@ struct GameView: View {
     @State var leader = 0
     @State private var showingFinish = false
     @State private var showingFullScore = false
+    @State private var showingStart = true
     
     private func updateGame() {
         phase = 0
@@ -106,8 +107,11 @@ struct GameView: View {
                         NavigationLink(destination: FinishGameView(game: $game)){
                             Text("End Game")
                         }
-                        Button("dealerLeader") {
-                            game.socket.emit("dealerLeader", game.players[game.dealer].name, game.players[leader].name)
+                        if showingStart {
+                            Button("Start Game") {
+                                game.socket.emit("dealerLeader", game.players[game.dealer].name, game.players[leader].name)
+                                showingStart = false
+                            }
                         }
                     }
                     .padding()
@@ -117,6 +121,7 @@ struct GameView: View {
                 .navigationBarBackButtonHidden(true)
                 .onAppear {
                     game.setDealer()
+                    game.socket.emit("start")
                     
                     game.players[game.dealer].dealer = true
                     leader = (game.dealer + 1) % game.players.count

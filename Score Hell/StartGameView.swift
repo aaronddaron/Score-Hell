@@ -9,17 +9,18 @@ import SwiftUI
 
 struct StartGameView: View {
     @State private var game = Game(players: [])
-    //@State private var game = Game.sampleData
+    @State private var names: [String] = []
+    @State private var themes: [String] = []
     @State private var playerName = ""
     @State private var playerTheme = ""
-    @State private var array: [Int] = [0, 0, 0, 0, 0]
+    @State private var place = 0
     //@State private var newCheck = 0
     
     var body: some View {
             NavigationStack{
                 List{
                     Section (header: Text("Players")){
-                        ForEach(game.players) { player in
+                        ForEach($game.players) { $player in
                             HStack{
                                 Label(player.name, systemImage: "person")
                                 Spacer()
@@ -27,9 +28,10 @@ struct StartGameView: View {
                                     .fill(player.theme)
                                     .frame(maxWidth: 20, maxHeight: 20)
                             }
+                            
                         }
-                        .onDelete { indices in
-                            game.players.remove(atOffsets: indices)}
+                        //.onDelete { indices in
+                          //  game.players.remove(atOffsets: indices)}
                         if game.players.count < 6{
                             HStack{
                                 
@@ -37,7 +39,8 @@ struct StartGameView: View {
                                     .padding(.leading)
                                 
                                 Button(action: {
-                                    game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
+                                    //game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
+                                    game.socket.emit("newPlayer", playerName, playerTheme)
                                     playerName = ""
                                     playerTheme = ""
                                 }) {
@@ -49,24 +52,17 @@ struct StartGameView: View {
                             }
                         }
                     }
-                   Text("\(array[0]), \(array[1]), \(array[2]), \(array[3]), \(array[4])")
                    Section(header: Text("New Player Color")){
-                        ForEach($game.themes) { $theme in
+                       ForEach(Theme.themes) { theme in
                             Button (action: {
-                                //game.clearChecks()
-                                //game.themes[newCheck].check = false
                                 playerTheme = theme.name
-                                //theme.check = true
-                                //newCheck = theme.index
                             }){
-                                ColorView(color: theme.name, check: theme.check)
+                                ColorView(color: theme.name)
                             }
                         }
                     }
                 }
                 .navigationTitle("New Game")
-                //.scrollContentBackground(.hidden)
-                //.background(Color("poppy"))
                 .toolbar{
                     if game.players.count >= 4                    {
                         NavigationLink(destination: GameView(game: $game)) {
@@ -75,14 +71,22 @@ struct StartGameView: View {
                     }
                 }
                 .onAppear{
-                    game.socket.connect()
-                    game.socket.on("newPlayer") { (data, ack) -> Void in
-                        playerName = data[0] as! String
-                        playerTheme = data[1] as! String
-                        array = data[2] as! [Int]
-                        game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
-                        playerName = ""
-                        playerTheme = ""
+                    game.socket.on("players"){ (data, ack) -> Void in
+                        names = data[0] as! [String]
+                        themes = data[1] as! [String]
+                        
+                        for num in 0...names.count-1 {
+                            game.players.append(Game.Player(name: names[num], theme: Color(themes[num])))
+                            
+                        }
+                    }
+                    game.socket.connect(withPayload: ["username": "Aaron", "theme": "lavender"])
+                                        
+                    game.socket.on("newPlayer"){ (data, ack) -> Void in
+                        let tempName = data[0] as! String
+                        let tempTheme = data[1] as! String
+                        game.players.append(Game.Player(name: tempName, theme: Color(tempTheme)))
+                        
                     }
                 }
         }

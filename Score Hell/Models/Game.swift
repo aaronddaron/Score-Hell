@@ -11,7 +11,6 @@ import SocketIO
 
 struct Game {
     var players: [Player]
-    var themes: [Theme]
     var dealer: Int
     var ohellNum: Int
     var bidTotal: Int
@@ -33,7 +32,6 @@ struct Game {
         self.table = []
         self.numPlayers = 0
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
-        self.themes = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "periwinkle", index: 4), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "sky", index: 7), Theme(name: "tan", index: 8), Theme(name: "teal", index: 9), Theme(name: "yellow", index: 10)]
         self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3000")!)
         self.socket = manager.defaultSocket
             }
@@ -42,9 +40,6 @@ struct Game {
         
         self.dealer = Int.random(in: 0...self.players.count-1)
         
-    }
-    mutating func setNumPlayers() {
-        self.numPlayers = self.players.count
     }
     
     mutating func calcOhellNum() {
@@ -70,12 +65,6 @@ struct Game {
             }
         }
     }
-    mutating func clearChecks()
-    {
-        for num in 0...self.themes.count - 1{
-            themes[num].check = false
-        }
-    }    
 }
 
 extension Game {
@@ -138,5 +127,5 @@ extension Game {
     static let sampleData: Game = Game( players: [
         Player(name: "Aaron", theme: Color("lavender")),
         Player(name: "Dad", theme: Color("poppy")), Player(name: "Mom", theme: Color("seafoam")),
-        Player(name: "Caroline", theme: Color("buttercup")) ] )
+        Player(name: "Caroline", theme: Color("buttercup")) ])
 }

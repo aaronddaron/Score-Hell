@@ -10,6 +10,7 @@ import SwiftUI
 struct PlayerView: View {
     @Binding var player: Game.Player
     var phase: Int
+
     @Binding var game: Game
     
     @State private var showingAlert = false
@@ -67,6 +68,7 @@ struct PlayerView: View {
             }
         }
         .font(.title3)
+        
     }
 }
 

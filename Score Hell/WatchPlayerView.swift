@@ -60,21 +60,6 @@ struct WatchPlayerView: View {
                     bid = data[1] as! Int
                 }
             }
-            game.socket.on("game") { (data, ack) -> Void in
-                if data[1] as! String == player.name {
-                    dealer = true
-                }
-                else {
-                    dealer = false
-                }
-                
-                if data[2] as! String == player.name {
-                    leader = true
-                }
-                else {
-                    leader = false
-                }
-            }
             game.socket.on("dealerLeader") { (data, ack) -> Void in
                 if data[0] as! String == player.name {
                     dealer = true
@@ -90,6 +75,7 @@ struct WatchPlayerView: View {
                     leader = false
                 }
             }
+            
             game.socket.on("score") { (data, ack) -> Void in
                 if player.name == data[0] as! String {
                     score = data[1] as! Int

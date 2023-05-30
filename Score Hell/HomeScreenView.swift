@@ -21,7 +21,6 @@ struct HomeScreenView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        //.buttonStyle(.borderedProminent)
     }
 }
 

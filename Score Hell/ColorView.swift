@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ColorView: View {
     var color: String
-    var check: Bool
     var body: some View {
         HStack{
             Rectangle()
@@ -24,6 +23,6 @@ struct ColorView: View {
 
 struct ColorView_Previews: PreviewProvider {
     static var previews: some View {
-        ColorView(color: Game.sampleData.themes[0].name, check: true)
+        ColorView(color: Theme.themes[0].name)
     }
 }
