@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct JoinGameView: View {
-    @State private var themes: [String] = []
-    @State private var names: [String] = []
+    //@State private var themes: [String] = []
+    //@State private var names: [String] = []
     @State private var name = ""
     @State private var game = Game(players: [])
     //@State private var players: [Game.Player] = []
     @State private var playerName = ""
     @State private var playerTheme = ""
     @State private var showingJoin = false
+    @State private var disableAdd = false
 
     var body: some View {
         VStack{
@@ -32,14 +33,13 @@ struct JoinGameView: View {
                 TextField("Name", text: $playerName)
                 Button(action: {
                     game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
-                    playerName = ""
-                    playerTheme = ""
+                    
                 }) {
                     Image(systemName: "plus")
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(Color(playerTheme))
-                .disabled(playerName.isEmpty || playerTheme.isEmpty)
+                .disabled(disableAdd)
                 
             }
             VStack {
@@ -64,11 +64,17 @@ struct JoinGameView: View {
         .padding()
         .onAppear{
             game.socket.on("players"){ (data, ack) -> Void in
-                names = data[0] as! [String]
-                themes = data[1] as! [String]
+                let names = data[0] as! [String]
+                let themes = data[1] as! [String]
+                let start = data[2] as! Bool
+                game.players.removeAll()
                 for num in 0...names.count-1 {
                     game.players.append(Game.Player(name: names[num], theme: Color(themes[num])))
                     
+                }
+                
+                if start == false {
+                    game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
                 }
             }
             
@@ -76,7 +82,7 @@ struct JoinGameView: View {
                 let tempName = data[0] as! String
                 let tempTheme = data[1] as! String
                 game.players.append(Game.Player(name: tempName, theme: Color(tempTheme)))
-                
+                disableAdd = true
             }
             
             game.socket.on("start"){ (data, ack) -> Void in

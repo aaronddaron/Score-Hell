@@ -9,12 +9,12 @@ import SwiftUI
 
 struct StartGameView: View {
     @State private var game = Game(players: [])
-    @State private var names: [String] = []
-    @State private var themes: [String] = []
+    //@State private var updatePlayers: [Game.Player] = []
+    //@State private var names: [String] = []
+    //@State private var themes: [String] = []
     @State private var playerName = ""
     @State private var playerTheme = ""
-    @State private var place = 0
-    //@State private var newCheck = 0
+    //@State private var place = 0
     
     var body: some View {
             NavigationStack{
@@ -39,7 +39,7 @@ struct StartGameView: View {
                                     .padding(.leading)
                                 
                                 Button(action: {
-                                    //game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
+                                    game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
                                     game.socket.emit("newPlayer", playerName, playerTheme)
                                     playerName = ""
                                     playerTheme = ""
@@ -72,15 +72,17 @@ struct StartGameView: View {
                 }
                 .onAppear{
                     game.socket.on("players"){ (data, ack) -> Void in
-                        names = data[0] as! [String]
-                        themes = data[1] as! [String]
+                        let names = data[0] as! [String]
+                        let themes = data[1] as! [String]
                         
+                        game.players.removeAll()
                         for num in 0...names.count-1 {
                             game.players.append(Game.Player(name: names[num], theme: Color(themes[num])))
                             
                         }
                     }
                     game.socket.connect(withPayload: ["username": "Aaron", "theme": "lavender"])
+                    game.players.append(Game.Player(name: "Aaron", theme: Color("lavender")))
                                         
                     game.socket.on("newPlayer"){ (data, ack) -> Void in
                         let tempName = data[0] as! String

@@ -36,10 +36,18 @@ struct Game {
         self.socket = manager.defaultSocket
             }
     
-    mutating func setDealer() {
-        
-        self.dealer = Int.random(in: 0...self.players.count-1)
-        
+    mutating func order(leader: Int) {
+        var temp: [Game.Player] = []
+        for num in 0...self.players.count - 1{
+            temp.append(self.players[(leader + num) % self.players.count])
+        }
+        self.players = temp
+    }
+    mutating func setLeader() {
+        let leader = Int.random(in: 0...self.players.count-1)
+    
+        self.order(leader: leader)
+        self.socket.emit("start", leader)
     }
     
     mutating func calcOhellNum() {

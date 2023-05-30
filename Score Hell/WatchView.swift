@@ -54,7 +54,11 @@ struct WatchView: View {
                     .listRowBackground(player.theme)
                 }
                 HStack {
-                    Text("\(dealer) cannot bid \(ohell)")
+                    if ohell < 0 {
+                       Text("\(game.players[game.players.count-1].name) can bid anything")
+                    } else {
+                        Text("\(game.players[game.players.count-1].name) cannot bid \(ohell)")
+                    }
                 }
                 .font(.title)
                 .padding()

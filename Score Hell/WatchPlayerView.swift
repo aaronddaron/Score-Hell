@@ -25,9 +25,9 @@ struct WatchPlayerView: View {
         VStack {
             
             HStack {
-                if dealer == true {
+                if player.name == game.players[game.players.count - 1].name {
                     Image(systemName: "flame.circle")
-                } else if leader == true {
+                } else if player.name == game.players[0].name {
                     Image(systemName: "arrowtriangle.forward.fill")
                 }
                 

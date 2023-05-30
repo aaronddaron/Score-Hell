@@ -12,10 +12,9 @@ struct GameView: View {
     @State var phase = 0
     @Binding var game: Game
     @State var round = 1
-    @State var leader = 0
+    //@State var leader = 0
     @State private var showingFinish = false
     @State private var showingFullScore = false
-    @State private var showingStart = true
     
     private func updateGame() {
         phase = 0
@@ -41,12 +40,13 @@ struct GameView: View {
             game.players[(game.dealer + 1) % game.players.count].leader = false
             game.dealer = (game.dealer + 1) % game.players.count
             game.players[game.dealer].dealer = true
-            leader = (game.dealer + 1) % game.players.count
+            let leader = (game.dealer + 1) % game.players.count
             game.players[leader].leader = true
+            game.socket.emit("game", game.ohellNum, game.players[game.dealer].name, game.players[leader].name)
             
         }
         game.calcWinner()
-        game.socket.emit("game", game.ohellNum, game.players[game.dealer].name, game.players[leader].name)
+        //game.socket.emit("game", game.ohellNum, game.players[game.dealer].name, game.players[leader].name)
     }
     
     var body: some View {
@@ -60,7 +60,11 @@ struct GameView: View {
                         }
                         .font(.largeTitle)
                         HStack {
-                            Text("\(game.players[game.dealer].name) cannot bid \(game.ohellNum)")
+                            if game.ohellNum < 0 {
+                                Text("\(game.players[game.players.count-1].name) can bid anything")
+                            } else {
+                                Text("\(game.players[game.players.count-1].name) cannot bid \(game.ohellNum)")
+                            }
                             Spacer()
                             Button(action: { showingFullScore = true }) {
                                 Text("Full Score")
@@ -107,12 +111,6 @@ struct GameView: View {
                         NavigationLink(destination: FinishGameView(game: $game)){
                             Text("End Game")
                         }
-                        if showingStart {
-                            Button("Start Game") {
-                                game.socket.emit("dealerLeader", game.players[game.dealer].name, game.players[leader].name)
-                                showingStart = false
-                            }
-                        }
                     }
                     .padding()
                     .buttonStyle(.borderedProminent)
@@ -120,12 +118,11 @@ struct GameView: View {
                 }
                 .navigationBarBackButtonHidden(true)
                 .onAppear {
-                    game.setDealer()
-                    game.socket.emit("start")
+                    game.setLeader()
                     
-                    game.players[game.dealer].dealer = true
+                    /*game.players[game.dealer].dealer = true
                     leader = (game.dealer + 1) % game.players.count
-                    game.players[leader].leader = true
+                    game.players[leader].leader = true*/
                     //game.socket.connect()
 
                 }
