@@ -17,77 +17,40 @@ struct JoinGameView: View {
     @State private var playerTheme = ""
     @State private var showingJoin = false
     @State private var disableAdd = false
+    @State private var showingAlert = false
+    @State private var alert = ""
 
     var body: some View {
-        VStack{
-            ForEach(game.players){ player in
-                HStack{
-                    Label(player.name, systemImage: "person")
-                    Spacer()
-                    Rectangle()
-                        .fill(player.theme)
-                        .frame(maxWidth: 20, maxHeight: 20)
-                }
-            }
-            HStack{
-                TextField("Name", text: $playerName)
-                Button(action: {
-                    game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
-                    
-                }) {
-                    Image(systemName: "plus")
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(Color(playerTheme))
-                .disabled(disableAdd)
-                
-            }
-            VStack {
-                ForEach(Theme.themes) { theme in
-                    Button (action: {
-                        playerTheme = theme.name
-                    }){
-                        ColorView(color: theme.name)
-                    }
-                }
-                Spacer()
-                if showingJoin == true
-                {
-                    NavigationStack{
-                        NavigationLink(destination: WatchView(game: $game)){
-                            Label("Join Game", systemImage: "person.3")
+        NavigationStack{
+            List{
+                Section (header: Text("Screen Name")){
+                    HStack{
+                        TextField("Name", text: $playerName)
+                        Spacer()
+                        
+                            .foregroundColor(Color(playerTheme))
                         }
                     }
-                }
-            }
-        }
-        .padding()
-        .onAppear{
-            game.socket.on("players"){ (data, ack) -> Void in
-                let names = data[0] as! [String]
-                let themes = data[1] as! [String]
-                let start = data[2] as! Bool
-                game.players.removeAll()
-                for num in 0...names.count-1 {
-                    game.players.append(Game.Player(name: names[num], theme: Color(themes[num])))
+                Section (header: Text("Colors")){
+                    ForEach(Theme.themes) { theme in
+                        Button (action: {
+                            playerTheme = theme.name
+                        }){
+                            ColorView(color: theme.name)
+                        }
+                    }
                     
                 }
-                
-                if start == false {
-                    game.players.append(Game.Player(name: playerName, theme: Color(playerTheme)))
+            }
+            .navigationTitle("Join Game")
+            .toolbar{
+                if !playerTheme.isEmpty && !playerTheme.isEmpty{
+                    NavigationLink(destination: WatchView(game: $game, playerName: playerName, playerTheme: playerTheme)) {
+                        Text("Join")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color(playerTheme))
                 }
-            }
-            
-            game.socket.on("newPlayer"){ (data, ack) -> Void in
-                let tempName = data[0] as! String
-                let tempTheme = data[1] as! String
-                game.players.append(Game.Player(name: tempName, theme: Color(tempTheme)))
-                disableAdd = true
-            }
-            
-            game.socket.on("start"){ (data, ack) -> Void in
-                showingJoin = true
-                //game.players.append(contentsOf: players)
             }
         }
     }

@@ -11,7 +11,6 @@ import SocketIO
 
 struct Game {
     var players: [Player]
-    var dealer: Int
     var ohellNum: Int
     var bidTotal: Int
     var trickTotal: Int
@@ -24,17 +23,16 @@ struct Game {
     
     init( players: [Player]) {
         self.players = players
-        self.dealer = 0
         self.ohellNum = 7
         self.bidTotal = 0
         self.trickTotal = 0
         self.numCards = 7
         self.table = []
-        self.numPlayers = 0
+        self.numPlayers = players.count
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
-        self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3000")!)
+        self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3030")!)
         self.socket = manager.defaultSocket
-            }
+    }
     
     mutating func order(leader: Int) {
         var temp: [Game.Player] = []
@@ -66,12 +64,22 @@ struct Game {
                 max = num
             }
         }
-        self.players[max].winner = true
+        //self.players[max].winner = true
+        var winners: [Bool] = []
+        var scores: [Int] = []
+        var streaks: [Int] = []
         for num in 0...self.players.count - 1{
             if self.players[max].score == self.players[num].score {
-                players[num].winner = true;
+                players[num].winner = true
+                winners.append(true)
+            } else {
+                winners.append(false)
             }
+            scores.append(self.players[num].score)
+            streaks.append(self.players[num].streak)
         }
+        self.socket.emit("scores", scores, streaks)
+        self.socket.emit("winners", winners)
     }
 }
 
@@ -82,16 +90,14 @@ extension Game {
         var score: Int
         var bid: Int
         var tricksTaken: Int
-        var theme: Color
-        var dealer: Bool
-        var leader: Bool
+        var theme: String
         var winner: Bool
         var newBid: Int
         var newTricksTaken: Int
         var streak: Int
         var scores: [TableInfo]
         
-        init(id: UUID = UUID(), name: String, theme: Color) {
+        init(id: UUID = UUID(), name: String, theme: String) {
             self.id = id
             self.name = name
             self.score = 0
@@ -101,9 +107,7 @@ extension Game {
             self.tricksTaken = 0
             self.theme = theme
             self.streak = 0
-            self.dealer = false
             self.winner = false
-            self.leader = false
             self.scores = []
         }
         
@@ -133,7 +137,7 @@ extension Game {
 extension Game {
         
     static let sampleData: Game = Game( players: [
-        Player(name: "Aaron", theme: Color("lavender")),
-        Player(name: "Dad", theme: Color("poppy")), Player(name: "Mom", theme: Color("seafoam")),
-        Player(name: "Caroline", theme: Color("buttercup")) ])
+        Player(name: "Aaron", theme: "lavender"),
+        Player(name: "Dad", theme: "poppy"), Player(name: "Mom", theme: "seafoam"),
+        Player(name: "Caroline", theme: "buttercup") ])
 }

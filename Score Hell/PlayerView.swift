@@ -44,10 +44,11 @@ struct PlayerView: View {
                             game.bidTotal = game.bidTotal - player.bid
                             game.bidTotal = game.bidTotal + newBid
                             player.bid = newBid
-                            game.calcOhellNum()
-                        
+                            if player.name != game.players[game.players.count-1].name {
+                                game.calcOhellNum()
+                            }
                             game.socket.emit("bid", player.name, player.bid, game.ohellNum)
-                            game.socket.emit("ohell", game.ohellNum)
+                            //game.socket.emit("ohell", game.ohellNum)
                     })
                 }
                 else if phase == 1{

@@ -40,7 +40,7 @@ struct FullScoreView: View {
                                     Text("\(row.score)")
                                 }
                             }
-                            .foregroundColor(player.theme)
+                            .foregroundColor(Color(player.theme))
                         }
                         .padding(.horizontal, 14)
                     }

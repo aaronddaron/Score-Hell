@@ -25,6 +25,6 @@ struct Theme: Identifiable{
 }
 
 extension Theme {
-    static let themes: [Theme] = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "periwinkle", index: 4), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "sky", index: 7), Theme(name: "tan", index: 8), Theme(name: "teal", index: 9), Theme(name: "yellow", index: 10)]
+    static let themes: [Theme] = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "tan", index: 7)]
 }
 
