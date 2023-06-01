@@ -23,6 +23,7 @@ struct Game {
     var table: [Int]
     var numPlayers: Int
     var started: Bool
+    var finished: Bool
     var manager: SocketManager
     var socket: SocketIOClient
     
@@ -36,6 +37,7 @@ struct Game {
         self.phase = 0
         self.table = []
         self.started = false
+        self.finished = false
         self.numPlayers = self.players.count
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
         self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3030")!)

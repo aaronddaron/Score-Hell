@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlayerView: View {
     @Binding var player: Game.Player
-    //var phase: Int
+    @Binding var showingStats: Bool
 
     @Binding var game: Game
     
@@ -27,48 +27,78 @@ struct PlayerView: View {
                 }
                 
                 Text("\(player.name)")
-                Text("\(player.bid)")
+                if game.phase == 1 {
+                    Text("\(player.bid)")
+                }
                 Spacer()
                 
-                if player.winner == true {
+                if player.winner {
                     Image(systemName: "crown")
                 }
                 Text("\(player.score)")
             }
             .foregroundColor(.black)
+            
             HStack{
                 if game.phase == 0 && game.started {
-                    Picker("Bid", selection: $player.newBid) {
-                        ForEach(0 ..< 8) {
-                            Text("\($0)").tag("\($0)")
+                    Stepper{Text("Bid: \(player.bid)")} onIncrement: {
+                        player.bid += 1
+                        if player.bid > game.numCards {
+                            player.bid = 0
+                            game.bidTotal -= game.numCards
+                        } else {
+                            game.bidTotal += 1
                         }
-                    }
-                    .onChange(of: player.newBid, perform: { newBid in
-                        game.bidTotal = game.bidTotal - player.bid
-                        game.bidTotal = game.bidTotal + newBid
-                        player.bid = newBid
-                        if player.name != game.players[game.players.count-1].name {
+                        
+                        if player.name != game.players[game.numPlayers-1].name {
                             game.calcOhellNum()
                         }
                         game.socket.emit("bid", player.name, player.bid, game.ohellNum)
-                    })
-                    
+                        
+                    } onDecrement: {
+                        player.bid -= 1
+                        if player.bid  < 0 {
+                            player.bid = game.numCards
+                            game.bidTotal += game.numCards
+                        } else {
+                            game.bidTotal -= 1
+                        }
+                        
+                        if player.name != game.players[game.numPlayers-1].name {
+                            game.calcOhellNum()
+                        }
+                        game.socket.emit("bid", player.name, player.bid, game.ohellNum)
+                    }
                 }
-                else if game.phase == 1 && game.started{
-                    Picker("Trick", selection: $player.newTricksTaken) {
-                        ForEach(0 ..< 8) {
-                            Text("\($0)").tag("\($0)")
+                else if game.phase == 1 {
+                    Stepper{Text("Tricks: \(player.tricksTaken)")} onIncrement: {
+                        
+                        player.tricksTaken += 1
+                        
+                        if player.tricksTaken > game.numCards {
+                            player.tricksTaken = 0
+                            game.trickTotal -= game.numCards
+                        } else {
+                            game.trickTotal += 1
+                        }
+                        
+                    } onDecrement: {
+                        
+                        player.tricksTaken -= 1
+                        
+                        if player.tricksTaken  < 0 {
+                            player.tricksTaken = game.numCards
+                            game.trickTotal += game.numCards
+                        } else {
+                            game.trickTotal -= 1
                         }
                     }
-                    .onChange(of: player.newTricksTaken, perform: { newTrick in
-                            game.trickTotal = game.trickTotal - player.tricksTaken
-                            player.tricksTaken = newTrick
-                            game.trickTotal = game.trickTotal + player.tricksTaken
-                            
-                        })
-                        .textFieldStyle(.roundedBorder)
                 }
             }
+            if showingStats {
+                StatsView(player: $player)
+            }
+            
         }
         .font(.title)
         
@@ -81,7 +111,7 @@ struct PlayerView_Previews: PreviewProvider {
     static var player = Game.sampleData.players[0]
     static var game = Game.sampleData
     static var previews: some View {
-        PlayerView(player: .constant(player), game: .constant(game))
+        PlayerView(player: .constant(player), showingStats: .constant(false), game: .constant(game))
             
             
     }

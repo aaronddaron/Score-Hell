@@ -55,6 +55,7 @@ struct FinishGameView: View {
                                 }
                             }
                         }
+                        .font(.headline)
                     }
                     .foregroundColor(.black)
                     .listRowBackground(Color(player.theme))
@@ -106,6 +107,7 @@ struct FinishGameView: View {
                             }
                             
                         }
+                        .font(.headline)
                     }
                     .foregroundColor(.black)
                     .listRowBackground(Color(player.theme))

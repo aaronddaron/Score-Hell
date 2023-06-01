@@ -16,16 +16,17 @@ struct GameView: View {
     @Binding var names: [String]
     @Binding var themes: [String]
     
+    @State private var showingStats = false
     
     var body: some View {
         NavigationStack {
-            VStack {
+            //VStack {
                  
                 GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme)
     
                 List{
                     ForEach($game.players) { $player in
-                        PlayerView(player: $player, game: $game)
+                        PlayerView(player: $player, showingStats: $showingStats, game: $game)
                         .listRowBackground(Color(player.theme))
                     }
                     .onMove { from, to in
@@ -34,8 +35,9 @@ struct GameView: View {
                             game.newPositions()
                         }
                     }
+                    StatsDropDownView(showingStats: $showingStats)
                 }
-            }
+            //}
 
             GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme)
                 
@@ -80,6 +82,7 @@ struct GameView: View {
                     game.players.append(Game.Player(name: names[num], theme: themes[num]))
                             
                 }
+                game.numPlayers = game.players.count
             }
             game.socket.on("newPlayer"){ (data, ack) -> Void in
                 let tempName = data[0] as! String

@@ -12,88 +12,32 @@ struct WatchView: View {
     @Binding var game: Game
     var playerName: String
     var playerTheme: String
-    @State var round = 1
-    @State var ohell = 7
+    
     @State private var showingFullScore = false
     @State private var showingStats = false
     @State private var showingAlert = false
-    //@State private var started = false
-    @State private var finished = false
+    //@State private var finished = false
     @State var alert = ""
 
 
     var body: some View {
         NavigationStack{
             VStack {
-                VStack {
-                    HStack{
-                        Text("Round \(round)")
-                        Spacer()
-                        Text("\(game.cards[round - 1]) cards")
-                        
-                    }
-                    .font(.largeTitle)
-                    HStack {
-                        Text(playerName)
-                            .padding(.horizontal)
-                            .background(Color(playerTheme))
-                            .cornerRadius(10)
-                            .foregroundColor(.black)
-                        Spacer()
-                        Button(action: { showingFullScore = true }) {
-                            Text("Full Score")
-                        }
-                        .sheet(isPresented: $showingFullScore) {
-                            NavigationStack{
-                                FullScoreView(game: $game)
-                                .toolbar{
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button("Done") {
-                                            showingFullScore = false
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .font(.title2)
-                }
-                .padding(.horizontal)
-                
+                GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme)
                 List{
                     ForEach($game.players) { $player in
                         WatchPlayerView(player: $player, game: $game, showingStats: $showingStats)
                         .listRowBackground(Color(player.theme))
                     }
-                    HStack{
-                    
-                        Button(action: {
-                            if showingStats {
-                                showingStats = false
-                            } else {
-                                showingStats = true
-                            }
-                            
-                        }) {
-                            if !showingStats {
-                                Image(systemName: "chevron.down")
-                            } else {
-                                Image(systemName: "chevron.up")
-                            }
-                        }
-                        .font(.headline)
-                        Text("Stats")
-                            .font(.headline)
-                        Spacer()
-                    }
+                    StatsDropDownView(showingStats: $showingStats)
                 }
                 HStack {
                     if !game.started {
                         Text("Waiting for players")
                     }
-                    else if ohell < 0 {
-                       Text("\(game.players[game.players.count-1].name) can bid anything")
-                    } else if finished {
+                    else if game.ohellNum < 0 {
+                       Text("\(game.players[game.numPlayers-1].name) can bid anything")
+                    } else if game.finished {
                         NavigationLink(destination: FinishGameView(game: $game)){
                             Text("End Game")
                             
@@ -102,7 +46,7 @@ struct WatchView: View {
                         .font(.title3)
                         
                     } else {
-                        Text("\(game.players[game.players.count-1].name) cannot bid \(ohell)")
+                        Text("\(game.players[game.players.count-1].name) cannot bid \(game.ohellNum)")
                     }
                 }
                 .font(.title)
@@ -113,18 +57,18 @@ struct WatchView: View {
                 game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
                 
                 game.socket.on("nextRound") { (data, ack) -> Void in
-                    ohell = game.cards[round]
-                    round = round + 1
+                    game.ohellNum = game.cards[game.round]
+                    game.round += 1
                 }
                 
                 game.socket.on("bid") { (data, ack) -> Void in
-                    ohell = data[2] as! Int
+                    game.ohellNum = data[2] as! Int
                     
                 }
                 
                 game.socket.on("winners"){ (data, ack) -> Void in
                     let winners = data[0] as! [Bool]
-                    for num in 0...game.players.count-1 {
+                    for num in 0...game.numPlayers-1 {
                         game.players[num].winner = winners[num]
                     }
                 }
@@ -132,7 +76,7 @@ struct WatchView: View {
                 game.socket.on("scores"){ (data, ack) -> Void in
                     let scores = data[0] as! [Int]
                     let streaks = data[1] as! [Int]
-                    for num in 0...game.players.count-1 {
+                    for num in 0...game.numPlayers-1 {
                         game.players[num].score = scores[num]
                         game.players[num].streak = streaks[num]
                     }
@@ -141,11 +85,11 @@ struct WatchView: View {
                 game.socket.on("game"){ (data, ack) -> Void in
                     let bids = data[0] as! [Int]
                     
-                    for num in 0...game.players.count-1 {
+                    for num in 0...game.numPlayers-1 {
                         game.players[num].bid = bids[num]
                     }
-                    round = data[1] as! Int
-                    ohell = data[2] as! Int
+                    game.round = data[1] as! Int
+                    game.ohellNum = data[2] as! Int
                     game.started = true
                 }
                 
@@ -156,9 +100,9 @@ struct WatchView: View {
                     game.players.removeAll()
                     for num in 0...names.count-1 {
                         game.players.append(Game.Player(name: names[num], theme: themes[num]))
-                        game.numPlayers = game.players.count
-                        
                     }
+                    game.numPlayers = game.players.count
+
                     
                     if addSelf {
                         game.players.append(Game.Player(name: playerName, theme: playerTheme))
@@ -187,7 +131,7 @@ struct WatchView: View {
                 }
                 
                 game.socket.on("finish"){ (data, ack) -> Void in
-                    finished = true
+                    game.finished = true
                 }
 
                 

@@ -13,9 +13,7 @@ struct WatchPlayerView: View {
     @Binding var player: Game.Player
     @Binding var game: Game
     @Binding var showingStats: Bool
-    
-    //@State private var bid = 0
-        
+            
     var body: some View {
         VStack {
             
@@ -37,15 +35,7 @@ struct WatchPlayerView: View {
             }
             .foregroundColor(.black)
             if showingStats {
-                HStack{
-                    Image(systemName: "flame")
-                    Text("\(player.streak)")
-                    Image(systemName: "circle.fill")
-                    Text("\(player.bidsMade)")
-                    
-                    Spacer()
-                }
-                .foregroundColor(.black)
+                StatsView(player: $player)
             } 
         }
         .font(.title)

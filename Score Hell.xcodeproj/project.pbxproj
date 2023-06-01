@@ -30,6 +30,8 @@
 		93EC17682A281D500019031B /* FinishGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17672A281D500019031B /* FinishGameView.swift */; };
 		93EC176A2A291AF20019031B /* GameHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17692A291AF20019031B /* GameHeaderView.swift */; };
 		93EC176C2A291F500019031B /* GameFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC176B2A291F500019031B /* GameFooterView.swift */; };
+		93EC17702A294E680019031B /* StatsDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC176F2A294E680019031B /* StatsDropDownView.swift */; };
+		93EC17722A294FE40019031B /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17712A294FE40019031B /* StatsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,8 @@
 		93EC17672A281D500019031B /* FinishGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishGameView.swift; sourceTree = "<group>"; };
 		93EC17692A291AF20019031B /* GameHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHeaderView.swift; sourceTree = "<group>"; };
 		93EC176B2A291F500019031B /* GameFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFooterView.swift; sourceTree = "<group>"; };
+		93EC176F2A294E680019031B /* StatsDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDropDownView.swift; sourceTree = "<group>"; };
+		93EC17712A294FE40019031B /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,11 +139,13 @@
 				93EC17692A291AF20019031B /* GameHeaderView.swift */,
 				93EC176B2A291F500019031B /* GameFooterView.swift */,
 				939E33352A206D97002EF184 /* WatchPlayerView.swift */,
+				93EC17712A294FE40019031B /* StatsView.swift */,
 				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
 				939E32932A1D44C1002EF184 /* StartGameView.swift */,
 				939E333B2A214689002EF184 /* JoinGameView.swift */,
 				939E329F2A1D8E31002EF184 /* ColorView.swift */,
 				939E33332A206BC0002EF184 /* WatchView.swift */,
+				93EC176F2A294E680019031B /* StatsDropDownView.swift */,
 				939E33392A20E480002EF184 /* HomeScreenView.swift */,
 				93EC17672A281D500019031B /* FinishGameView.swift */,
 			);
@@ -327,11 +333,13 @@
 				939E32A42A1E6AD5002EF184 /* TableInfo.swift in Sources */,
 				939E32942A1D44C1002EF184 /* StartGameView.swift in Sources */,
 				939E32A02A1D8E31002EF184 /* ColorView.swift in Sources */,
+				93EC17702A294E680019031B /* StatsDropDownView.swift in Sources */,
 				934AA37A2A1BE95A001C7FF9 /* Game.swift in Sources */,
 				934AA3502A1BE41C001C7FF9 /* Score_HellApp.swift in Sources */,
 				939E33342A206BC0002EF184 /* WatchView.swift in Sources */,
 				93EC176C2A291F500019031B /* GameFooterView.swift in Sources */,
 				939E33362A206D97002EF184 /* WatchPlayerView.swift in Sources */,
+				93EC17722A294FE40019031B /* StatsView.swift in Sources */,
 				939E333A2A20E480002EF184 /* HomeScreenView.swift in Sources */,
 				93EC176A2A291AF20019031B /* GameHeaderView.swift in Sources */,
 				934AA37D2A1BF95B001C7FF9 /* PlayerView.swift in Sources */,
