@@ -20,9 +20,9 @@ struct WatchPlayerView: View {
         VStack {
             
             HStack {
-                if player.name == game.players[game.players.count - 1].name {
+                if player.name == game.players[game.numPlayers - 1].name && game.started {
                     Image(systemName: "flame.circle")
-                } else if player.name == game.players[0].name {
+                } else if player.name == game.players[0].name && game.started{
                     Image(systemName: "arrowtriangle.forward.fill")
                 }
                 
@@ -39,12 +39,13 @@ struct WatchPlayerView: View {
             if showingStats {
                 HStack{
                     Image(systemName: "flame")
-                        .foregroundColor(.black)
                     Text("\(player.streak)")
-                        .foregroundColor(.black)
+                    Image(systemName: "circle.fill")
+                    Text("\(player.bidsMade)")
+                    
                     Spacer()
-                    //Text("\(bid) + \(trick)")
                 }
+                .foregroundColor(.black)
             } 
         }
         .font(.title)
@@ -52,7 +53,6 @@ struct WatchPlayerView: View {
             game.socket.on("bid") { (data, ack) -> Void in
                 
                 let name = data[0] as! String
-                //bid = data[1] as! Int
                 if name == player.name {
                     player.bid = data[1] as! Int
                 }

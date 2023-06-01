@@ -17,7 +17,7 @@ struct WatchView: View {
     @State private var showingFullScore = false
     @State private var showingStats = false
     @State private var showingAlert = false
-    @State private var started = false
+    //@State private var started = false
     @State private var finished = false
     @State var alert = ""
 
@@ -88,7 +88,7 @@ struct WatchView: View {
                     }
                 }
                 HStack {
-                    if !started {
+                    if !game.started {
                         Text("Waiting for players")
                     }
                     else if ohell < 0 {
@@ -111,6 +111,7 @@ struct WatchView: View {
             .navigationBarBackButtonHidden(true)
             .onAppear {
                 game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
+                
                 game.socket.on("nextRound") { (data, ack) -> Void in
                     ohell = game.cards[round]
                     round = round + 1
@@ -145,13 +146,13 @@ struct WatchView: View {
                     }
                     round = data[1] as! Int
                     ohell = data[2] as! Int
-                    started = true
+                    game.started = true
                 }
                 
                 game.socket.on("players"){ (data, ack) -> Void in
                     let names = data[0] as! [String]
                     let themes = data[1] as! [String]
-                    let started = data[2] as! Bool
+                    let addSelf = data[2] as! Bool
                     game.players.removeAll()
                     for num in 0...names.count-1 {
                         game.players.append(Game.Player(name: names[num], theme: themes[num]))
@@ -159,10 +160,11 @@ struct WatchView: View {
                         
                     }
                     
-                    if !started {
+                    if addSelf {
                         game.players.append(Game.Player(name: playerName, theme: playerTheme))
                         game.numPlayers+=1
-                    } else {
+                    }
+                    if game.started {
                         if playerName == game.players[0].name {
                             showingAlert = true
                             alert = "lead"
@@ -181,7 +183,7 @@ struct WatchView: View {
                 }
                 
                 game.socket.on("start"){ (data, ack) -> Void in
-                    started = true
+                    game.started = true
                 }
                 
                 game.socket.on("finish"){ (data, ack) -> Void in
@@ -205,7 +207,7 @@ struct WatchView: View {
     
 struct WatchView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchView(game: .constant(Game(players: [])), playerName: "Aaron", playerTheme: "lavender")
+        WatchView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender")
     }
 }
 

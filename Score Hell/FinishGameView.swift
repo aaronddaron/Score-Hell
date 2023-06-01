@@ -20,31 +20,92 @@ struct FinishGameView: View {
            
             ForEach (game.players) { player in
                 if player.winner {
-                    HStack{
-                        Text("\(player.name)")
-                        Spacer()
-                        Image(systemName: "crown")
-                        Text("\(player.score)")
+                    VStack{
+                        HStack{
+                            
+                            Text("\(player.name)")
+                            Spacer()
+                            Image(systemName: "crown")
+                            Text("\(player.score)")
+                        }
+                        HStack{
+                            
+                            VStack{
+                                Image(systemName: "flame")
+                                Text("\(player.streak)") //Longest Streak
+                            }
+                            VStack{
+                                Image(systemName: "circle.fill")
+                                Text("\(player.bidsMade)") //Bids made
+                            }
+                            VStack{
+                                Image(systemName: "circle")
+                                Text("\(13 - player.bidsMade)") //Bids missed
+                            }
+                            //Dirty Rat symbol
+                            VStack{
+                                Image(systemName: "0.square")
+                                Text("\(player.bidZero)") //0's bid (and made?)
+                            }
+                            
+                            Spacer()
+                            if player.streak == game.round - 1{
+                                VStack{
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
                     }
                     .foregroundColor(.black)
+                    .listRowBackground(Color(player.theme))
                 }
             }
             
             HStack{
                 Spacer()
-                Text("You Won!")
+                Text("")
                 Spacer()
             }
             
             ForEach (game.players) { player in
                 if !player.winner {
-                    HStack{
-                        Text("\(player.name)")
+                    VStack{
+                        HStack{
+                            Text("\(player.name)")
 
-                        Spacer()
-                        Text("\(player.score)")
+                            Spacer()
+                            Text("\(player.score)")
 
-                        //Image(systemName: "flame")
+                            //Image(systemName: "flame")
+                        }
+                        HStack{
+                            
+                            VStack{
+                                Image(systemName: "flame")
+                                Text("\(player.longestStreak)") //Longest Streak
+                            }
+                            VStack{
+                                Image(systemName: "circle.fill")
+                                Text("\(player.bidsMade)") //Bids made
+                            }
+                            VStack{
+                                Image(systemName: "circle")
+                                Text("\(13 - player.bidsMade)") //Bids missed
+                            }
+                            //Dirty Rat symbol
+                            VStack{
+                                Image(systemName: "0.square")
+                                Text("\(player.bidZero)") //0's bid (and made?)
+                            }
+                            
+                            Spacer()
+                            if player.streak == game.round-1 {
+                                VStack{
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                            
+                        }
                     }
                     .foregroundColor(.black)
                     .listRowBackground(Color(player.theme))

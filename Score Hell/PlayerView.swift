@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlayerView: View {
     @Binding var player: Game.Player
-    var phase: Int
+    //var phase: Int
 
     @Binding var game: Game
     
@@ -20,9 +20,9 @@ struct PlayerView: View {
         VStack {
             
             HStack {
-                if player.name == game.players[game.players.count - 1].name {
+                if player.name == game.players[game.players.count - 1].name && game.started{
                     Image(systemName: "flame.circle")
-                } else if player.name == game.players[0].name {
+                } else if player.name == game.players[0].name && game.started{
                     Image(systemName: "arrowtriangle.forward.fill")
                 }
                 
@@ -37,23 +37,30 @@ struct PlayerView: View {
             }
             .foregroundColor(.black)
             HStack{
-                if phase == 0 {
-                    TextField("Bid", value: $player.newBid, formatter: NumberFormatter())
-                        .textFieldStyle(.roundedBorder)
-                        .onChange(of: player.newBid, perform: { newBid in
-                            game.bidTotal = game.bidTotal - player.bid
-                            game.bidTotal = game.bidTotal + newBid
-                            player.bid = newBid
-                            if player.name != game.players[game.players.count-1].name {
-                                game.calcOhellNum()
-                            }
-                            game.socket.emit("bid", player.name, player.bid, game.ohellNum)
-                            //game.socket.emit("ohell", game.ohellNum)
+                if game.phase == 0 && game.started {
+                    Picker("Bid", selection: $player.newBid) {
+                        ForEach(0 ..< 8) {
+                            Text("\($0)").tag("\($0)")
+                        }
+                    }
+                    .onChange(of: player.newBid, perform: { newBid in
+                        game.bidTotal = game.bidTotal - player.bid
+                        game.bidTotal = game.bidTotal + newBid
+                        player.bid = newBid
+                        if player.name != game.players[game.players.count-1].name {
+                            game.calcOhellNum()
+                        }
+                        game.socket.emit("bid", player.name, player.bid, game.ohellNum)
                     })
+                    
                 }
-                else if phase == 1{
-                    TextField("Trick", value: $player.newTricksTaken, formatter: NumberFormatter())
-                        .onChange(of: player.newTricksTaken, perform: { newTrick in
+                else if game.phase == 1 && game.started{
+                    Picker("Trick", selection: $player.newTricksTaken) {
+                        ForEach(0 ..< 8) {
+                            Text("\($0)").tag("\($0)")
+                        }
+                    }
+                    .onChange(of: player.newTricksTaken, perform: { newTrick in
                             game.trickTotal = game.trickTotal - player.tricksTaken
                             player.tricksTaken = newTrick
                             game.trickTotal = game.trickTotal + player.tricksTaken
@@ -61,14 +68,9 @@ struct PlayerView: View {
                         })
                         .textFieldStyle(.roundedBorder)
                 }
-                Spacer()
-                Image(systemName: "flame")
-                    .foregroundColor(.black)
-                Text("\(player.streak)")
-                    .foregroundColor(.black)
             }
         }
-        .font(.title3)
+        .font(.title)
         
     }
 }
@@ -79,7 +81,7 @@ struct PlayerView_Previews: PreviewProvider {
     static var player = Game.sampleData.players[0]
     static var game = Game.sampleData
     static var previews: some View {
-        PlayerView(player: .constant(player), phase: 0, game: .constant(game))
+        PlayerView(player: .constant(player), game: .constant(game))
             
             
     }

@@ -28,6 +28,8 @@
 		939E333A2A20E480002EF184 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E33392A20E480002EF184 /* HomeScreenView.swift */; };
 		939E333C2A214689002EF184 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E333B2A214689002EF184 /* JoinGameView.swift */; };
 		93EC17682A281D500019031B /* FinishGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17672A281D500019031B /* FinishGameView.swift */; };
+		93EC176A2A291AF20019031B /* GameHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17692A291AF20019031B /* GameHeaderView.swift */; };
+		93EC176C2A291F500019031B /* GameFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC176B2A291F500019031B /* GameFooterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		939E33392A20E480002EF184 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
 		939E333B2A214689002EF184 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
 		93EC17672A281D500019031B /* FinishGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishGameView.swift; sourceTree = "<group>"; };
+		93EC17692A291AF20019031B /* GameHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHeaderView.swift; sourceTree = "<group>"; };
+		93EC176B2A291F500019031B /* GameFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFooterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +132,8 @@
 				934AA3532A1BE41E001C7FF9 /* Assets.xcassets */,
 				934AA3552A1BE41E001C7FF9 /* Preview Content */,
 				934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */,
+				93EC17692A291AF20019031B /* GameHeaderView.swift */,
+				93EC176B2A291F500019031B /* GameFooterView.swift */,
 				939E33352A206D97002EF184 /* WatchPlayerView.swift */,
 				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
 				939E32932A1D44C1002EF184 /* StartGameView.swift */,
@@ -324,8 +330,10 @@
 				934AA37A2A1BE95A001C7FF9 /* Game.swift in Sources */,
 				934AA3502A1BE41C001C7FF9 /* Score_HellApp.swift in Sources */,
 				939E33342A206BC0002EF184 /* WatchView.swift in Sources */,
+				93EC176C2A291F500019031B /* GameFooterView.swift in Sources */,
 				939E33362A206D97002EF184 /* WatchPlayerView.swift in Sources */,
 				939E333A2A20E480002EF184 /* HomeScreenView.swift in Sources */,
+				93EC176A2A291AF20019031B /* GameHeaderView.swift in Sources */,
 				934AA37D2A1BF95B001C7FF9 /* PlayerView.swift in Sources */,
 				934AA3832A1C2169001C7FF9 /* FullScoreView.swift in Sources */,
 			);
