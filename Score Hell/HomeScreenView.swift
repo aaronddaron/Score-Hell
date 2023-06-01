@@ -11,7 +11,7 @@ struct HomeScreenView: View {
     var body: some View {
         NavigationStack{
             NavigationLink (destination: StartGameView()){
-                Label("Start Game", systemImage: "person")
+                Label("Score Game", systemImage: "person")
             }
             Divider()
             VStack{

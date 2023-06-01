@@ -27,6 +27,7 @@
 		939E33362A206D97002EF184 /* WatchPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E33352A206D97002EF184 /* WatchPlayerView.swift */; };
 		939E333A2A20E480002EF184 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E33392A20E480002EF184 /* HomeScreenView.swift */; };
 		939E333C2A214689002EF184 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939E333B2A214689002EF184 /* JoinGameView.swift */; };
+		93EC17682A281D500019031B /* FinishGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17672A281D500019031B /* FinishGameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		939E33352A206D97002EF184 /* WatchPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayerView.swift; sourceTree = "<group>"; };
 		939E33392A20E480002EF184 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
 		939E333B2A214689002EF184 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
+		93EC17672A281D500019031B /* FinishGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishGameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				939E329F2A1D8E31002EF184 /* ColorView.swift */,
 				939E33332A206BC0002EF184 /* WatchView.swift */,
 				939E33392A20E480002EF184 /* HomeScreenView.swift */,
+				93EC17672A281D500019031B /* FinishGameView.swift */,
 			);
 			path = "Score Hell";
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				939E32A62A1EA895002EF184 /* AppDelegate.swift in Sources */,
+				93EC17682A281D500019031B /* FinishGameView.swift in Sources */,
 				939E329E2A1D8A0D002EF184 /* Theme.swift in Sources */,
 				939E333C2A214689002EF184 /* JoinGameView.swift in Sources */,
 				934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */,

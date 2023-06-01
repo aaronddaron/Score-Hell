@@ -62,7 +62,7 @@ struct PlayerView: View {
                         .textFieldStyle(.roundedBorder)
                 }
                 Spacer()
-                Image(systemName: "flame.fill")
+                Image(systemName: "flame")
                     .foregroundColor(.black)
                 Text("\(player.streak)")
                     .foregroundColor(.black)

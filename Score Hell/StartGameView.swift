@@ -83,33 +83,14 @@ struct StartGameView: View {
                 .toolbar{
                     if game.numPlayers > 0{
                         NavigationLink(destination: GameView(game: $game, playerName: name, playerTheme: theme, names: $names, themes: $themes)) {
-                            Text("Start")
+                            Text("Score")
                         }
                         .buttonStyle(.borderedProminent)
                     
                     }
                 }
                 .onAppear{
-                    //game.socket.connect(withPayload: ["username": "Aaron", "theme": "lavender"])
-                    //game.players.append(Game.Player(name: "Aaron", theme: Color("lavender")))
-                    
-                    /*game.socket.on("players"){ (data, ack) -> Void in
-                        let names = data[0] as! [String]
-                        let themes = data[1] as! [String]
-                        
-                        game.players.removeAll()
-                        for num in 0...names.count-1 {
-                            game.players.append(Game.Player(name: names[num], theme: themes[num]))
-                            
-                        }
-                    }
-                    
-                    game.socket.on("newPlayer"){ (data, ack) -> Void in
-                        let tempName = data[0] as! String
-                        let tempTheme = data[1] as! String
-                        game.players.append(Game.Player(name: tempName, theme: tempTheme))
-                        
-                    }*/
+                   
                 }
         }
     }

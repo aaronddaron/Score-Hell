@@ -13,14 +13,12 @@ struct WatchView: View {
     var playerName: String
     var playerTheme: String
     @State var round = 1
-    //@State var bid = -1
     @State var ohell = 7
-    @State var dealer = "?"
-    @State var leader = "?"
     @State private var showingFullScore = false
     @State private var showingStats = false
     @State private var showingAlert = false
     @State private var started = false
+    @State private var finished = false
     @State var alert = ""
 
 
@@ -40,6 +38,7 @@ struct WatchView: View {
                             .padding(.horizontal)
                             .background(Color(playerTheme))
                             .cornerRadius(10)
+                            .foregroundColor(.black)
                         Spacer()
                         Button(action: { showingFullScore = true }) {
                             Text("Full Score")
@@ -89,11 +88,19 @@ struct WatchView: View {
                     }
                 }
                 HStack {
-                    if started == false {
+                    if !started {
                         Text("Waiting for players")
                     }
                     else if ohell < 0 {
                        Text("\(game.players[game.players.count-1].name) can bid anything")
+                    } else if finished {
+                        NavigationLink(destination: FinishGameView(game: $game)){
+                            Text("End Game")
+                            
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .font(.title3)
+                        
                     } else {
                         Text("\(game.players[game.players.count-1].name) cannot bid \(ohell)")
                     }
@@ -174,14 +181,11 @@ struct WatchView: View {
                 }
                 
                 game.socket.on("start"){ (data, ack) -> Void in
-                    /*if playerName == game.players[0].name {
-                        showingAlert = true
-                        alert = "lead"
-                    } else if playerName == game.players[game.numPlayers-1].name {
-                        showingAlert = true
-                        alert = "deal"
-                    }*/
                     started = true
+                }
+                
+                game.socket.on("finish"){ (data, ack) -> Void in
+                    finished = true
                 }
 
                 

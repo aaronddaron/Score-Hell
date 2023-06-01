@@ -38,7 +38,7 @@ struct WatchPlayerView: View {
             .foregroundColor(.black)
             if showingStats {
                 HStack{
-                    Image(systemName: "flame.fill")
+                    Image(systemName: "flame")
                         .foregroundColor(.black)
                     Text("\(player.streak)")
                         .foregroundColor(.black)
@@ -57,18 +57,8 @@ struct WatchPlayerView: View {
                     player.bid = data[1] as! Int
                 }
             }
-            
-            /*game.socket.on("score") { (data, ack) -> Void in
-                if player.name == data[0] as! String {
-                    score = data[1] as! Int
-                    streak = data[2] as! Int
-                }
-                bid = 0
-            }*/
-            
         }
     }
-    
 }
 
 
@@ -78,7 +68,5 @@ struct WatchPlayerView_Previews: PreviewProvider {
     static var game = Game.sampleData
     static var previews: some View {
         WatchPlayerView(player: .constant(player), game: .constant(game), showingStats: .constant(false))
-            
-            
     }
 }

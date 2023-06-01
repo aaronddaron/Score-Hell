@@ -14,7 +14,6 @@ struct GameView: View {
     let playerName: String
     let playerTheme: String
     @State var round = 1
-    //@State var leader = 0
     @State private var showingFinish = false
     @State private var showingFullScore = false
     @State private var showingAlert = false
@@ -25,15 +24,13 @@ struct GameView: View {
     
     private func updateGame() {
         phase = 0
-        //var scores: [Int] = []
         for number in 0...game.players.count-1{
             game.players[number].updateScore()
             game.players[number].bid = 0
             game.players[number].newBid = 0
             game.players[number].tricksTaken = 0
             game.players[number].newTricksTaken = 0
-            //game.socket.emit("score", game.players[number].name, game.players[number].score, game.players[number].streak)
-            //game.socket.emit("scores", scores)
+           
         }
         if round + 1 == 14 {
             game.bidTotal = game.numCards
@@ -59,7 +56,6 @@ struct GameView: View {
             
         }
         game.calcWinner()
-        //game.socket.emit("game", game.ohellNum, game.players[game.dealer].name, game.players[leader].name)
     }
     
     var body: some View {
@@ -67,23 +63,20 @@ struct GameView: View {
                 VStack {
                     VStack {
                         HStack{
-                            Text("\(game.cards[round - 1]) cards")
+                            Text("Round \(round)")
                             Spacer()
+                            Text("\(game.cards[round - 1]) cards")
+                        }
+                        .font(.largeTitle)
+                        HStack {
                             Text(playerName)
                                 .padding(.horizontal)
                                 .background(Color(playerTheme))
                                 .cornerRadius(10)
                                 .font(.title2)
+                                .foregroundColor(.black)
                             Spacer()
-                            Text("Round \(round)")
-                        }
-                        .font(.largeTitle)
-                        HStack {
-                            if game.ohellNum < 0 {
-                                Text("\(game.players[game.players.count-1].name) can bid anything")
-                            } else {
-                                Text("\(game.players[game.players.count-1].name) cannot bid \(game.ohellNum)")
-                            }
+                            
                             Spacer()
                            
                             Button(action: { showingFullScore = true }) {
@@ -110,6 +103,14 @@ struct GameView: View {
                     List($game.players) { $player in
                         PlayerView(player: $player, phase: phase, game: $game)
                             .listRowBackground(Color(player.theme))
+                    }
+                    
+                    if game.ohellNum < 0 {
+                        Text("\(game.players[game.players.count-1].name) can bid anything")
+                            .font(.title3)
+                    } else {
+                        Text("\(game.players[game.players.count-1].name) cannot bid \(game.ohellNum)")
+                            .font(.title3)
                     }
                     
                     HStack{
@@ -147,9 +148,9 @@ struct GameView: View {
                             Text("End Game")
                         }
                     }
-                    .padding()
                     .buttonStyle(.borderedProminent)
                     .font(.title3)
+                    .padding(.bottom)
                 }
                 .navigationBarBackButtonHidden(true)
                 .onAppear {
@@ -203,7 +204,7 @@ struct GameView: View {
                     }
 
                 }
-                .alert("Your \(alert)", isPresented: $showingAlert, actions: { // 3
+                .alert("Your \(alert)", isPresented: $showingAlert, actions: {
 
                     Button("Ok", role: .cancel, action: { showingAlert = false})
 
