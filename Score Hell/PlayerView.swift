@@ -39,7 +39,8 @@ struct PlayerView: View {
             }
             .foregroundColor(.black)
             
-            HStack{
+            StepperView(game: $game, player: $player)
+            /*HStack{
                 if game.phase == 0 && game.started {
                     Stepper{Text("Bid: \(player.bid)")} onIncrement: {
                         player.bid += 1
@@ -94,7 +95,7 @@ struct PlayerView: View {
                         }
                     }
                 }
-            }
+            }*/
             if showingStats {
                 StatsView(player: $player)
             }

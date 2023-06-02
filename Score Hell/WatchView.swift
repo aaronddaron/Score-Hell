@@ -16,7 +16,6 @@ struct WatchView: View {
     @State private var showingFullScore = false
     @State private var showingStats = false
     @State private var showingAlert = false
-    //@State private var finished = false
     @State var alert = ""
 
 
@@ -134,8 +133,6 @@ struct WatchView: View {
                     game.finished = true
                 }
 
-                
-                //need to receive game.players.name
             }
             .onDisappear {
                 game.socket.disconnect()

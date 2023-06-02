@@ -20,7 +20,6 @@ struct GameView: View {
     
     var body: some View {
         NavigationStack {
-            //VStack {
                  
                 GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme)
     
@@ -37,7 +36,6 @@ struct GameView: View {
                     }
                     StatsDropDownView(showingStats: $showingStats)
                 }
-            //}
 
             GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme)
                 

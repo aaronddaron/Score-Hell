@@ -32,6 +32,7 @@
 		93EC176C2A291F500019031B /* GameFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC176B2A291F500019031B /* GameFooterView.swift */; };
 		93EC17702A294E680019031B /* StatsDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC176F2A294E680019031B /* StatsDropDownView.swift */; };
 		93EC17722A294FE40019031B /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17712A294FE40019031B /* StatsView.swift */; };
+		93EC17742A2968D60019031B /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17732A2968D60019031B /* StepperView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		93EC176B2A291F500019031B /* GameFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFooterView.swift; sourceTree = "<group>"; };
 		93EC176F2A294E680019031B /* StatsDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDropDownView.swift; sourceTree = "<group>"; };
 		93EC17712A294FE40019031B /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		93EC17732A2968D60019031B /* StepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 				934AA3532A1BE41E001C7FF9 /* Assets.xcassets */,
 				934AA3552A1BE41E001C7FF9 /* Preview Content */,
 				934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */,
+				93EC17732A2968D60019031B /* StepperView.swift */,
 				93EC17692A291AF20019031B /* GameHeaderView.swift */,
 				93EC176B2A291F500019031B /* GameFooterView.swift */,
 				939E33352A206D97002EF184 /* WatchPlayerView.swift */,
@@ -331,6 +334,7 @@
 				939E333C2A214689002EF184 /* JoinGameView.swift in Sources */,
 				934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */,
 				939E32A42A1E6AD5002EF184 /* TableInfo.swift in Sources */,
+				93EC17742A2968D60019031B /* StepperView.swift in Sources */,
 				939E32942A1D44C1002EF184 /* StartGameView.swift in Sources */,
 				939E32A02A1D8E31002EF184 /* ColorView.swift in Sources */,
 				93EC17702A294E680019031B /* StatsDropDownView.swift in Sources */,
