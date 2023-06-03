@@ -15,13 +15,14 @@ struct GameView: View {
     let playerTheme: String
     @Binding var names: [String]
     @Binding var themes: [String]
+    @State private var roomCode = ""
     
     @State private var showingStats = false
     
     var body: some View {
         NavigationStack {
                  
-                GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme)
+            GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
     
                 List{
                     ForEach($game.players) { $player in
@@ -88,6 +89,9 @@ struct GameView: View {
                 game.players.append(Game.Player(name: tempName, theme: tempTheme))
                 game.numPlayers+=1
                         
+            }
+            game.socket.on("roomCode"){ (data, ack) -> Void in
+                roomCode = data[0] as! String
             }
         }
     }

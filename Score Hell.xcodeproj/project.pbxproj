@@ -33,6 +33,13 @@
 		93EC17702A294E680019031B /* StatsDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC176F2A294E680019031B /* StatsDropDownView.swift */; };
 		93EC17722A294FE40019031B /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17712A294FE40019031B /* StatsView.swift */; };
 		93EC17742A2968D60019031B /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17732A2968D60019031B /* StepperView.swift */; };
+		93EC177B2A2A3D370019031B /* LocalGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC177A2A2A3D370019031B /* LocalGameView.swift */; };
+		93EC177E2A2A98E70019031B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC177D2A2A98E70019031B /* FirebaseAnalytics */; };
+		93EC17802A2A98E70019031B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC177F2A2A98E70019031B /* FirebaseAuth */; };
+		93EC17822A2A98E70019031B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC17812A2A98E70019031B /* FirebaseFirestore */; };
+		93EC17842A2A98E70019031B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC17832A2A98E70019031B /* FirebaseStorage */; };
+		93EC17862A2A9AB60019031B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17852A2A9AB60019031B /* LoginView.swift */; };
+		93EC17882A2A9BC30019031B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93EC17872A2A9BC30019031B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +88,9 @@
 		93EC176F2A294E680019031B /* StatsDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDropDownView.swift; sourceTree = "<group>"; };
 		93EC17712A294FE40019031B /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		93EC17732A2968D60019031B /* StepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperView.swift; sourceTree = "<group>"; };
+		93EC177A2A2A3D370019031B /* LocalGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGameView.swift; sourceTree = "<group>"; };
+		93EC17852A2A9AB60019031B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		93EC17872A2A9BC30019031B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +98,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93EC177E2A2A98E70019031B /* FirebaseAnalytics in Frameworks */,
+				93EC17822A2A98E70019031B /* FirebaseFirestore in Frameworks */,
+				93EC17802A2A98E70019031B /* FirebaseAuth in Frameworks */,
+				93EC17842A2A98E70019031B /* FirebaseStorage in Frameworks */,
 				939E32F02A1F9BDC002EF184 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,25 +146,15 @@
 		934AA34E2A1BE41C001C7FF9 /* Score Hell */ = {
 			isa = PBXGroup;
 			children = (
-				934AA37B2A1BE967001C7FF9 /* Models */,
-				934AA34F2A1BE41C001C7FF9 /* Score_HellApp.swift */,
-				934AA3512A1BE41C001C7FF9 /* GameView.swift */,
 				934AA3532A1BE41E001C7FF9 /* Assets.xcassets */,
+				93EC17872A2A9BC30019031B /* GoogleService-Info.plist */,
+				934AA34F2A1BE41C001C7FF9 /* Score_HellApp.swift */,
+				93EC17792A2A36EF0019031B /* StartUpViews */,
+				93EC17772A2A36320019031B /* GameViews */,
+				93EC17782A2A36AC0019031B /* WatchViews */,
+				934AA37B2A1BE967001C7FF9 /* Models */,
 				934AA3552A1BE41E001C7FF9 /* Preview Content */,
-				934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */,
-				93EC17732A2968D60019031B /* StepperView.swift */,
-				93EC17692A291AF20019031B /* GameHeaderView.swift */,
-				93EC176B2A291F500019031B /* GameFooterView.swift */,
-				939E33352A206D97002EF184 /* WatchPlayerView.swift */,
-				93EC17712A294FE40019031B /* StatsView.swift */,
-				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
-				939E32932A1D44C1002EF184 /* StartGameView.swift */,
-				939E333B2A214689002EF184 /* JoinGameView.swift */,
-				939E329F2A1D8E31002EF184 /* ColorView.swift */,
-				939E33332A206BC0002EF184 /* WatchView.swift */,
-				93EC176F2A294E680019031B /* StatsDropDownView.swift */,
-				939E33392A20E480002EF184 /* HomeScreenView.swift */,
-				93EC17672A281D500019031B /* FinishGameView.swift */,
+				93EC177A2A2A3D370019031B /* LocalGameView.swift */,
 			);
 			path = "Score Hell";
 			sourceTree = "<group>";
@@ -191,6 +195,43 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		93EC17772A2A36320019031B /* GameViews */ = {
+			isa = PBXGroup;
+			children = (
+				93EC176F2A294E680019031B /* StatsDropDownView.swift */,
+				934AA3822A1C2169001C7FF9 /* FullScoreView.swift */,
+				934AA37C2A1BF95B001C7FF9 /* PlayerView.swift */,
+				93EC17732A2968D60019031B /* StepperView.swift */,
+				93EC17692A291AF20019031B /* GameHeaderView.swift */,
+				93EC17712A294FE40019031B /* StatsView.swift */,
+				93EC176B2A291F500019031B /* GameFooterView.swift */,
+				93EC17672A281D500019031B /* FinishGameView.swift */,
+				934AA3512A1BE41C001C7FF9 /* GameView.swift */,
+			);
+			path = GameViews;
+			sourceTree = "<group>";
+		};
+		93EC17782A2A36AC0019031B /* WatchViews */ = {
+			isa = PBXGroup;
+			children = (
+				939E33332A206BC0002EF184 /* WatchView.swift */,
+				939E33352A206D97002EF184 /* WatchPlayerView.swift */,
+			);
+			path = WatchViews;
+			sourceTree = "<group>";
+		};
+		93EC17792A2A36EF0019031B /* StartUpViews */ = {
+			isa = PBXGroup;
+			children = (
+				939E333B2A214689002EF184 /* JoinGameView.swift */,
+				939E32932A1D44C1002EF184 /* StartGameView.swift */,
+				939E329F2A1D8E31002EF184 /* ColorView.swift */,
+				939E33392A20E480002EF184 /* HomeScreenView.swift */,
+				93EC17852A2A9AB60019031B /* LoginView.swift */,
+			);
+			path = StartUpViews;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -209,6 +250,10 @@
 			name = "Score Hell";
 			packageProductDependencies = (
 				939E32EF2A1F9BDC002EF184 /* SocketIO */,
+				93EC177D2A2A98E70019031B /* FirebaseAnalytics */,
+				93EC177F2A2A98E70019031B /* FirebaseAuth */,
+				93EC17812A2A98E70019031B /* FirebaseFirestore */,
+				93EC17832A2A98E70019031B /* FirebaseStorage */,
 			);
 			productName = "Score Hell";
 			productReference = 934AA34C2A1BE41C001C7FF9 /* Score Hell.app */;
@@ -285,6 +330,7 @@
 			mainGroup = 934AA3432A1BE41C001C7FF9;
 			packageReferences = (
 				939E32EE2A1F9BDC002EF184 /* XCRemoteSwiftPackageReference "socket" */,
+				93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 934AA34D2A1BE41C001C7FF9 /* Products */;
 			projectDirPath = "";
@@ -304,6 +350,7 @@
 			files = (
 				934AA3572A1BE41E001C7FF9 /* Preview Assets.xcassets in Resources */,
 				934AA3542A1BE41E001C7FF9 /* Assets.xcassets in Resources */,
+				93EC17882A2A9BC30019031B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,8 +380,10 @@
 				939E329E2A1D8A0D002EF184 /* Theme.swift in Sources */,
 				939E333C2A214689002EF184 /* JoinGameView.swift in Sources */,
 				934AA3522A1BE41C001C7FF9 /* GameView.swift in Sources */,
+				93EC177B2A2A3D370019031B /* LocalGameView.swift in Sources */,
 				939E32A42A1E6AD5002EF184 /* TableInfo.swift in Sources */,
 				93EC17742A2968D60019031B /* StepperView.swift in Sources */,
+				93EC17862A2A9AB60019031B /* LoginView.swift in Sources */,
 				939E32942A1D44C1002EF184 /* StartGameView.swift in Sources */,
 				939E32A02A1D8E31002EF184 /* ColorView.swift in Sources */,
 				93EC17702A294E680019031B /* StatsDropDownView.swift in Sources */,
@@ -687,6 +736,14 @@
 				kind = branch;
 			};
 		};
+		93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -694,6 +751,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 939E32EE2A1F9BDC002EF184 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
+		};
+		93EC177D2A2A98E70019031B /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		93EC177F2A2A98E70019031B /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		93EC17812A2A98E70019031B /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		93EC17832A2A98E70019031B /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

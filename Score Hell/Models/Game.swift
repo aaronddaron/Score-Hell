@@ -106,7 +106,7 @@ struct Game {
             zeros.append(self.players[num].bidZero)
             longest.append(self.players[num].longestStreak)
         }
-        self.socket.emit("scores", scores, streaks)
+        self.socket.emit("scores", scores, streaks, made, zeros, longest)
         self.socket.emit("winners", winners)
     }
     

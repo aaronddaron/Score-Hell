@@ -11,12 +11,15 @@ struct GameHeaderView: View {
     @Binding var game: Game
     @State var playerName: String
     @State var playerTheme: String
+    @Binding var roomCode: String
     @State private var showingFullScore = false
     
     var body: some View {
         VStack {
             HStack{
                 Text("Round \(game.round)")
+                Spacer()
+                Text(roomCode)
                 Spacer()
                 Text("\(game.numCards) cards")
             }
@@ -56,6 +59,6 @@ struct GameHeaderView: View {
 
 struct GameHeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        GameHeaderView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender")
+        GameHeaderView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", roomCode: .constant("ABCD"))
     }
 }

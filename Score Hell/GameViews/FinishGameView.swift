@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FinishGameView: View {
     @Binding var game: Game
-    //game.players[0].winner = true
 
     var body: some View {
         VStack{
@@ -37,14 +36,14 @@ struct FinishGameView: View {
                                     Text("\(player.streak)") //Longest Streak
                                 }
                                 VStack{
-                                    if player.bidsMade >= (game.round - 1 - player.bidsMade)
+                                    if player.bidsMade >= (game.round - player.bidsMade)
                                     {
                                         Image(systemName: "circle.fill")
                                         Text("\(player.bidsMade)") //Bids made
                                     } else {
                                         
                                         Image(systemName: "circle")
-                                        Text("\(game.round - 1 - player.bidsMade)") //Bids missed
+                                        Text("\(game.round - player.bidsMade)") //Bids missed
                                     }
                                 }
                                 //Dirty Rat symbol
@@ -85,13 +84,13 @@ struct FinishGameView: View {
                                     Text("\(player.longestStreak)") //Longest Streak
                                 }
                                 VStack{
-                                    if player.bidsMade >= (game.round - 1 - player.bidsMade)
+                                    if player.bidsMade >= (game.round - player.bidsMade)
                                     {
                                         Image(systemName: "circle.fill")
                                         Text("\(player.bidsMade)") //Bids made
                                     } else {
                                         Image(systemName: "circle")
-                                        Text("\(game.round - 1 - player.bidsMade)") //Bids missed
+                                        Text("\(game.round - player.bidsMade)") //Bids missed
                                     }
                                 }
                                 //Dirty Rat symbol
@@ -129,6 +128,9 @@ struct FinishGameView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear{
             game.socket.emit("finish")
+            if game.phase == 0 {
+                game.round -= 1
+            }
         }
     }
 }

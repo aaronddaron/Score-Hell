@@ -12,17 +12,25 @@ struct WatchView: View {
     @Binding var game: Game
     var playerName: String
     var playerTheme: String
+    @State var roomCode: String
     
     @State private var showingFullScore = false
     @State private var showingStats = false
     @State private var showingAlert = false
     @State var alert = ""
 
-
     var body: some View {
+        if game.finished {
+            FinishGameView(game: $game)
+        } else {
+            watch
+        }
+    }
+
+    var watch: some View {
         NavigationStack{
             VStack {
-                GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme)
+                GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
                 List{
                     ForEach($game.players) { $player in
                         WatchPlayerView(player: $player, game: $game, showingStats: $showingStats)
@@ -36,7 +44,7 @@ struct WatchView: View {
                     }
                     else if game.ohellNum < 0 {
                        Text("\(game.players[game.numPlayers-1].name) can bid anything")
-                    } else if game.finished {
+                    } /*else if game.finished {
                         NavigationLink(destination: FinishGameView(game: $game)){
                             Text("End Game")
                             
@@ -44,7 +52,7 @@ struct WatchView: View {
                         .buttonStyle(.borderedProminent)
                         .font(.title3)
                         
-                    } else {
+                    } */else {
                         Text("\(game.players[game.players.count-1].name) cannot bid \(game.ohellNum)")
                     }
                 }
@@ -53,7 +61,7 @@ struct WatchView: View {
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
+                game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
                 
                 game.socket.on("nextRound") { (data, ack) -> Void in
                     game.ohellNum = game.cards[game.round]
@@ -148,7 +156,7 @@ struct WatchView: View {
     
 struct WatchView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender")
+        WatchView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", roomCode: "ABCD")
     }
 }
 
