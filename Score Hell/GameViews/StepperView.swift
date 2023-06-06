@@ -13,7 +13,7 @@ struct StepperView: View {
     
     var body: some View {
         HStack{
-            if game.phase == 0 && game.started {
+            if game.phase == 0 && game.started{
                 Stepper{Text("Bid: \(player.bid)")} onIncrement: {
                     player.bid += 1
                     if player.bid > game.numCards {
@@ -26,7 +26,7 @@ struct StepperView: View {
                     if player.name != game.players[game.numPlayers-1].name {
                         game.calcOhellNum()
                     }
-                    game.socket.emit("bid", player.name, player.bid, game.ohellNum)
+                    game.socket.emit("bid", player.name, player.bid, game.ohellNum, game.bidTotal)
                     
                 } onDecrement: {
                     player.bid -= 1
@@ -40,7 +40,7 @@ struct StepperView: View {
                     if player.name != game.players[game.numPlayers-1].name {
                         game.calcOhellNum()
                     }
-                    game.socket.emit("bid", player.name, player.bid, game.ohellNum)
+                    game.socket.emit("bid", player.name, player.bid, game.ohellNum, game.bidTotal)
                 }
             }
             else if game.phase == 1 {
@@ -54,6 +54,7 @@ struct StepperView: View {
                     } else {
                         game.trickTotal += 1
                     }
+                    game.socket.emit("trick", player.name, player.tricksTaken)
                     
                 } onDecrement: {
                     
@@ -65,10 +66,10 @@ struct StepperView: View {
                     } else {
                         game.trickTotal -= 1
                     }
+                    game.socket.emit("trick", player.name, player.tricksTaken)
                 }
             }
         }
-
     }
 }
 

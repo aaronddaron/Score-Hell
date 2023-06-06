@@ -47,6 +47,12 @@ struct WatchPlayerView: View {
                     player.bid = data[1] as! Int
                 }
             }
+            game.socket.on("trick") { data, ack -> Void in
+                let name = data[0] as! String
+                if name == player.name {
+                    player.tricksTaken = data[1] as! Int
+                }
+            }
         }
     }
 }

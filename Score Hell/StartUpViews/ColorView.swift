@@ -15,7 +15,7 @@ struct ColorView: View {
                 .fill(Color(color))
                 .frame(maxWidth: 20, maxHeight: 20)
             Text(color)
-            Spacer()
+            //Spacer()
         }
         
     }

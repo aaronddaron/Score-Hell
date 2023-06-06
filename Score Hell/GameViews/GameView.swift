@@ -32,13 +32,13 @@ struct GameView: View {
                     .onMove { from, to in
                         if !game.started {
                             game.players.move(fromOffsets: from, toOffset: to)
-                            game.newPositions()
+                            let _ = game.newPositions(host: "")
                         }
                     }
                     StatsDropDownView(showingStats: $showingStats)
                 }
 
-            GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme)
+            GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: .constant(0))
                 
         }
         .navigationBarBackButtonHidden(true)

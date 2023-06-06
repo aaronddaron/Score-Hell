@@ -41,27 +41,19 @@ struct WatchView: View {
                 HStack {
                     if !game.started {
                         Text("Waiting for players")
-                    }
-                    else if game.ohellNum < 0 {
+                    } else if game.ohellNum < 0 {
                        Text("\(game.players[game.numPlayers-1].name) can bid anything")
-                    } /*else if game.finished {
-                        NavigationLink(destination: FinishGameView(game: $game)){
-                            Text("End Game")
-                            
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .font(.title3)
-                        
-                    } */else {
-                        Text("\(game.players[game.players.count-1].name) cannot bid \(game.ohellNum)")
+                    } else {
+                        Text("\(game.players[game.numPlayers-1].name) cannot bid \(game.ohellNum)")
                     }
+                    
                 }
                 .font(.title)
                 .padding()
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
+                //game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
                 
                 game.socket.on("nextRound") { (data, ack) -> Void in
                     game.ohellNum = game.cards[game.round]

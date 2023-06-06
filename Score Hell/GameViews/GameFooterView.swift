@@ -11,6 +11,7 @@ struct GameFooterView: View {
     @Binding var game: Game
     let playerName: String
     let playerTheme: String
+    @Binding var userPosition: Int
     @State private var showingAlert = false
     @State private var alert = ""
     
@@ -37,8 +38,8 @@ struct GameFooterView: View {
                     EditButton()
                 }
                 
-                if game.numPlayers > 2 && !game.started {
-                    Button(action: { game.setLeader()
+                if game.numPlayers >= 2 && !game.started {
+                    Button(action: { userPosition = game.setLeader(host: playerName)
                         game.started = true
                         if playerName == game.players[0].name {
                             showingAlert = true
@@ -53,13 +54,15 @@ struct GameFooterView: View {
                 }
                 
                 if game.phase == 0 && game.started {
-                    Button(action: { game.phase = 1}) {
+                    Button(action: { game.phase = 1
+                        game.socket.emit("play")}) {
                         Text("Play Round")
+                        
                     }
                     .disabled(game.bidTotal == game.numCards)
                 } else if game.phase == 1{
                     Button(action: {
-                        game.updateGame()
+                        userPosition = game.updateGame()
                         if playerName == game.players[0].name {
                             showingAlert = true
                             alert = "lead"
@@ -90,6 +93,6 @@ struct GameFooterView: View {
 
 struct GameFooterView_Previews: PreviewProvider {
     static var previews: some View {
-        GameFooterView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender")
+        GameFooterView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", userPosition: .constant(0))
     }
 }
