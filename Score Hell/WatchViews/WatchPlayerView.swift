@@ -35,7 +35,7 @@ struct WatchPlayerView: View {
             }
             .foregroundColor(.black)
             if showingStats {
-                StatsView(player: $player)
+                StatsView(player: $player, game: $game)
             } 
         }
         .font(.title)

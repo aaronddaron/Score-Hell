@@ -62,7 +62,7 @@ struct GameFooterView: View {
                     .disabled(game.bidTotal == game.numCards)
                 } else if game.phase == 1{
                     Button(action: {
-                        userPosition = game.updateGame()
+                        userPosition = game.updateGame(host: playerName)
                         if playerName == game.players[0].name {
                             showingAlert = true
                             alert = "lead"

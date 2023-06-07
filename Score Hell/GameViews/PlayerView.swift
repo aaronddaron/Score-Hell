@@ -97,7 +97,7 @@ struct PlayerView: View {
                 }
             }*/
             if showingStats {
-                StatsView(player: $player)
+                StatsView(player: $player, game: $game)
             }
             
         }

@@ -46,7 +46,7 @@ struct Game {
     
     mutating func order(leader: Int, host: String) -> Int {
         var temp: [Game.Player] = []
-        var position = -1
+        var position = 0
         for num in 0...self.players.count - 1{
             temp.append(self.players[(leader + num) % self.players.count])
             if temp[num].name == host {
@@ -120,12 +120,12 @@ struct Game {
         }
         //self.socket.emit("scores", scores, streaks, made, zeros, longest)
         //self.socket.emit("winners", winners)
-        self.socket.emit("nextRound", scores, winners, streaks, made, zeros, longest)
+        self.socket.emit("nextRound", scores, winners, made) //streaks, made, zeros, longest)
     }
     
-    mutating func updateGame() -> Int{
+    mutating func updateGame(host: String) -> Int{
         self.phase = 0
-        var place = -1
+        var position = 0
         for number in 0...self.numPlayers-1{
             self.players[number].updateScore()
             self.players[number].bid = 0
@@ -144,10 +144,10 @@ struct Game {
             self.trickTotal = 0
             self.ohellNum = self.numCards
             
-            place = self.order(leader: 1, host: "")
+            position = self.order(leader: 1, host: "")
         }
         self.calcWinner()
-        return place
+        return position
     }
 }
 

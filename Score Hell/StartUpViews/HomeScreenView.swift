@@ -19,9 +19,9 @@ struct HomeScreenView: View {
             
             Divider()
             HStack{
-                NavigationLink (destination: ScoreGameView()){
+                /*NavigationLink (destination: ScoreGameView()){
                     Label("Score Game", systemImage: "person.3")
-                }
+                }*/
                 NavigationLink (destination: StartGameView()){
                     Label("Start Game", systemImage: "person.3")
                 }

@@ -23,37 +23,23 @@ struct FinishGameView: View {
                     if player.winner {
                         VStack{
                             HStack{
-                                
                                 Text("\(player.name)")
                                 Spacer()
                                 Image(systemName: "crown")
                                 Text("\(player.score)")
                             }
                             HStack{
-                                
                                 VStack{
                                     Image(systemName: "flame")
                                     Text("\(player.streak)") //Longest Streak
                                 }
                                 VStack{
-                                    if player.bidsMade >= (game.round - player.bidsMade)
-                                    {
-                                        Image(systemName: "circle.fill")
-                                        Text("\(player.bidsMade)") //Bids made
-                                    } else {
-                                        
-                                        Image(systemName: "circle")
-                                        Text("\(game.round - player.bidsMade)") //Bids missed
-                                    }
-                                }
-                                //Dirty Rat symbol
-                                VStack{
-                                    Image(systemName: "0.square")
-                                    Text("\(player.bidZero)") //0's bid (and made?)
+                                    Image(systemName: "circle.fill")
+                                    Text("\(player.bidsMade)") //Bids made
                                 }
                                 
                                 Spacer()
-                                if player.streak == game.round - 1{
+                                if player.bidsMade == game.round - 1 && game.round > 1{
                                     VStack{
                                         Image(systemName: "checkmark")
                                     }
@@ -84,22 +70,12 @@ struct FinishGameView: View {
                                     Text("\(player.longestStreak)") //Longest Streak
                                 }
                                 VStack{
-                                    if player.bidsMade >= (game.round - player.bidsMade)
-                                    {
-                                        Image(systemName: "circle.fill")
-                                        Text("\(player.bidsMade)") //Bids made
-                                    } else {
-                                        Image(systemName: "circle")
-                                        Text("\(game.round - player.bidsMade)") //Bids missed
-                                    }
+                                    Image(systemName: "circle.fill")
+                                    Text("\(player.bidsMade)") //Bids made
                                 }
-                                //Dirty Rat symbol
-                                VStack{
-                                    Image(systemName: "0.square")
-                                    Text("\(player.bidZero)") //0's bid (and made?)
-                                }
+                                
                                 Spacer()
-                                if player.streak == game.round-1 {
+                                if player.streak == game.round-1 && game.round > 1{
                                     VStack{
                                         Image(systemName: "checkmark")
                                     }
