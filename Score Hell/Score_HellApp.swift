@@ -19,7 +19,7 @@ struct Score_HellApp: App {
         WindowGroup {
             //GameView(game: $game)
             //StartGameView()
-            HomeScreenView()
+            LoginView()
         }
     }
 }

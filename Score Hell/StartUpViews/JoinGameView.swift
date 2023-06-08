@@ -31,13 +31,13 @@ struct JoinGameView: View {
     var join: some View {
         NavigationStack{
             List{
-                Section (header: Text("Connect")){
-                    TextField("Screen Name", text: $playerName)
+              /*  Section (header: Text("Connect")){
+                 //   TextField("Screen Name", text: $playerName)*/
 
                     TextField("Room Code", text: $roomCode)
 
     
-                    }
+                 /*   }
                 Section (header: Text("Colors")){
                     Picker("", selection: $playerTheme) {
                         ForEach(Theme.colors, id: \.self) { color in
@@ -46,9 +46,9 @@ struct JoinGameView: View {
                     }
                     .pickerStyle(.wheel)
                     
-                }
+                }*/
             }
-            .edgesIgnoringSafeArea([.horizontal])
+            //.edgesIgnoringSafeArea([.horizontal])
             .toolbar{
                 if !playerTheme.isEmpty && !playerName.isEmpty && !roomCode.isEmpty{
                     Button("Join") {
