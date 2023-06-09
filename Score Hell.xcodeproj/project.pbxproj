@@ -40,10 +40,8 @@
 		93EC17722A294FE40019031B /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17712A294FE40019031B /* StatsView.swift */; };
 		93EC17742A2968D60019031B /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17732A2968D60019031B /* StepperView.swift */; };
 		93EC177B2A2A3D370019031B /* LocalGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC177A2A2A3D370019031B /* LocalGameView.swift */; };
-		93EC177E2A2A98E70019031B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC177D2A2A98E70019031B /* FirebaseAnalytics */; };
 		93EC17802A2A98E70019031B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC177F2A2A98E70019031B /* FirebaseAuth */; };
 		93EC17822A2A98E70019031B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC17812A2A98E70019031B /* FirebaseFirestore */; };
-		93EC17842A2A98E70019031B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 93EC17832A2A98E70019031B /* FirebaseStorage */; };
 		93EC17862A2A9AB60019031B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC17852A2A9AB60019031B /* LoginView.swift */; };
 		93EC17882A2A9BC30019031B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93EC17872A2A9BC30019031B /* GoogleService-Info.plist */; };
 		93EC178C2A2E28F70019031B /* HostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC178B2A2E28F70019031B /* HostView.swift */; };
@@ -116,10 +114,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93EC177E2A2A98E70019031B /* FirebaseAnalytics in Frameworks */,
 				93EC17822A2A98E70019031B /* FirebaseFirestore in Frameworks */,
 				93EC17802A2A98E70019031B /* FirebaseAuth in Frameworks */,
-				93EC17842A2A98E70019031B /* FirebaseStorage in Frameworks */,
 				939E32F02A1F9BDC002EF184 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,10 +273,8 @@
 			name = "Score Hell";
 			packageProductDependencies = (
 				939E32EF2A1F9BDC002EF184 /* SocketIO */,
-				93EC177D2A2A98E70019031B /* FirebaseAnalytics */,
 				93EC177F2A2A98E70019031B /* FirebaseAuth */,
 				93EC17812A2A98E70019031B /* FirebaseFirestore */,
-				93EC17832A2A98E70019031B /* FirebaseStorage */,
 			);
 			productName = "Score Hell";
 			productReference = 934AA34C2A1BE41C001C7FF9 /* Score Hell.app */;
@@ -792,11 +786,6 @@
 			package = 939E32EE2A1F9BDC002EF184 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
 		};
-		93EC177D2A2A98E70019031B /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
 		93EC177F2A2A98E70019031B /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -806,11 +795,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		93EC17832A2A98E70019031B /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 93EC177C2A2A98E70019031B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
