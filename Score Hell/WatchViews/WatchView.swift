@@ -33,7 +33,7 @@ struct WatchView: View {
                 GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
                 List{
                     ForEach($game.players) { $player in
-                        WatchPlayerView(player: $player, game: $game, showingStats: $showingStats)
+                        WatchPlayerView(player: $player, game: $game, showingStats: $showingStats, leaderFirst: true)
                         .listRowBackground(Color(player.theme))
                     }
                     StatsDropDownView(showingStats: $showingStats)

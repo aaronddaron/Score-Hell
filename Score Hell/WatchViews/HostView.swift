@@ -11,12 +11,13 @@ struct HostView: View {
     @Binding var game: Game
     var playerName: String
     var playerTheme: String
+    var leaderFirst: Bool
     @State var roomCode: String
     
     @State private var showingFullScore = false
     @State private var showingStats = false
     @State private var showingAlert = false
-    @State private var player = Game.Player(name: "", theme: "")
+    //@State private var player = Game.Player(name: "", theme: "")
     @State var alert = ""
     @State private var userPosition = 0
 
@@ -24,25 +25,46 @@ struct HostView: View {
     var body: some View {
         NavigationStack{
             VStack {
-                GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
-                List{
-                    ForEach($game.players) { $player in
-                        WatchPlayerView(player: $player, game: $game, showingStats: $showingStats)
-                            .listRowBackground(Color(player.theme))
-                    }
-                    .onMove { from, to in
-                        if !game.started {
-                            game.players.move(fromOffsets: from, toOffset: to)
-                            userPosition = game.newPositions(host: playerName)
+                ZStack{
+                    LinearGradient(
+                        colors: [Color(playerTheme), Color(Theme(name: playerTheme).secondary)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .ignoresSafeArea()
+                    VStack{
+                        GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
+                        List{
+                            ForEach($game.players) { $player in
+                                WatchPlayerView(player: $player, game: $game, showingStats: $showingStats, leaderFirst: leaderFirst)
+                                    .listRowBackground(Color(player.theme))
+                            }
+                            .onMove { from, to in
+                                if !game.started {
+                                    game.players.move(fromOffsets: from, toOffset: to)
+                                    userPosition = game.newPositions(host: playerName)
+                                }
+                            }
+                            StatsDropDownView(showingStats: $showingStats)
                         }
                     }
-                    StatsDropDownView(showingStats: $showingStats)
                 }
+                ZStack{
                 
-                StepperPlayView(game: $game, i: $userPosition)
-                .padding(.horizontal)
-                
-                GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: $userPosition)
+                    LinearGradient(
+                        colors: [Color("poppy"), Color("buttercup")],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .ignoresSafeArea()
+                    .frame(maxHeight: 150)
+                    
+                    VStack{
+                        StepperPlayView(game: $game, i: $userPosition)
+                        .padding(.horizontal)
+                        GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: $userPosition, leaderFirst: leaderFirst)
+                    }
+                }
             }
             .navigationBarBackButtonHidden(true)
         }
@@ -62,12 +84,9 @@ struct HostView: View {
             game.socket.on("players") { data, ack -> Void in
                 let names = data[0] as! [String]
                 let themes = data[1] as! [String]
-                
-                if !game.started {
-                    game.numPlayers = names.count
-                }
-                
+    
                 game.players.removeAll()
+                game.numPlayers = themes.count
                 
                 for num in 0...game.numPlayers-1 {
                     game.players.append(Game.Player(name: names[num], theme: themes[num]))
@@ -76,6 +95,7 @@ struct HostView: View {
                         userPosition = num
                     }
                 }
+                /*game.players.append(Game.Player(name: String(game.numPlayers), theme: "tan"))*/
                 
                 if game.started{
                     let scores = data[2] as! [Int]
@@ -125,6 +145,6 @@ struct HostView: View {
 
 struct HostView_Previews: PreviewProvider {
     static var previews: some View {
-        HostView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", roomCode: "ABCD")
+        HostView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", leaderFirst: true, roomCode: "ABCD")
     }
 }

@@ -34,7 +34,7 @@ struct GameHeaderView: View {
                 
                 Spacer()
                                            
-                Button(action: { showingFullScore = true }) {
+                /*Button(action: { showingFullScore = true }) {
                     Text("Full Score")
                 }
                 .sheet(isPresented: $showingFullScore) {
@@ -49,7 +49,7 @@ struct GameHeaderView: View {
                             }
                         }
                     }
-                }
+                }*/
             }
             .font(.title2)
         }

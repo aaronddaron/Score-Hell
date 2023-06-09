@@ -9,18 +9,37 @@ import Foundation
 struct Theme: Identifiable{
     var id: UUID
     var name: String
+    var secondary: String
 
     
-    init(id: UUID = UUID(), name: String, index: Int){
+    init(id: UUID = UUID(), name: String){
         self.id = id
         self.name = name
+        
+        if name == "bubblegum" {
+            self.secondary = "purple"
+        } else if name == "buttercup" {
+            self.secondary = "teal"
+        } else if name == "lavender" {
+            self.secondary = "oxblood"
+        } else if name == "orange" {
+            self.secondary = "yellow"
+        } else if name == "poppy" {
+            self.secondary = "indigo"
+        } else if name == "seafoam" {
+            self.secondary = "navy"
+        } else if name == "tan" {
+            self.secondary = "magenta"
+        } else {
+            self.secondary = "buttercup"
+        }
     }
 }
 
 extension Theme {
-    static let themes: [Theme] = [Theme(name: "bubblegum", index: 0), Theme(name: "buttercup", index: 1), Theme(name: "lavender", index: 2), Theme(name: "orange", index: 3), Theme(name: "poppy", index: 5), Theme(name: "seafoam", index: 6), Theme(name: "tan", index: 7)]
+    static let themes: [Theme] = [Theme(name: "bubblegum"), Theme(name: "buttercup"), Theme(name: "lavender"), Theme(name: "orange"), Theme(name: "poppy"), Theme(name: "seafoam"), Theme(name: "tan")]
 }
 
 extension Theme {
-    static let colors: [String] = ["", "bubblegum", "buttercup", "lavender", "orange", "poppy", "seafoam", "tan"]
+    static let colors: [String] = [ "bubblegum", "buttercup", "lavender", "orange", "poppy", "seafoam", "tan"]
 }

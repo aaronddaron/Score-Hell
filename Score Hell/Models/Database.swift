@@ -10,6 +10,19 @@ import Firebase
 
 class Database {
     
+    func setTheme(playerTheme: String) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+        
+        if let user = user{
+            let id = user.uid
+            
+            if !id.isEmpty {
+                db.collection("Users").document(id).setData(["theme": playerTheme])
+            }
+        }
+    }
+    
     func changeTheme(playerTheme: String) {
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser
@@ -18,7 +31,33 @@ class Database {
             let id = user.uid
             
             if !id.isEmpty {
-                db.collection("Users").document(id).setData(["Theme": playerTheme])
+                db.collection("Users").document(id).updateData(["theme": playerTheme])
+            }
+        }
+    }
+    
+    func setLeaderFirst(leaderFirst: Bool) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+        
+        if let user = user{
+            let id = user.uid
+            
+            if !id.isEmpty {
+                db.collection("Users").document(id).setData(["leaderFirst": leaderFirst])
+            }
+        }
+    }
+    
+    func changeLeaderFirst(leaderFirst: Bool) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+        
+        if let user = user{
+            let id = user.uid
+            
+            if !id.isEmpty {
+                db.collection("Users").document(id).updateData(["leaderFirst": leaderFirst])
             }
         }
     }

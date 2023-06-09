@@ -10,6 +10,7 @@ import Firebase
 
 struct HomeScreenView: View {
     @State private var game = Game(players: [])
+    @State private var games: [GameData] = []
     @State private var playerName = ""
     @State private var playerTheme = ""
     @State private var roomCode = ""
@@ -17,90 +18,151 @@ struct HomeScreenView: View {
     @State private var signedOut = false
     @State private var join = false
     @State private var start = false
-    //private var db = Database()
+    @State private var showingProfile = false
+    @State var leaderFirst = true
+    @State var newTheme = ""
+    @State var newName = ""
+    @State var newLeaderFirst = true
     
     var body: some View {
         if signedOut {
             LoginView()
         } else if join {
-            PlayView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: roomCode, userPosition: userPosition)
+            PlayView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: roomCode, userPosition: userPosition, leaderFirst: leaderFirst)
         } else if start {
-            HostView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: roomCode)
+            HostView(game: $game, playerName: playerName, playerTheme: playerTheme, leaderFirst: leaderFirst, roomCode: roomCode)
         } else {
             homeScreen
         }
     }
     
     var homeScreen: some View {
-        NavigationStack{
-            Text("Score Hell")
-                .font(.title)
-                .foregroundColor(Color("orange"))
-            Text(playerName)
-            /*.padding(.horizontal)
-            .background(Color(playerTheme))
-            .cornerRadius(10)
-            .font(.title2)
-            .foregroundColor(.black)*/
-                //.foregroundColor(Color(playerTheme))
-            Spacer()
-            
-            VStack{
-                TextField("Room Code", text: $roomCode)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal, 150)
+        NavigationStack {
+            ZStack{
+                LinearGradient(
+                    colors: [Color("poppy"), Color("buttercup")],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                VStack{
+                    Text("Score Hell")
+                    .font(.largeTitle)
+                    .foregroundColor(Color("buttercup"))
+                    Text(playerName)
+                    Text(playerTheme)
+                    Spacer()
                 
-                NavigationLink (destination: JoinGameView()){
-                    Label("Join Game", systemImage: "person")
-                }
-                .tint(Color("orange"))
-                        /*NavigationLink (destination: ScoreGameView()){
-                        Label("Score Game", systemImage: "person.3")
-                    }*/
-                    NavigationLink (destination: StartGameView()){
-                        Label("Start Game", systemImage: "person.3")
+                    TabView{
+                        ScrollView(.vertical, showsIndicators: false){
+                            ForEach(games){game in
+                                VStack {
+                                    ListGameView(game: game, playerTheme: playerTheme)
+                                        .cornerRadius(10)
+                                }
+                                .padding(.horizontal)
+                                
+                            }
+                        }
+                        BidsView()
+                        LeaderBoardView()
                     }
-                    .tint(Color("poppy"))
-                    //.border(40)
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .font(.headline)
-            .padding(.bottom, 60)
-            .foregroundColor(.black)
-            /*Divider()
-            NavigationLink (destination: LocalGameView()){
-                Label("Local Game", systemImage: "")
-            }*/
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading){
-                    Button(action: {
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+               
+                    TextField("Room Code:", text: $roomCode)
+                        .padding(.horizontal, 100)
+                    Divider()
+                        .padding(.horizontal, 100)
+                    
+                    Button("Join Game") {
+                        game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
+                    }
+                    .tint(Color("orange"))
+                    
+                            
+                    Button("Start Game"){
+                        game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
+                    }
+                        .tint(Color("poppy"))
+                    
                         
-                    }) {
-                        Image(systemName: "person.crop.circle.fill")
-                            .foregroundColor(Color("buttercup"))
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .font(.headline)
+                .padding(.bottom, 60)
+                .foregroundColor(.black)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading){
+                        Button(action: {
+                            showingProfile = true
+                        }) {
+                            Image(systemName: "person.crop.circle.fill")
+                                .foregroundColor(Color("buttercup"))
 
+                        }
                     }
+                
+                    ToolbarItem(placement: .navigationBarTrailing){
+                        Button(action: {
+                            do {
+                                try Auth.auth().signOut()
+                            } catch let signOutError as NSError {
+                              print("Error signing out: %@", signOutError)
+                            }
+                            
+                            if Auth.auth().currentUser == nil {
+                                signedOut = true
+                            }
+                        }) {
+                            Text("Sign Out")
+                            .foregroundColor(Color("buttercup"))
+                        }
+                    }
+                    
                 }
-            
-                ToolbarItem(placement: .navigationBarTrailing){
-                    Button(action: {
-                        do {
-                            try Auth.auth().signOut()
-                        } catch let signOutError as NSError {
-                          print("Error signing out: %@", signOutError)
+            }
+            .sheet(isPresented: $showingProfile) {
+                NavigationStack{
+                    ProfileView(playerTheme: $playerTheme, playerName: $playerName, leaderFirst: $leaderFirst, newTheme: $newTheme, newName: $newName, newLeaderFirst: $newLeaderFirst)
+                    .toolbar{
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Save") {
+                                showingProfile = false
+                                if !newName.isEmpty && newName != playerName{
+                                    if let currentUser = Auth.auth().currentUser?.createProfileChangeRequest() {
+                                        currentUser.displayName = newName
+                                        currentUser.commitChanges(completion: {error in
+                                            if let error = error {
+                                                print(error)
+                                            }
+                                        })
+
+                                    }
+                                    playerName = newName
+                                }
+                                let db = Database()
+                                if !newTheme.isEmpty && newTheme != playerTheme{
+                                    db.changeTheme(playerTheme: newTheme)
+                                }
+                                if newLeaderFirst != leaderFirst
+                                {
+                                    db.changeLeaderFirst(leaderFirst: newLeaderFirst)
+                                
+                                }
+                            }
+                            .tint(Color("buttercup"))
                         }
                         
-                        if Auth.auth().currentUser == nil {
-                            signedOut = true
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                showingProfile = false
+                                    
+                            }
+                            .tint(Color("buttercup"))
                         }
-                    }) {
-                        //Image(systemName: "line.3.horizontal.circle")
-                        Text("Sign Out")
-                        .foregroundColor(Color("buttercup"))
                     }
                 }
-                
             }
             
         }
@@ -108,43 +170,65 @@ struct HomeScreenView: View {
             let user = Auth.auth().currentUser
             let db = Firestore.firestore()
             var id = ""
+            // timestamp = NSDate().timeIntervalSince1970
+            //let myTimeInterval = TimeInterval(timestamp)
+            //time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
+
             if let user = user{
                 playerName = user.displayName ?? ""
                 id = user.uid
             }
             //playerTheme = db.getTheme()
-
-                let docRef = db.collection("Users").document(id)
-
-                docRef.getDocument { (document, error) in
-                    guard error == nil else {
-                        //playerTheme = error?.localizedDescription as? String ?? "dshfhfh"
+            if !id.isEmpty {
+                db.collection("Users").document(id)
+                    .addSnapshotListener { documentSnapshot, error in
+                      guard let document = documentSnapshot else {
+                        print("Error fetching document: \(error!)")
                         return
+                      }
+                      guard let data = document.data() else {
+                        print("Document data was empty.")
+                        return
+                      }
+                      print("Current data: \(data)")
+                    playerTheme = data["theme"] as? String ?? ""
+                    leaderFirst = data["leaderFirst"] as? Bool ?? true
                     }
-                    //playerTheme = "this"
-                    if let document = document, document.exists {
-                        //playerTheme = "this?"
-                        let data = document.data()
-                        if let data = data {
-                            print("data", data)
-                            playerTheme = data["Theme"] as? String ?? ""
+                
+                
+                
+                db.collection("Users").document(id).collection("Games").limit(to: 5)
+                    .addSnapshotListener { collectionSnapshot, error in
+                      guard let collection = collectionSnapshot?.documents else {
+                        print("Error fetching collection: \(error!)")
+                        return
+                      }
+                        for doc in collection {
+                            let field = doc.data()
+                            let place = field["place"] as? Int ?? 0
+                            let score = field["score"] as? Int ?? 0
+                            let made = field["made"] as? Int ?? 0
+                            games.append(GameData(title: doc.documentID, place: place, score: score, made: made))
                         }
                     }
-
-                }
+                //let ref = db.collection("Users/").getDocuments()
+            }
             
             game.socket.on("players") { data, ack -> Void in
-                let names = data[0] as! [String]
-                let themes = data[1] as! [String]
-                
-                game.numPlayers = names.count
-                //userPosition = game.numPlayers-1
-                for num in 0...game.numPlayers-1 {
-                    game.players.append(Game.Player(name: names[num], theme: themes[num]))
+                    let names = data[0] as! [String]
+                    let themes = data[1] as! [String]
                     
-                    if playerName == game.players[num].name {
-                        userPosition = num
-                    }
+                    game.numPlayers = names.count
+                    game.players.removeAll()
+                    //userPosition = game.numPlayers-1
+                    for num in 0...game.numPlayers-1 {
+                        game.players.append(Game.Player(name: names[num], theme: themes[num]))
+                        
+                        //game.numPlayers+=1
+                        if playerName == game.players[num].name {
+                            userPosition = num
+                        }
+                
                 }
                 
                 if game.started {
@@ -159,8 +243,9 @@ struct HomeScreenView: View {
                         
                     }
                 }
-                
-                join = true
+                if !start {
+                    join = true
+                }
                     
             }
             

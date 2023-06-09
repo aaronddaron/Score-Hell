@@ -13,33 +13,45 @@ struct WatchPlayerView: View {
     @Binding var player: Game.Player
     @Binding var game: Game
     @Binding var showingStats: Bool
+    var leaderFirst: Bool
+    
+    @State private var lead = 0
+    @State private var deal = 0
             
     var body: some View {
-        VStack {
-            
-            HStack {
-                if player.name == game.players[game.numPlayers - 1].name && game.started {
-                    Image(systemName: "flame.circle")
-                } else if player.name == game.players[0].name && game.started{
-                    Image(systemName: "arrowtriangle.forward.fill")
-                }
+        ZStack{
+            VStack {
                 
-                Text("\(player.name)")
-                Text("\(player.bid)")
-                Spacer()
-                
-                if player.winner == true {
-                    Image(systemName: "crown")
+                HStack {
+                    if player.name == game.players[deal].name && game.started {
+                        Image(systemName: "flame.circle")
+                    } else if player.name == game.players[lead].name && game.started{
+                        Image(systemName: "arrowtriangle.forward.fill")
+                    }
+                    
+                    Text("\(player.name)")
+                    Text("\(player.bid)")
+                    Spacer()
+                    
+                    if player.winner == true {
+                        Image(systemName: "crown")
+                    }
+                    Text("\(player.score)")
                 }
-                Text("\(player.score)")
+                .foregroundColor(.black)
+                if showingStats {
+                    StatsView(player: $player, game: $game)
+                }
             }
-            .foregroundColor(.black)
-            if showingStats {
-                StatsView(player: $player, game: $game)
-            } 
+            .font(.title)
         }
-        .font(.title)
         .onAppear{
+            deal = game.numPlayers-1
+            if !leaderFirst {
+                deal = 0
+                lead = 1
+            }
+            
             game.socket.on("bid") { (data, ack) -> Void in
                 
                 let name = data[0] as! String
@@ -63,6 +75,6 @@ struct WatchPlayerView_Previews: PreviewProvider {
     static var player = Game.sampleData.players[0]
     static var game = Game.sampleData
     static var previews: some View {
-        WatchPlayerView(player: .constant(player), game: .constant(game), showingStats: .constant(false))
+        WatchPlayerView(player: .constant(player), game: .constant(game), showingStats: .constant(false), leaderFirst: true)
     }
 }

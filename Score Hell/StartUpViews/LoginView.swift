@@ -27,51 +27,60 @@ struct LoginView: View {
     
     var LogIn: some View {
         NavigationStack{
-            Text("Score Hell")
-                .font(.title)
-            Spacer()
-            VStack{
-                HStack{
-                    Text("Email:")
+            ZStack{
+                LinearGradient(
+                    colors: [Color("poppy"), Color("buttercup")],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                VStack{
+                    Text("Score Hell")
+                        .font(.title)
+                        .foregroundColor(Color("buttercup"))
+                    Spacer()
+                    VStack{
+                        
+                        
+                        TextField("Email:", text: $email)
+                        Divider()
+                        
+                        SecureField("Password:", text: $password)
+                        Divider()
+                    }
+                    .font(.title3)
+                    .padding()
+                    HStack{
+                        Button("Login"){
+                            Auth.auth().signIn(withEmail: email, password: password) { result, error in
+                                if error != nil {
+                                    print(error!.localizedDescription)
+                                }
+                            }
+                        }
+                        //.disabled(password.isEmpty || email.isEmpty)
+                        .tint(Color("poppy"))
+                        
+                        Button("Sign Up"){
+                            
+                            Auth.auth().createUser(withEmail: email, password: password) { result, error in
+                                if error != nil {
+                                    print(error!.localizedDescription)
+                                } else {
+                                    signUp = true
+                                }
+                            }
+                        }
+                        //.disabled(password.isEmpty || email.isEmpty)
+                        .tint(Color("orange"))
+                        
+                    }
+                    .foregroundColor(.black)
                     Spacer()
                 }
-                
-                TextField("", text: $email)
-                HStack{
-                    Text("Password:")
-                    Spacer()
-                }
-            
-                SecureField("", text: $password)
             }
-            .font(.title3)
-            .padding()
-            HStack{
-                Button("Login"){
-                    Auth.auth().signIn(withEmail: email, password: password) { result, error in
-                        if error != nil {
-                            print(error!.localizedDescription)
-                        }
-                    }
-                }
-                .disabled(password.isEmpty || email.isEmpty)
-                
-                Button("Sign Up"){
-                    
-                    Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                        if error != nil {
-                            print(error!.localizedDescription)
-                        } else {
-                            signUp = true
-                        }
-                    }
-                }
-                .disabled(password.isEmpty || email.isEmpty)
-                
-            }
-            Spacer()
         }
-        .textFieldStyle(.roundedBorder)
+        //.textFieldStyle(.roundedBorder)
         //.padding()
         .buttonStyle(.borderedProminent)
         .onAppear {

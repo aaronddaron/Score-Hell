@@ -13,6 +13,7 @@ struct PlayView: View {
     var playerTheme: String
     @State var roomCode: String
     @State  var userPosition: Int
+    var leaderFirst: Bool
     
     @State private var showingFullScore = false
     @State private var showingStats = false
@@ -20,6 +21,10 @@ struct PlayView: View {
     @State var alert = ""
     //@State private var userPosition = 0
     @State private var player = Game.Player(name: "", theme: "")
+    @State private var nextRound = false
+    
+    @State var lead = 0
+    @State var deal = 0
 
     var body: some View {
         if game.finished {
@@ -32,52 +37,77 @@ struct PlayView: View {
     var watch: some View {
         NavigationStack{
             VStack {
-                GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
-                List{
-                    ForEach($game.players) { $player in
-                        WatchPlayerView(player: $player, game: $game, showingStats: $showingStats)
-                            .listRowBackground(Color(player.theme))
+                ZStack{
+                    LinearGradient(
+                        colors: [Color(playerTheme), Color(Theme(name: playerTheme).secondary)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .ignoresSafeArea()
+                    VStack{
+                        GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
+                        List{
+                            ForEach($game.players) { $player in
+                                WatchPlayerView(player: $player, game: $game, showingStats: $showingStats, leaderFirst: leaderFirst)
+                                    .listRowBackground(Color(player.theme))
+                            }
+                            StatsDropDownView(showingStats: $showingStats)
+                        }
                     }
-                    StatsDropDownView(showingStats: $showingStats)
                 }
-                
-                StepperPlayView(game: $game, i: $userPosition)
-                .padding(.horizontal)
-                
-                HStack {
-                    if !game.started {
-                        Text("Waiting for players")
-                    } else if game.phase == 1{
-                        Text("Playing Round")
-                    } else if game.ohellNum < 0 {
-                        Text("\(game.players[game.numPlayers-1].name) can bid anything")
-                    } else {
-                        Text("\(game.players[game.numPlayers-1].name) cannot bid \(game.ohellNum)")
-                    }
+                ZStack{
                     
+                    LinearGradient(
+                        colors: [Color("poppy"), Color("buttercup")],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .ignoresSafeArea()
+                    .frame(maxHeight: 150)
+                    VStack{
+                        StepperPlayView(game: $game, i: $userPosition)
+                            .padding(.horizontal)
+                        HStack {
+                            if !game.started {
+                                Text("Waiting for players")
+                            } else if game.phase == 1{
+                                Text("Playing Round")
+                            } else if game.ohellNum < 0 {
+                                Text("\(game.players[deal].name) can bid anything")
+                            } else {
+                                Text("\(game.players[deal].name) cannot bid \(game.ohellNum)")
+                            }
+                            
+                        }
+                        .font(.title)
+                        .padding()
+                    }
                 }
-                .font(.title)
-                .padding()
+                .alert("Your \(alert)", isPresented: $showingAlert, actions: { // 3
+                    
+                    Button("Ok", role: .cancel, action: { showingAlert = false})
+                    
+                })
+                .navigationBarBackButtonHidden()
             }
-            .alert("Your \(alert)", isPresented: $showingAlert, actions: { // 3
-
-                Button("Ok", role: .cancel, action: { showingAlert = false})
-
-                    })
-            .navigationBarBackButtonHidden()
         }
         .onAppear{
+            deal = game.numPlayers-1
+            if !leaderFirst {
+                deal = 0
+                lead = 1
+            }
             //userPosition = game.numPlayers-1
             game.socket.on("players") { data, ack -> Void in
                 let names = data[0] as! [String]
                 let themes = data[1] as! [String]
                 //var tempPlayer = Game.Player(name: "", theme: "")
                 game.players.removeAll()
-                
+                game.numPlayers = names.count
                 for num in 0...game.numPlayers-1 {
                     game.players.append(Game.Player(name: names[num], theme: themes[num]))
                 
-                    
+                    //game.numPlayers+=1
                     if playerName == game.players[num].name {
                         userPosition = num
                     }
@@ -97,10 +127,15 @@ struct PlayView: View {
                         
                     }
                     
-                    if playerName == game.players[0].name {
+                    if !leaderFirst && nextRound{
+                        userPosition = game.order(leader: 1, host: playerName)
+                        nextRound = false
+                    }
+                    
+                    if playerName == game.players[lead].name {
                         showingAlert = true
                         alert = "lead"
-                    } else if playerName == game.players[game.numPlayers-1].name{
+                    } else if playerName == game.players[deal].name{
                         showingAlert = true
                         alert = "deal"
                     }
@@ -120,6 +155,7 @@ struct PlayView: View {
             
             game.socket.on("start") { data, ack -> Void in
                 game.started = true
+                nextRound = true
             }
             
             game.socket.on("finish") { data, ack -> Void in
@@ -151,6 +187,7 @@ struct PlayView: View {
                     game.players[num].bid = 0
                     game.players[num].tricksTaken = 0
                 }
+                nextRound = true
             }
             
             game.socket.on("gameData") { data, ack -> Void in
@@ -181,6 +218,6 @@ struct PlayView: View {
 
 struct PlayView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", roomCode: "ABCD", userPosition: 0)
+        PlayView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", roomCode: "ABCD", userPosition: 0, leaderFirst: true)
     }
 }

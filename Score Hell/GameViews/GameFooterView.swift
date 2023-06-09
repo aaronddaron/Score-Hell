@@ -12,10 +12,15 @@ struct GameFooterView: View {
     let playerName: String
     let playerTheme: String
     @Binding var userPosition: Int
+    var leaderFirst: Bool
     @State private var showingAlert = false
     @State private var alert = ""
     
+    @State private var lead = 0
+    @State private var deal = 0
+    
     var body: some View {
+        
         VStack{
             if !game.started {
                 Text("Waiting For Players")
@@ -26,10 +31,10 @@ struct GameFooterView: View {
                 .font(.title)
             }
             else if game.ohellNum < 0 {
-                Text("\(game.players[game.numPlayers-1].name) can bid anything")
+                Text("\(game.players[deal].name) can bid anything")
                     .font(.title)
             } else {
-                Text("\(game.players[game.numPlayers-1].name) cannot bid \(game.ohellNum)")
+                Text("\(game.players[deal].name) cannot bid \(game.ohellNum)")
                     .font(.title)
             }
             
@@ -39,12 +44,12 @@ struct GameFooterView: View {
                 }
                 
                 if game.numPlayers >= 2 && !game.started {
-                    Button(action: { userPosition = game.setLeader(host: playerName)
+                    Button(action: { userPosition = game.setLeader(host: playerName, leaderFirst: leaderFirst)
                         game.started = true
-                        if playerName == game.players[0].name {
+                        if playerName == game.players[lead].name {
                             showingAlert = true
                             alert = "lead"
-                        } else if playerName == game.players[game.numPlayers-1].name {
+                        } else if playerName == game.players[deal].name {
                             showingAlert = true
                             alert = "deal"
                         }
@@ -62,11 +67,11 @@ struct GameFooterView: View {
                     .disabled(game.bidTotal == game.numCards)
                 } else if game.phase == 1{
                     Button(action: {
-                        userPosition = game.updateGame(host: playerName)
-                        if playerName == game.players[0].name {
+                        userPosition = game.updateGame(host: playerName, leaderFirst: leaderFirst)
+                        if playerName == game.players[lead].name {
                             showingAlert = true
                             alert = "lead"
-                        } else if playerName == game.players[game.numPlayers-1].name {
+                        } else if playerName == game.players[deal].name {
                             showingAlert = true
                             alert = "deal"
                         }
@@ -80,7 +85,16 @@ struct GameFooterView: View {
                 }
             }
         }
+        .onAppear{
+            deal = game.numPlayers-1
+            if !leaderFirst {
+                deal = 0
+                lead = 1
+            } 
+        }
         .buttonStyle(.borderedProminent)
+        .tint(Color("orange"))
+        .foregroundColor(.black)
         .font(.title3)
         .padding(.bottom)
         .alert("Your \(alert)", isPresented: $showingAlert, actions: {
@@ -88,11 +102,12 @@ struct GameFooterView: View {
             Button("Ok", role: .cancel, action: { showingAlert = false})
 
                 })
+        
     }
 }
 
 struct GameFooterView_Previews: PreviewProvider {
     static var previews: some View {
-        GameFooterView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", userPosition: .constant(0))
+        GameFooterView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", userPosition: .constant(0), leaderFirst: true)
     }
 }
