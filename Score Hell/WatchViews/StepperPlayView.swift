@@ -10,6 +10,7 @@ import SwiftUI
 struct StepperPlayView: View {
     @Binding var game: Game
     @Binding var i: Int
+    let deal: Int
     
     var body: some View {
         HStack{
@@ -23,7 +24,7 @@ struct StepperPlayView: View {
                         game.bidTotal += 1
                     }
                     
-                    if game.players[i].name != game.players[game.numPlayers-1].name {
+                    if game.players[i].name != game.players[deal].name {
                         game.calcOhellNum()
                     }
                     game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
@@ -37,7 +38,7 @@ struct StepperPlayView: View {
                         game.bidTotal -= 1
                     }
                     
-                    if game.players[i].name != game.players[game.numPlayers-1].name {
+                    if game.players[i].name != game.players[deal].name {
                         game.calcOhellNum()
                     }
                     game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
@@ -75,6 +76,6 @@ struct StepperPlayView: View {
 
 struct StepperPlayView_Previews: PreviewProvider {
     static var previews: some View {
-        StepperPlayView(game: .constant(Game.sampleData), i: .constant(0))
+        StepperPlayView(game: .constant(Game.sampleData), i: .constant(0), deal: 0)
     }
 }

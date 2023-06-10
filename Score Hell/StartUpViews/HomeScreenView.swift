@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 
 struct HomeScreenView: View {
     @State private var game = Game(players: [])
@@ -51,28 +52,26 @@ struct HomeScreenView: View {
                     .foregroundColor(Color("buttercup"))
                     Text(playerName)
                     Text(playerTheme)
+                    //Text(playerPts)
                     Spacer()
                 
                     TabView{
-                        ScrollView(.vertical, showsIndicators: false){
-                            ForEach(games){game in
-                                VStack {
-                                    ListGameView(game: game, playerTheme: playerTheme)
-                                        .cornerRadius(10)
+                        if !games.isEmpty{
+                            ScrollView(.vertical, showsIndicators: false){
+                                ForEach(games){game in
+                                    VStack {
+                                        ListGameView(game: game, playerTheme: playerTheme)
+                                            .cornerRadius(10)
+                                    }
+                                    .padding(.horizontal)
+                                    
                                 }
-                                .padding(.horizontal)
-                                
                             }
-                        }
+                        } else { Text("No games played yet")}
                         BidsView()
                         LeaderBoardView()
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-               
-                    TextField("Room Code:", text: $roomCode)
-                        .padding(.horizontal, 100)
-                    Divider()
-                        .padding(.horizontal, 100)
                     
                     Button("Join Game") {
                         game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
@@ -84,6 +83,11 @@ struct HomeScreenView: View {
                         game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
                     }
                         .tint(Color("poppy"))
+                    
+                    TextField("Room Code:", text: $roomCode)
+                        .padding(.horizontal, 100)
+                    Divider()
+                        .padding(.horizontal, 100)
                     
                         
                 }
@@ -151,7 +155,14 @@ struct HomeScreenView: View {
                                 
                                 }
                             }
-                            .tint(Color("buttercup"))
+                            .tint(Color("orange"))
+                            .buttonStyle(.borderedProminent)
+                            .foregroundColor(.black)
+                        }
+                        
+                        ToolbarItem(placement: .principal) {
+                            Text("Preferences")
+                                .font(.title)
                         }
                         
                         ToolbarItem(placement: .cancellationAction) {
@@ -159,7 +170,7 @@ struct HomeScreenView: View {
                                 showingProfile = false
                                     
                             }
-                            .tint(Color("buttercup"))
+                            .tint(.black)
                         }
                     }
                 }
@@ -197,7 +208,7 @@ struct HomeScreenView: View {
                 
                 
                 
-                db.collection("Users").document(id).collection("Games").limit(to: 5)
+                db.collection("Users").document(id).collection("Games").limit(to: 5).order(by: "date", descending: true)
                     .addSnapshotListener { collectionSnapshot, error in
                       guard let collection = collectionSnapshot?.documents else {
                         print("Error fetching collection: \(error!)")
@@ -205,10 +216,13 @@ struct HomeScreenView: View {
                       }
                         for doc in collection {
                             let field = doc.data()
+                            let date = field["date"] as? String ?? ""
                             let place = field["place"] as? Int ?? 0
                             let score = field["score"] as? Int ?? 0
-                            let made = field["made"] as? Int ?? 0
-                            games.append(GameData(title: doc.documentID, place: place, score: score, made: made))
+                            let made = field["bids_made"] as? Int ?? 0
+                            let round = field["round"] as? Int ?? 0
+                            let finished = field["finished"] as? Bool ?? false
+                            games.append(GameData(date: date, place: place, score: score, made: made, finished: finished, round: round))
                         }
                     }
                 //let ref = db.collection("Users/").getDocuments()

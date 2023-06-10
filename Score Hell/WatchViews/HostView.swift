@@ -20,6 +20,7 @@ struct HostView: View {
     //@State private var player = Game.Player(name: "", theme: "")
     @State var alert = ""
     @State private var userPosition = 0
+    @State private var deal = 0
 
     
     var body: some View {
@@ -60,9 +61,9 @@ struct HostView: View {
                     .frame(maxHeight: 150)
                     
                     VStack{
-                        StepperPlayView(game: $game, i: $userPosition)
+                        StepperPlayView(game: $game, i: $userPosition, deal: deal)
                         .padding(.horizontal)
-                        GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: $userPosition, leaderFirst: leaderFirst)
+                        GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: $userPosition, leaderFirst: leaderFirst, deal: $deal)
                     }
                 }
             }

@@ -21,9 +21,9 @@ struct Theme: Identifiable{
         } else if name == "buttercup" {
             self.secondary = "teal"
         } else if name == "lavender" {
-            self.secondary = "oxblood"
+            self.secondary = "poppy"
         } else if name == "orange" {
-            self.secondary = "yellow"
+            self.secondary = "buttercup"
         } else if name == "poppy" {
             self.secondary = "indigo"
         } else if name == "seafoam" {

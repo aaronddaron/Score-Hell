@@ -25,10 +25,13 @@ struct PlayView: View {
     
     @State var lead = 0
     @State var deal = 0
+    @State var title = ""
+    @State var stringDate = ""
+    @State var date = Date.now
 
     var body: some View {
         if game.finished {
-            FinishGameView(game: $game)
+            FinishGameView(game: $game, playerName: playerName, title: title)
         } else {
             watch
         }
@@ -65,7 +68,7 @@ struct PlayView: View {
                     .ignoresSafeArea()
                     .frame(maxHeight: 150)
                     VStack{
-                        StepperPlayView(game: $game, i: $userPosition)
+                        StepperPlayView(game: $game, i: $userPosition, deal: deal)
                             .padding(.horizontal)
                         HStack {
                             if !game.started {
@@ -127,6 +130,13 @@ struct PlayView: View {
                         
                     }
                     
+                    if nextRound {
+                        for num in 0...game.numPlayers-1 {
+                            game.players[num].bid = 0
+                            game.players[num].tricksTaken = 0
+                        }
+                    }
+                    
                     if !leaderFirst && nextRound{
                         userPosition = game.order(leader: 1, host: playerName)
                         nextRound = false
@@ -140,7 +150,7 @@ struct PlayView: View {
                         alert = "deal"
                     }
                 }
-                
+
                     
             }
                 
@@ -156,6 +166,15 @@ struct PlayView: View {
             game.socket.on("start") { data, ack -> Void in
                 game.started = true
                 nextRound = true
+                date = Date.now
+                let formatter = DateFormatter()
+                formatter.dateFormat = "YYYY-MM-dd-HH"
+                formatter.timeZone = TimeZone(secondsFromGMT: -18000)
+                
+                //var gameData = GameData(title: "", place: 0, score: 0, made: 0, finished: false, round: 0)
+                stringDate = formatter.string(from: date)
+                let db = Database()
+                title = db.createGameData(date: stringDate)
             }
             
             game.socket.on("finish") { data, ack -> Void in
@@ -178,15 +197,37 @@ struct PlayView: View {
             game.socket.on("nextRound") { data, ack -> Void in
                 game.ohellNum = game.cards[game.round]
                 game.numCards = game.ohellNum
-                game.round += 1
+                
                 game.phase = 0
                 game.bidTotal = 0
                 game.trickTotal = 0
                 
-                for num in 0...game.numPlayers-1 {
-                    game.players[num].bid = 0
-                    game.players[num].tricksTaken = 0
+                //calculate role and result
+                var role = ""
+                var result = ""
+                if userPosition == deal {
+                    role = "dealer"
+                } else if userPosition == lead {
+                    role = "leader"
+                } else {
+                    role = "none"
                 }
+                
+                let t = game.players[userPosition].tricksTaken
+                let b = game.players[userPosition].bid
+                
+                if t == b {
+                    result = "made"
+                } else if t > b {
+                    result = "over"
+                } else {
+                    result = "under"
+                }
+                //setBid()
+                let db = Database()
+                db.setBid(bid: b, round: game.round, trick: t, result: result, role: role, title: title)
+                
+                game.round += 1
                 nextRound = true
             }
             

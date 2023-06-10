@@ -21,11 +21,19 @@ struct ListGameView: View {
             .ignoresSafeArea()
             VStack{
                 HStack{
-                    Text("\(game.title)")
+                    Text("\(game.date)")
                         .padding(.leading)
                     Spacer()
                 }
-                Text("")
+                HStack{
+                    if game.finished {
+                        Text("Full")
+                    } else {
+                        Text("Partial: \(game.round)")
+                    }
+                    Spacer()
+                }
+                .padding(.leading)
                 HStack{
                     Text("\(game.place)")
                     Text("\(game.score)")
@@ -45,6 +53,6 @@ struct ListGameView_Previews: PreviewProvider {
     
     static var previews: some View {
         //let timestamp = NSDate().timeIntervalSince1970
-        ListGameView(game: GameData(title: "timestamp", place: 1, score: 65, made: 7), playerTheme: "lavender")
+        ListGameView(game: GameData(date: "timestamp", place: 1, score: 65, made: 7, finished: false, round: 12), playerTheme: "lavender")
     }
 }

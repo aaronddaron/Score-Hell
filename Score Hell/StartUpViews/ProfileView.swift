@@ -27,13 +27,12 @@ struct ProfileView: View {
                     endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
-                VStack{
-                    HStack{
                         VStack{
+                            
                             TextField("Display Name", text: $newName)
                                 .padding(.horizontal)
                             Divider()
-                                .padding()
+                                .padding(.horizontal)
                             Toggle("\(message)", isOn: $newLeaderFirst)
                                 .padding()
                                 .tint(Color("poppy"))
@@ -55,11 +54,7 @@ struct ProfileView: View {
                             .frame(height: 175)
                             .padding(.horizontal)
                         }
-                        
-                        
-                    }
-                    
-                }
+                        .font(.title2)
                 
             }.foregroundColor(.black)
         }

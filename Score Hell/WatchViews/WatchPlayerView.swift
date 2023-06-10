@@ -65,6 +65,9 @@ struct WatchPlayerView: View {
                     player.tricksTaken = data[1] as! Int
                 }
             }
+            game.socket.on("start") { data, ack -> Void in
+                deal = game.numPlayers-1
+            }
         }
     }
 }

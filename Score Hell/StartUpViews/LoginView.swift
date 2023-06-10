@@ -80,6 +80,7 @@ struct LoginView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
         //.textFieldStyle(.roundedBorder)
         //.padding()
         .buttonStyle(.borderedProminent)

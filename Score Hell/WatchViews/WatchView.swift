@@ -21,7 +21,7 @@ struct WatchView: View {
 
     var body: some View {
         if game.finished {
-            FinishGameView(game: $game)
+            FinishGameView(game: $game, playerName: playerName, title: "")
         } else {
             watch
         }

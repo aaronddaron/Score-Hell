@@ -9,9 +9,13 @@ import SwiftUI
 
 struct FinishGameView: View {
     @Binding var game: Game
+    var playerName: String
+    var title: String
+    
+    @State var gameData = GameData(date: "", place: 0, score: 0, made: 0, finished: false, round: 0)
 
     var body: some View {
-        VStack{
+        NavigationStack{
             List{
                 HStack{
                     Spacer()
@@ -30,8 +34,12 @@ struct FinishGameView: View {
                             }
                             HStack{
                                 VStack{
-                                    Image(systemName: "flame")
-                                    Text("\(player.streak)") //Longest Streak
+                                    VStack{
+                                        if player.bidsMade == game.round - 1 && game.round > 1 {
+                                            Image(systemName: "flame")
+                                        }
+                                        Text("")
+                                    }
                                 }
                                 VStack{
                                     Image(systemName: "circle.fill")
@@ -66,8 +74,10 @@ struct FinishGameView: View {
                             }
                             HStack{
                                 VStack{
-                                    Image(systemName: "flame")
-                                    Text("\(player.longestStreak)") //Longest Streak
+                                    if player.bidsMade == game.round - 1 && game.round > 1 {
+                                        Image(systemName: "flame")
+                                    }
+                                    Text("")
                                 }
                                 VStack{
                                     Image(systemName: "circle.fill")
@@ -95,11 +105,12 @@ struct FinishGameView: View {
                 
             }
             .font(.title)
-            NavigationLink(destination: HomeScreenView()){
-                Text("Home")
-            }
-            .buttonStyle(.borderedProminent)
-            .font(.title3)
+                NavigationLink(destination: HomeScreenView()){
+                    Text("Home")
+                }
+                .buttonStyle(.borderedProminent)
+                .font(.title3)
+            
         }
         .navigationBarBackButtonHidden(true)
         .onAppear{
@@ -107,12 +118,47 @@ struct FinishGameView: View {
             if game.phase == 0 {
                 game.round -= 1
             }
+            
+            /*let formatter = DateFormatter()
+            formatter.dateFormat = "YYYY-MM-dd-HH"
+            formatter.timeZone = TimeZone(secondsFromGMT: -18000)
+            gameData.title = formatter.string(from: date)*/
+            //gameData.date = date
+            for player in game.players {
+                if player.name == playerName {
+                    gameData.score = player.score
+                    gameData.made = player.bidsMade
+                }
+            }
+            
+            gameData.place = 1
+            for player in game.players {
+                if player.score > gameData.score
+                {
+                    gameData.place += 1
+                }
+            }
+            
+            gameData.round = game.round
+            if game.round == 14 {
+                gameData.finished = true
+            }
+            
+            let db = Database()
+            db.setGameData(game: gameData, title: title)
+            
+            var points = gameData.made
+            if gameData.place == 1{
+                points = points * 10
+            }
+            
+            db.changePts(pts: points)
         }
     }
 }
 
 struct FinishGameView_Previews: PreviewProvider {
     static var previews: some View {
-        FinishGameView(game: .constant(Game.sampleData))
+        FinishGameView(game: .constant(Game.sampleData), playerName: "Aaron", title: "")
     }
 }
