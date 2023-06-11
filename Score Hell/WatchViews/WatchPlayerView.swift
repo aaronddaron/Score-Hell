@@ -16,17 +16,19 @@ struct WatchPlayerView: View {
     var leaderFirst: Bool
     
     @State private var lead = 0
-    @State private var deal = 0
+    @State var deal: Int
             
     var body: some View {
         ZStack{
             VStack {
                 
                 HStack {
-                    if player.name == game.players[deal].name && game.started {
-                        Image(systemName: "flame.circle")
-                    } else if player.name == game.players[lead].name && game.started{
-                        Image(systemName: "arrowtriangle.forward.fill")
+                    if game.started{
+                        if player.name == game.players[deal].name {
+                            Image(systemName: "flame.circle")
+                        } else if player.name == game.players[lead].name {
+                            Image(systemName: "arrowtriangle.forward.fill")
+                        }
                     }
                     
                     Text("\(player.name)")
@@ -46,7 +48,7 @@ struct WatchPlayerView: View {
             .font(.title)
         }
         .onAppear{
-            deal = game.numPlayers-1
+            //deal = game.numPlayers-1
             if !leaderFirst {
                 deal = 0
                 lead = 1
@@ -67,6 +69,10 @@ struct WatchPlayerView: View {
             }
             game.socket.on("start") { data, ack -> Void in
                 deal = game.numPlayers-1
+                if !leaderFirst {
+                    deal = 0
+                    lead = 1
+                }
             }
         }
     }
@@ -78,6 +84,6 @@ struct WatchPlayerView_Previews: PreviewProvider {
     static var player = Game.sampleData.players[0]
     static var game = Game.sampleData
     static var previews: some View {
-        WatchPlayerView(player: .constant(player), game: .constant(game), showingStats: .constant(false), leaderFirst: true)
+        WatchPlayerView(player: .constant(player), game: .constant(game), showingStats: .constant(false), leaderFirst: true, deal: 0)
     }
 }

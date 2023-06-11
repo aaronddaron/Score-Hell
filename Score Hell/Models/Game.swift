@@ -146,11 +146,8 @@ struct Game {
             self.bidTotal = 0
             self.trickTotal = 0
             self.ohellNum = self.numCards
-            
+           
             position = self.order(leader: 1, host: host)
-            if !leaderFirst{
-                position = self.order(leader: 1, host: host)
-            }
         }
         self.calcWinner()
         return position

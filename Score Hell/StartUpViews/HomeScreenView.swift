@@ -155,7 +155,7 @@ struct HomeScreenView: View {
                                 
                                 }
                             }
-                            .tint(Color("orange"))
+                            .tint(Color(newTheme))
                             .buttonStyle(.borderedProminent)
                             .foregroundColor(.black)
                         }

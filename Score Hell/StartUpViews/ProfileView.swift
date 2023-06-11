@@ -35,13 +35,13 @@ struct ProfileView: View {
                                 .padding(.horizontal)
                             Toggle("\(message)", isOn: $newLeaderFirst)
                                 .padding()
-                                .tint(Color("poppy"))
+                                .tint(Color(Theme(name: newTheme).secondary))
                                 .onChange(of: newLeaderFirst) {newValue in
-                                    if newLeaderFirst == true {
+                                    /*if newLeaderFirst == true {
                                         message = "Leader shown first"
                                     } else {
                                         message = "Dealer shown first"
-                                    }
+                                    }*/
                                 }
                         
                             Text("Color")

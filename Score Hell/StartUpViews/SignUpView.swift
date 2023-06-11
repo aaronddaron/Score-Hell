@@ -44,7 +44,7 @@ struct SignUpView: View {
                                 .padding()
                             Toggle("\(message)", isOn: $leaderFirst)
                                 .padding()
-                                .tint(Color("poppy"))
+                                .tint(Color(Theme(name: playerTheme).secondary))
                                 .onChange(of: leaderFirst) {newValue in
                                     if leaderFirst == true {
                                         message = "Leader shown first"
@@ -86,7 +86,7 @@ struct SignUpView: View {
                         
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(Color("poppy"))
+                    .tint(Color(playerTheme))
                     .padding()
                     .navigationTitle("User Info")
                     

@@ -38,7 +38,7 @@ struct GameView: View {
                     StatsDropDownView(showingStats: $showingStats)
                 }
 
-            GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: .constant(0), leaderFirst: true, deal: .constant(0))
+            GameFooterView(game: $game, playerName: playerName, userPosition: .constant(0), leaderFirst: true, deal: .constant(0))
                 
         }
         .navigationBarBackButtonHidden(true)

@@ -124,35 +124,37 @@ struct FinishGameView: View {
             formatter.timeZone = TimeZone(secondsFromGMT: -18000)
             gameData.title = formatter.string(from: date)*/
             //gameData.date = date
-            for player in game.players {
-                if player.name == playerName {
-                    gameData.score = player.score
-                    gameData.made = player.bidsMade
+            if game.round > 0{
+                for player in game.players {
+                    if player.name == playerName {
+                        gameData.score = player.score
+                        gameData.made = player.bidsMade
+                    }
                 }
-            }
-            
-            gameData.place = 1
-            for player in game.players {
-                if player.score > gameData.score
-                {
-                    gameData.place += 1
+                
+                gameData.place = 1
+                for player in game.players {
+                    if player.score > gameData.score
+                    {
+                        gameData.place += 1
+                    }
                 }
+                
+                gameData.round = game.round
+                if game.round == 14 {
+                    gameData.finished = true
+                }
+                
+                let db = Database()
+                db.setGameData(game: gameData, title: title)
+                
+                var points = gameData.made
+                if gameData.place == 1{
+                    points = points * 10
+                }
+                
+                db.changePts(pts: points)
             }
-            
-            gameData.round = game.round
-            if game.round == 14 {
-                gameData.finished = true
-            }
-            
-            let db = Database()
-            db.setGameData(game: gameData, title: title)
-            
-            var points = gameData.made
-            if gameData.place == 1{
-                points = points * 10
-            }
-            
-            db.changePts(pts: points)
         }
     }
 }

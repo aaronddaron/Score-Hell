@@ -10,7 +10,7 @@ import SwiftUI
 struct GameFooterView: View {
     @Binding var game: Game
     let playerName: String
-    let playerTheme: String
+    //let playerTheme: String
     @Binding var userPosition: Int
     var leaderFirst: Bool
     @Binding var deal: Int
@@ -52,6 +52,7 @@ struct GameFooterView: View {
                         date = Date.now
                         game.started = true
                         deal = game.numPlayers-1
+                        
                         if playerName == game.players[lead].name {
                             showingAlert = true
                             alert = "lead"
@@ -82,19 +83,21 @@ struct GameFooterView: View {
                     .disabled(game.bidTotal == game.numCards)
                 } else if game.phase == 1{
                     Button(action: {
+                        let lastPosition = userPosition
+                        userPosition = game.updateGame(host: playerName, leaderFirst: leaderFirst)
                         
                         var role = ""
                         var result = ""
-                        if userPosition == deal {
+                        if lastPosition == deal {
                             role = "dealer"
-                        } else if userPosition == lead {
+                        } else if lastPosition == lead {
                             role = "leader"
                         } else {
                             role = "none"
                         }
                         
-                        let t = game.players[userPosition].tricksTaken
-                        let b = game.players[userPosition].bid
+                        let t = game.players[lastPosition].tricksTaken
+                        let b = game.players[lastPosition].bid
                         
                         if t == b {
                             result = "made"
@@ -108,7 +111,6 @@ struct GameFooterView: View {
                         db.setBid(bid: b, round: game.round, trick: t, result: result, role: role, title: title)
 
                         
-                        userPosition = game.updateGame(host: playerName, leaderFirst: leaderFirst)
                         if playerName == game.players[lead].name {
                             showingAlert = true
                             alert = "lead"
@@ -128,7 +130,7 @@ struct GameFooterView: View {
             }
         }
         .onAppear{
-            deal = game.numPlayers-1
+            //deal = game.numPlayers-1
             if !leaderFirst {
                 deal = 0
                 lead = 1
@@ -154,6 +156,6 @@ struct GameFooterView: View {
 
 struct GameFooterView_Previews: PreviewProvider {
     static var previews: some View {
-        GameFooterView(game: .constant(Game.sampleData), playerName: "Aaron", playerTheme: "lavender", userPosition: .constant(0), leaderFirst: true, deal: .constant(0))
+        GameFooterView(game: .constant(Game.sampleData), playerName: "Aaron", userPosition: .constant(0), leaderFirst: true, deal: .constant(0))
     }
 }

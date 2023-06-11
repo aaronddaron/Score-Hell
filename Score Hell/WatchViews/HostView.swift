@@ -37,7 +37,7 @@ struct HostView: View {
                         GameHeaderView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: $roomCode)
                         List{
                             ForEach($game.players) { $player in
-                                WatchPlayerView(player: $player, game: $game, showingStats: $showingStats, leaderFirst: leaderFirst)
+                                WatchPlayerView(player: $player, game: $game, showingStats: $showingStats, leaderFirst: leaderFirst, deal: deal)
                                     .listRowBackground(Color(player.theme))
                             }
                             .onMove { from, to in
@@ -63,7 +63,7 @@ struct HostView: View {
                     VStack{
                         StepperPlayView(game: $game, i: $userPosition, deal: deal)
                         .padding(.horizontal)
-                        GameFooterView(game: $game, playerName: playerName, playerTheme: playerTheme, userPosition: $userPosition, leaderFirst: leaderFirst, deal: $deal)
+                        GameFooterView(game: $game, playerName: playerName, userPosition: $userPosition, leaderFirst: leaderFirst, deal: $deal)
                     }
                 }
             }
@@ -72,6 +72,10 @@ struct HostView: View {
         .onAppear{
             game.socket.disconnect()
             game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
+            
+            if leaderFirst {
+                deal = game.numPlayers - 1
+            }
             
             game.socket.on("newPlayer") { data, ack -> Void in
                 let name = data[0] as! String
