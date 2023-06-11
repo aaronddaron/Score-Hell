@@ -21,6 +21,7 @@ struct HomeScreenView: View {
     @State private var start = false
     @State private var showingProfile = false
     @State var leaderFirst = true
+    @State var playerPts = 0
     @State var newTheme = ""
     @State var newName = ""
     @State var newLeaderFirst = true
@@ -50,7 +51,7 @@ struct HomeScreenView: View {
                     Text("Score Hell")
                     .font(.largeTitle)
                     .foregroundColor(Color("buttercup"))
-                    Text(playerName)
+                    Text("\(playerName) - \(playerPts)")
                     Text(playerTheme)
                     //Text(playerPts)
                     Spacer()
@@ -133,26 +134,17 @@ struct HomeScreenView: View {
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Save") {
                                 showingProfile = false
-                                if !newName.isEmpty && newName != playerName{
-                                    if let currentUser = Auth.auth().currentUser?.createProfileChangeRequest() {
-                                        currentUser.displayName = newName
-                                        currentUser.commitChanges(completion: {error in
-                                            if let error = error {
-                                                print(error)
-                                            }
-                                        })
-
-                                    }
-                                    playerName = newName
-                                }
+                               
                                 let db = Database()
                                 if !newTheme.isEmpty && newTheme != playerTheme{
                                     db.changeTheme(playerTheme: newTheme)
                                 }
-                                if newLeaderFirst != leaderFirst
-                                {
+                                if newLeaderFirst != leaderFirst{
                                     db.changeLeaderFirst(leaderFirst: newLeaderFirst)
                                 
+                                }
+                                if !newName.isEmpty && newName != playerName{
+                                    db.changeName(playerName: newName)
                                 }
                             }
                             .tint(Color(newTheme))
@@ -186,7 +178,7 @@ struct HomeScreenView: View {
             //time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
 
             if let user = user{
-                playerName = user.displayName ?? ""
+                //playerName = user.displayName ?? ""
                 id = user.uid
             }
             //playerTheme = db.getTheme()
@@ -202,13 +194,15 @@ struct HomeScreenView: View {
                         return
                       }
                       print("Current data: \(data)")
-                    playerTheme = data["theme"] as? String ?? ""
+                        playerTheme = data["theme"] as? String ?? ""
                     leaderFirst = data["leaderFirst"] as? Bool ?? true
+                    playerName = data["name"] as? String ?? ""
+                        playerPts = data["pts"] as? Int ?? 0
                     }
                 
                 
                 
-                db.collection("Users").document(id).collection("Games").limit(to: 5).order(by: "date", descending: true)
+                db.collection("Users").document(id).collection("Games").order(by: "date", descending: true).limit(to: 5)
                     .addSnapshotListener { collectionSnapshot, error in
                       guard let collection = collectionSnapshot?.documents else {
                         print("Error fetching collection: \(error!)")

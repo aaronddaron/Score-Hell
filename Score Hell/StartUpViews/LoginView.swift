@@ -43,6 +43,7 @@ struct LoginView: View {
                         
                         
                         TextField("Email:", text: $email)
+                            .keyboardType(.emailAddress)
                         Divider()
                         
                         SecureField("Password:", text: $password)

@@ -28,14 +28,20 @@ struct BidsView: View {
             HStack{
                 VStack{
                     HStack{
-                        Text("Total: \(bidTotal, specifier: "%.0f")")
-                        Text("Made: \(totalAvg, specifier: "%.2f")%")
+                        if bidTotal == 1 {
+                            Text("Total: \(totalAvg, specifier: "%.2f")% on \(bidTotal, specifier: "%.0f") attempt")
+                        } else {
+                            Text("Total: \(totalAvg, specifier: "%.2f")% on \(bidTotal, specifier: "%.0f") attempts")
+                        }
                     }
                 
                     ForEach (indeces, id: \.self) {index in
                         HStack{
-                            Text("\(index): \(totals[index], specifier: "%.0f")")
-                            Text("Made: \(avgs[index], specifier: "%.2f")%")
+                            if totals[index] == 1 {
+                                Text("\(index): \(avgs[index], specifier: "%.2f")% on \(totals[index], specifier: "%.0f") attempt")
+                            } else {
+                                Text("\(index): \(avgs[index], specifier: "%.2f")% on \(totals[index], specifier: "%.0f") attempts")
+                            }
                         }
                     }
                     

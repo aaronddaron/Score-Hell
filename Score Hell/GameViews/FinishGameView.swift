@@ -16,103 +16,127 @@ struct FinishGameView: View {
 
     var body: some View {
         NavigationStack{
-            List{
-                HStack{
-                    Spacer()
-                    Text("Congrats!")
-                    Spacer()
-                }
-               
-                ForEach (game.players) { player in
-                    if player.winner {
+            ZStack{
+                LinearGradient(
+                    colors: [Color("poppy"), Color("buttercup")],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                VStack{
+                    //List{
+                        HStack{
+                            Spacer()
+                            Text("Congrats!")
+                            Spacer()
+                        }
+                       
                         VStack{
-                            HStack{
-                                Text("\(player.name)")
-                                Spacer()
-                                Image(systemName: "crown")
-                                Text("\(player.score)")
-                            }
-                            HStack{
-                                VStack{
+                            ForEach (game.players) { player in
+                                if player.winner {
                                     VStack{
-                                        if player.bidsMade == game.round - 1 && game.round > 1 {
-                                            Image(systemName: "flame")
+                                        HStack{
+                                            Text("\(player.name)")
+                                            Spacer()
+                                            Image(systemName: "crown")
+                                            Text("\(player.score)")
                                         }
-                                        Text("")
+                                        .padding(.horizontal)
+                                        HStack{
+                                            if player.bidsMade == game.round - 1 && game.round > 1 {
+                                                VStack{
+                                                    
+                                                    Image(systemName: "flame")
+                                                    
+                                                    Text("")
+                                                }
+                                            }
+                                            VStack{
+                                                Image(systemName: "circle.fill")
+                                                Text("\(player.bidsMade)") //Bids made
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                        }
+                                        .padding(.horizontal)
+                                        .font(.headline)
                                     }
-                                }
-                                VStack{
-                                    Image(systemName: "circle.fill")
-                                    Text("\(player.bidsMade)") //Bids made
-                                }
-                                
-                                Spacer()
-                                if player.bidsMade == game.round - 1 && game.round > 1{
-                                    VStack{
-                                        Image(systemName: "checkmark")
-                                    }
+                                    .foregroundColor(.black)
+                                    .background(Color(player.theme))
                                 }
                             }
-                            .font(.headline)
                         }
-                        .foregroundColor(.black)
-                        .listRowBackground(Color(player.theme))
-                    }
-                }
-                
-                HStack{
-                    Text("")
-                }
-                
-                ForEach (game.players) { player in
-                    if !player.winner {
+                        .cornerRadius(10)
+                        
+                        
+                        
+                        
                         VStack{
-                            HStack{
-                                Text("\(player.name)")
-                                Spacer()
-                                Text("\(player.score)")
-                            }
-                            HStack{
-                                VStack{
-                                    if player.bidsMade == game.round - 1 && game.round > 1 {
-                                        Image(systemName: "flame")
-                                    }
-                                    Text("")
-                                }
-                                VStack{
-                                    Image(systemName: "circle.fill")
-                                    Text("\(player.bidsMade)") //Bids made
-                                }
-                                
-                                Spacer()
-                                if player.streak == game.round-1 && game.round > 1{
-                                    VStack{
-                                        Image(systemName: "checkmark")
-                                    }
-                                }
-                            }
-                            .font(.headline)
+                            Divider()
                         }
-                        .foregroundColor(.black)
-                        .listRowBackground(Color(player.theme))
-                    }
+                        
+                        VStack{
+                            ForEach (game.players) { player in
+                                if !player.winner {
+                                    VStack{
+                                        HStack{
+                                            Text("\(player.name)")
+                                            Spacer()
+                                            Text("\(player.score)")
+                                        }
+                                        .padding(.horizontal)
+                                        HStack{
+                                            if player.bidsMade == game.round - 1 && game.round > 1 {
+                                                VStack{
+                                                    
+                                                    Image(systemName: "flame")
+                                                    
+                                                    Text("")
+                                                }
+                                            }
+                                            VStack{
+                                                Image(systemName: "circle.fill")
+                                                Text("\(player.bidsMade)") //Bids made
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                        }
+                                        .padding(.horizontal)
+                                        .font(.headline)
+                                    }
+                                    .foregroundColor(.black)
+                                    .background(Color(player.theme))
+                                    
+                                }
+                            }
+                        }
+                        .cornerRadius(10)
+                    
+                    
+                        HStack{
+                            Spacer()
+                            Text("Also Played...")
+                            Spacer()
+                        }
+                        .font(.title)
+                        
+                    //}
+                    
+                        NavigationLink(destination: HomeScreenView()){
+                            Text("Home")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .font(.title3)
                 }
-                HStack{
-                    Spacer()
-                    Text("Also Played...")
-                    Spacer()
-                }
+                .padding()
+                
                 
             }
-            .font(.title)
-                NavigationLink(destination: HomeScreenView()){
-                    Text("Home")
-                }
-                .buttonStyle(.borderedProminent)
-                .font(.title3)
-            
         }
         .navigationBarBackButtonHidden(true)
+        .font(.title)
         .onAppear{
             game.socket.emit("finish")
             if game.phase == 0 {
@@ -124,7 +148,7 @@ struct FinishGameView: View {
             formatter.timeZone = TimeZone(secondsFromGMT: -18000)
             gameData.title = formatter.string(from: date)*/
             //gameData.date = date
-            if game.round > 0{
+            if game.round > 1{
                 for player in game.players {
                     if player.name == playerName {
                         gameData.score = player.score
@@ -150,11 +174,11 @@ struct FinishGameView: View {
                 
                 var points = gameData.made
                 if gameData.place == 1{
-                    points = points * 10
+                    points = points + 10
                 }
                 
                 db.changePts(pts: points)
-            }
+           }
         }
     }
 }

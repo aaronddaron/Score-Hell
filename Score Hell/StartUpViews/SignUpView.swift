@@ -40,7 +40,6 @@ struct SignUpView: View {
                         VStack{
                             TextField("Display Name", text: $playerName)
                                 .padding(.horizontal)
-                            Divider()
                                 .padding()
                             Toggle("\(message)", isOn: $leaderFirst)
                                 .padding()
@@ -71,18 +70,17 @@ struct SignUpView: View {
                     }
                     Button("Finish") {
                         
-                        if let currentUser = Auth.auth().currentUser?.createProfileChangeRequest() {
+                        /*if let currentUser = Auth.auth().currentUser?.createProfileChangeRequest() {
                             currentUser.displayName = playerName
                             currentUser.commitChanges(completion: {error in
                                 if let error = error {
                                     print(error)
                                 }
-                            })
-                            db.setTheme(playerTheme: playerTheme)
-                            db.setLeaderFirst(leaderFirst: leaderFirst)
+                            })*/
+                        db.setPlayer(playerName: playerName, playerTheme: playerTheme, leaderFirst: leaderFirst)
 
-                            signedUp = true
-                        }
+                        signedUp = true
+                       // }
                         
                     }
                     .buttonStyle(.borderedProminent)

@@ -138,7 +138,7 @@ struct PlayView: View {
                     }
                     
                     if !leaderFirst && nextRound{
-                        userPosition = game.order(leader: 1, host: playerName)
+                        userPosition = game.order(leader: game.numPlayers-1, host: playerName)
                         nextRound = false
                     }
                     
@@ -168,9 +168,14 @@ struct PlayView: View {
                 nextRound = true
                 date = Date.now
                 let formatter = DateFormatter()
-                formatter.dateFormat = "YYYY-MM-dd-HH"
+                formatter.dateFormat = "YYYY-MM-dd-HH-mm"
                 formatter.timeZone = TimeZone(secondsFromGMT: -18000)
-                
+                if !leaderFirst {
+                    deal = 0
+                    lead = 1
+                } else {
+                    deal = game.numPlayers-1
+                }
                 //var gameData = GameData(title: "", place: 0, score: 0, made: 0, finished: false, round: 0)
                 stringDate = formatter.string(from: date)
                 let db = Database()

@@ -62,7 +62,7 @@ struct GameFooterView: View {
                         }
                         
                         let formatter = DateFormatter()
-                        formatter.dateFormat = "YYYY-MM-dd-HH"
+                        formatter.dateFormat = "YYYY-MM-dd-HH-mm"
                         formatter.timeZone = TimeZone(secondsFromGMT: -18000)
                         
                         stringDate = formatter.string(from: date)

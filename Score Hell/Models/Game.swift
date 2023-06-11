@@ -62,7 +62,7 @@ struct Game {
         var position = self.order(leader: leader, host: host)
         self.socket.emit("start", leader)
         if !leaderFirst{
-            position = self.order(leader: 1, host: host)
+            position = self.order(leader: self.numPlayers-1, host: host)
         }
         return position
     }
@@ -147,7 +147,7 @@ struct Game {
             self.trickTotal = 0
             self.ohellNum = self.numCards
            
-            position = self.order(leader: 1, host: host)
+            position = self.order(leader: self.numPlayers-1, host: host)
         }
         self.calcWinner()
         return position

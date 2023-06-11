@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class Database {
     
-    func setTheme(playerTheme: String) {
+    func setPlayer(playerName: String, playerTheme: String, leaderFirst: Bool) {
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser
         
@@ -19,7 +19,25 @@ class Database {
             let id = user.uid
             
             if !id.isEmpty {
-                db.collection("Users").document(id).setData(["theme": playerTheme])
+                db.collection("Users").document(id).setData([
+                    "name": playerName,
+                    "leaderFirst": leaderFirst,
+                    "theme": playerTheme,
+                    "pts": 0
+                ])
+            }
+        }
+    }
+    
+    func changeName(playerName: String) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+        
+        if let user = user{
+            let id = user.uid
+            
+            if !id.isEmpty {
+                db.collection("Users").document(id).updateData(["name": playerName])
             }
         }
     }
@@ -46,19 +64,6 @@ class Database {
             
             if !id.isEmpty {
                 db.collection("Users").document(id).updateData(["pts": FieldValue.increment(Int64(pts))])
-            }
-        }
-    }
-    
-    func setLeaderFirst(leaderFirst: Bool) {
-        let db = Firestore.firestore()
-        let user = Auth.auth().currentUser
-        
-        if let user = user{
-            let id = user.uid
-            
-            if !id.isEmpty {
-                db.collection("Users").document(id).setData(["leaderFirst": leaderFirst])
             }
         }
     }
@@ -133,35 +138,6 @@ class Database {
                 ])
             }
         }
-    }
-    
-    func getTheme() -> String{
-        let db = Firestore.firestore()
-        let user = Auth.auth().currentUser
-        var id = ""
-        var theme = "changePls"
-        if let user = user{
-            id = user.uid
-        }
-            let docRef = db.collection("Users").document(id)
-
-            docRef.getDocument { (document, error) in
-                guard error == nil else {
-                    theme = error?.localizedDescription as? String ?? "dshfhfh"
-                    return
-                }
-                theme = "this"
-                if let document = document, document.exists {
-                    theme = "this"
-                    let data = document.data()
-                    if let data = data {
-                        print("data", data)
-                        theme = "this"//data["Theme"] as? String ?? ""
-                    }
-                }
-
-            }
-        return theme
     }
     
 }
