@@ -14,6 +14,7 @@ struct WatchPlayerView: View {
     @Binding var game: Game
     @Binding var showingStats: Bool
     var leaderFirst: Bool
+    //@State private var opaque = 1.0
     
     @State private var lead = 0
     @State var deal: Int
@@ -32,7 +33,14 @@ struct WatchPlayerView: View {
                     }
                     
                     Text("\(player.name)")
-                    Text("\(player.bid)")
+                        //.background(Color(Theme(name: player.theme).secondary))
+                        //.foregroundColor(Color("white"))
+                    if player.bid < 0 {
+                        Text("-")
+                    } else {
+                        Text("\(player.bid)")
+                        
+                    }
                     Spacer()
                     
                     if player.winner == true {
@@ -46,6 +54,7 @@ struct WatchPlayerView: View {
                 }
             }
             .font(.title)
+            //.opacity(opaque)
         }
         .onAppear{
             //deal = game.numPlayers-1
@@ -59,7 +68,9 @@ struct WatchPlayerView: View {
                 let name = data[0] as! String
                 if name == player.name {
                     player.bid = data[1] as! Int
+                    //opaque = 1.0
                 }
+                
             }
             game.socket.on("trick") { data, ack -> Void in
                 let name = data[0] as! String
@@ -73,6 +84,11 @@ struct WatchPlayerView: View {
                     deal = 0
                     lead = 1
                 }
+                //opaque = 0.5
+            }
+            
+            game.socket.on("nextRound") { data, ack -> Void in
+                //opaque = 0.5
             }
         }
     }

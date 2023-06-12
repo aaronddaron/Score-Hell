@@ -61,9 +61,6 @@ struct Game {
         let leader = Int.random(in: 0...self.players.count-1)
         var position = self.order(leader: leader, host: host)
         self.socket.emit("start", leader)
-        if !leaderFirst{
-            position = self.order(leader: self.numPlayers-1, host: host)
-        }
         return position
     }
     
@@ -131,8 +128,8 @@ struct Game {
         var position = 0
         for number in 0...self.numPlayers-1{
             self.players[number].updateScore()
-            self.players[number].bid = 0
-            self.players[number].newBid = 0
+            self.players[number].bid = -1
+            //self.players[number].newBid = 0
             self.players[number].tricksTaken = 0
             self.players[number].newTricksTaken = 0
            
@@ -147,7 +144,11 @@ struct Game {
             self.trickTotal = 0
             self.ohellNum = self.numCards
            
-            position = self.order(leader: self.numPlayers-1, host: host)
+            position = self.order(leader: 1, host: host)
+            
+            /*if !leaderFirst {
+                position = self.order(leader: self.numPlayers-1, host: host)
+            }*/
         }
         self.calcWinner()
         return position
@@ -163,7 +164,7 @@ extension Game {
         var tricksTaken: Int
         var theme: String
         var winner: Bool
-        var newBid: Int
+        //var newBid: Int
         var newTricksTaken: Int
         var streak: Int
         var bidsMade: Int
@@ -175,8 +176,8 @@ extension Game {
             self.id = id
             self.name = name
             self.score = 0
-            self.bid = 0
-            self.newBid = 0
+            self.bid = -1
+            //self.newBid = -1
             self.newTricksTaken = 0
             self.tricksTaken = 0
             self.theme = theme

@@ -25,6 +25,7 @@ struct FinishGameView: View {
                 .ignoresSafeArea()
                 VStack{
                     //List{
+                    Spacer()
                         HStack{
                             Spacer()
                             Text("Congrats!")
@@ -68,8 +69,6 @@ struct FinishGameView: View {
                             }
                         }
                         .cornerRadius(10)
-                        
-                        
                         
                         
                         VStack{
@@ -117,37 +116,33 @@ struct FinishGameView: View {
                     
                         HStack{
                             Spacer()
-                            Text("Also Played...")
+                            Text("...Also Played")
                             Spacer()
                         }
                         .font(.title)
                         
                     //}
-                    
+                        Spacer()
                         NavigationLink(destination: HomeScreenView()){
                             Text("Home")
                         }
                         .buttonStyle(.borderedProminent)
                         .font(.title3)
+                        .tint(Color("poppy"))
+                    
                 }
                 .padding()
                 
                 
             }
+            .font(.title)
+            .foregroundColor(.white)
         }
         .navigationBarBackButtonHidden(true)
-        .font(.title)
+        
         .onAppear{
             game.socket.emit("finish")
-            if game.phase == 0 {
-                game.round -= 1
-            }
             
-            /*let formatter = DateFormatter()
-            formatter.dateFormat = "YYYY-MM-dd-HH"
-            formatter.timeZone = TimeZone(secondsFromGMT: -18000)
-            gameData.title = formatter.string(from: date)*/
-            //gameData.date = date
             if game.round > 1{
                 for player in game.players {
                     if player.name == playerName {

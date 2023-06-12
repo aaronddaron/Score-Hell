@@ -56,6 +56,8 @@ struct PlayView: View {
                             }
                             StatsDropDownView(showingStats: $showingStats)
                         }
+                        .scrollContentBackground(.hidden)
+                        .background(.black)
                     }
                 }
                 ZStack{
@@ -93,6 +95,7 @@ struct PlayView: View {
                 })
                 .navigationBarBackButtonHidden()
             }
+            .background(.black)
         }
         .onAppear{
             deal = game.numPlayers-1
@@ -132,7 +135,7 @@ struct PlayView: View {
                     
                     if nextRound {
                         for num in 0...game.numPlayers-1 {
-                            game.players[num].bid = 0
+                            game.players[num].bid = -1
                             game.players[num].tricksTaken = 0
                         }
                     }

@@ -19,6 +19,7 @@ struct HomeScreenView: View {
     @State private var signedOut = false
     @State private var join = false
     @State private var start = false
+    @FocusState private var showStart: Bool
     @State private var showingProfile = false
     @State var leaderFirst = true
     @State var playerPts = 0
@@ -74,35 +75,45 @@ struct HomeScreenView: View {
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     
-                    Button("Join Game") {
-                        game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
-                    }
-                    .tint(Color("orange"))
-                    
+                    VStack{
+                        Divider()
+                        Text("")
+                        HStack{
+                                
+                            TextField("Room Code:", text: $roomCode)
+                                .submitLabel(.join)
+                                //.focused($showStart)
+                                .padding(.horizontal)
                             
-                    Button("Start Game"){
-                        game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
+                        }
+                        Divider()
                     }
-                        .tint(Color("poppy"))
+                    .padding(.horizontal)
+                    .background(Color("buttercup"))
+                    .onSubmit {
+                        if roomCode.count == 4 {
+                            game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
+                        }
+                    }
                     
-                    TextField("Room Code:", text: $roomCode)
-                        .padding(.horizontal, 100)
-                    Divider()
-                        .padding(.horizontal, 100)
-                    
+                    .textFieldStyle(.roundedBorder)
                         
                 }
+                .onTapGesture {
+                    let resign = #selector(UIResponder.resignFirstResponder)
+                            UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
+                    //roomCode = ""
+                }
                 .buttonStyle(.borderedProminent)
-                .controlSize(.large)
                 .font(.headline)
-                .padding(.bottom, 60)
+                //.padding(.bottom, 60)
                 .foregroundColor(.black)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading){
                         Button(action: {
                             showingProfile = true
                         }) {
-                            Image(systemName: "person.crop.circle.fill")
+                            Image(systemName: "gear")
                                 .foregroundColor(Color("buttercup"))
 
                         }
@@ -124,6 +135,46 @@ struct HomeScreenView: View {
                             .foregroundColor(Color("buttercup"))
                         }
                     }
+                    ToolbarItemGroup(placement: .bottomBar){
+                
+                        Spacer()
+                        Button(action: {
+                        
+                        }) {
+                            Image(systemName: "house.fill")
+                        }
+                        .tint(Color("orange"))
+                        
+                        Spacer()
+                        Button(action: {
+                            if roomCode.isEmpty {
+                                game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
+                            }
+                        }) {
+                            Image(systemName: "arrowtriangle.forward.fill")
+                        }
+                        .tint(Color("orange"))
+                        
+                        Spacer()
+                        Button(action: {
+                        
+                        }) {
+                            Image(systemName: "chart.bar.doc.horizontal.fill")
+                        }
+                        .tint(Color("orange"))
+                        
+                        
+                        Spacer()
+                        Button(action: {
+                        
+                        }) {
+                            Image(systemName: "crown.fill")
+                        }
+                        .tint(Color("orange"))
+                        
+                        Spacer()
+                    }
+                    
                     
                 }
             }

@@ -27,6 +27,7 @@ struct HostView: View {
         NavigationStack{
             VStack {
                 ZStack{
+                    
                     LinearGradient(
                         colors: [Color(playerTheme), Color(Theme(name: playerTheme).secondary)],
                         startPoint: .topLeading,
@@ -48,6 +49,8 @@ struct HostView: View {
                             }
                             StatsDropDownView(showingStats: $showingStats)
                         }
+                        .scrollContentBackground(.hidden)
+                        .background(.black)
                     }
                 }
                 ZStack{
@@ -58,7 +61,7 @@ struct HostView: View {
                         endPoint: .bottomTrailing
                     )
                     .ignoresSafeArea()
-                    .frame(maxHeight: 150)
+                    .frame(maxHeight: 180)
                     
                     VStack{
                         StepperPlayView(game: $game, i: $userPosition, deal: deal)
@@ -67,6 +70,7 @@ struct HostView: View {
                     }
                 }
             }
+            .background(.black)
             .navigationBarBackButtonHidden(true)
         }
         .onAppear{

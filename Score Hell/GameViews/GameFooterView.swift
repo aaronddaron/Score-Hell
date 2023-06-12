@@ -52,6 +52,13 @@ struct GameFooterView: View {
                         date = Date.now
                         game.started = true
                         deal = game.numPlayers-1
+                        if !leaderFirst {
+                            deal = 0
+                            lead = 1
+                            
+                            userPosition = game.order(leader: game.numPlayers-1, host: playerName)
+                            
+                        }
                         
                         if playerName == game.players[lead].name {
                             showingAlert = true
@@ -84,6 +91,8 @@ struct GameFooterView: View {
                 } else if game.phase == 1{
                     Button(action: {
                         let lastPosition = userPosition
+                        let t = game.players[lastPosition].tricksTaken
+                        let b = game.players[lastPosition].bid
                         userPosition = game.updateGame(host: playerName, leaderFirst: leaderFirst)
                         
                         var role = ""
@@ -95,9 +104,6 @@ struct GameFooterView: View {
                         } else {
                             role = "none"
                         }
-                        
-                        let t = game.players[lastPosition].tricksTaken
-                        let b = game.players[lastPosition].bid
                         
                         if t == b {
                             result = "made"
@@ -129,6 +135,7 @@ struct GameFooterView: View {
                 }
             }
         }
+
         .onAppear{
             //deal = game.numPlayers-1
             if !leaderFirst {

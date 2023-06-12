@@ -13,61 +13,88 @@ struct StepperPlayView: View {
     let deal: Int
     
     var body: some View {
-        HStack{
-            if game.phase == 0 && game.started{
-                Stepper{Text("Bid: \(game.players[i].bid)")} onIncrement: {
-                    game.players[i].bid += 1
-                    if game.players[i].bid > game.numCards {
-                        game.players[i].bid = 0
-                        game.bidTotal -= game.numCards
-                    } else {
-                        game.bidTotal += 1
+        VStack(alignment: .leading){
+            HStack{
+                //Bid: \(game.players[i].bid)
+                if game.phase == 0 /*&& game.started*/{
+                    HStack{
+                        Stepper{Text("")} onIncrement: {
+                            if game.players[i].bid == -1{
+                                game.players[i].bid += 1
+                            } else {
+                                
+                                game.players[i].bid += 1
+                                if game.players[i].bid > game.numCards {
+                                    game.players[i].bid = 0
+                                    game.bidTotal -= game.numCards
+                                } else {
+                                    
+                                    game.bidTotal += 1
+                                }
+                                
+                                if game.players[i].name != game.players[deal].name {
+                                    game.calcOhellNum()
+                                }
+                            }
+                            //game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
+                            
+                        } onDecrement: {
+                            game.players[i].bid -= 1
+                            if game.players[i].bid  < 0 {
+                                game.players[i].bid = game.numCards
+                                game.bidTotal += game.numCards
+                            } else {
+                                game.bidTotal -= 1
+                            }
+                            
+                            if game.players[i].name != game.players[deal].name {
+                                game.calcOhellNum()
+                            }
+                            //game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if game.players[i].bid == -1 {
+                                game.players[i].bid+=1
+                            }
+                            game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
+                        }) {
+                            Image(systemName: "arrow.up.circle")
+                        }
                     }
-                    
-                    if game.players[i].name != game.players[deal].name {
-                        game.calcOhellNum()
-                    }
-                    game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
-                    
-                } onDecrement: {
-                    game.players[i].bid -= 1
-                    if game.players[i].bid  < 0 {
-                        game.players[i].bid = game.numCards
-                        game.bidTotal += game.numCards
-                    } else {
-                        game.bidTotal -= 1
-                    }
-                    
-                    if game.players[i].name != game.players[deal].name {
-                        game.calcOhellNum()
-                    }
-                    game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
                 }
-            }
-            else if game.phase == 1 {
-                Stepper{Text("Trick: \(game.players[i].tricksTaken), Total: \(game.trickTotal)")} onIncrement: {
-                    
-                    game.players[i].tricksTaken += 1
-                    
-                    if game.players[i].tricksTaken > game.numCards {
-                        game.players[i].tricksTaken = 0
-                        game.trickTotal -= game.numCards
-                    } else {
-                        game.trickTotal += 1
+                else if game.phase == 1 {
+                    HStack{
+                        Stepper{Text("Trick: \(game.players[i].tricksTaken), Total: \(game.trickTotal)")} onIncrement: {
+                            
+                            game.players[i].tricksTaken += 1
+                            
+                            if game.players[i].tricksTaken > game.numCards {
+                                game.players[i].tricksTaken = 0
+                                game.trickTotal -= game.numCards
+                            } else {
+                                game.trickTotal += 1
+                            }
+                        game.socket.emit("trick", game.players[i].name, game.players[i].tricksTaken, game.trickTotal)
+                            
+                        } onDecrement: {
+                            
+                            game.players[i].tricksTaken -= 1
+                            
+                            if game.players[i].tricksTaken  < 0 {
+                                game.players[i].tricksTaken = game.numCards
+                                game.trickTotal += game.numCards
+                            } else {
+                                game.trickTotal -= 1
+                            }
+                            game.socket.emit("trick", game.players[i].name, game.players[i].tricksTaken, game.trickTotal)
+                        }
+                        /*Button(action: {
+                            game.socket.emit("trick", game.players[i].name, game.players[i].tricksTaken, game.trickTotal)
+                        }) {
+                            Image(systemName: "arrow.up.circle")
+                        }*/
                     }
-                    game.socket.emit("trick", game.players[i].name, game.players[i].tricksTaken, game.trickTotal)
-                    
-                } onDecrement: {
-                    
-                    game.players[i].tricksTaken -= 1
-                    
-                    if game.players[i].tricksTaken  < 0 {
-                        game.players[i].tricksTaken = game.numCards
-                        game.trickTotal += game.numCards
-                    } else {
-                        game.trickTotal -= 1
-                    }
-                    game.socket.emit("trick", game.players[i].name, game.players[i].tricksTaken, game.trickTotal)
                 }
             }
         }
