@@ -140,4 +140,18 @@ class Database {
         }
     }
     
+    func deleteGame(title: String) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+            
+        if let user = user{
+            let id = user.uid
+                
+            if !id.isEmpty {
+                db.collection("Users").document(id).collection("Games").document(title).delete()
+            }
+        }
+
+    }
+    
 }

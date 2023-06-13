@@ -85,7 +85,9 @@ struct HostView: View {
                 let name = data[0] as! String
                 let theme = data[1] as! String
                 
-                game.players.append(Game.Player(name: name, theme: theme))
+                withAnimation{
+                    game.players.append(Game.Player(name: name, theme: theme))
+                }
                 game.numPlayers+=1
                 
             }

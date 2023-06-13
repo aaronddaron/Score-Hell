@@ -9,13 +9,11 @@ import SwiftUI
 import Firebase
 
 struct ProfileView: View {
-    @Binding var playerTheme: String
-    @Binding var playerName: String
-    @Binding var leaderFirst: Bool
+    @EnvironmentObject var user: User
     @Binding var newTheme: String
     @Binding var newName: String
     @Binding var newLeaderFirst: Bool
-    @State private var message = "Leader shown first"
+    //@State private var message = "Leader shown first"
     @State private var db = Database()
     
     var body: some View {
@@ -33,19 +31,12 @@ struct ProfileView: View {
                                 .padding(.horizontal)
                             Divider()
                                 .padding(.horizontal)
-                            Toggle("\(message)", isOn: $newLeaderFirst)
+                            Toggle("", isOn: $newLeaderFirst)
                                 .padding()
                                 .tint(Color(Theme(name: newTheme).secondary))
-                                .onChange(of: newLeaderFirst) {newValue in
-                                    /*if newLeaderFirst == true {
-                                        message = "Leader shown first"
-                                    } else {
-                                        message = "Dealer shown first"
-                                    }*/
-                                }
                         
                             Text("Color")
-                            Picker("", selection: $newTheme) {
+                            Picker("Leader shown first", selection: $newTheme) {
                                 ForEach(Theme.colors, id: \.self) { color in
                                     ColorView(color: color)
                                 }
@@ -59,14 +50,10 @@ struct ProfileView: View {
             }.foregroundColor(.black)
         }
         .onAppear{
-            newLeaderFirst = leaderFirst
-            newTheme = playerTheme
+            newLeaderFirst = user.leaderFirst
+            newTheme = user.theme
+            newName = user.name
             
-            if newLeaderFirst == true {
-                message = "Leader shown first"
-            } else {
-                message = "Dealer shown first"
-            }
         }
         
     }
@@ -74,6 +61,8 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(playerTheme: .constant("tan"), playerName:  .constant("Aaron"), leaderFirst: .constant(true), newTheme: .constant(""), newName: .constant(""), newLeaderFirst: .constant(true))
+        ProfileView(newTheme: .constant(""), newName: .constant(""), newLeaderFirst: .constant(true))
+            .environmentObject(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0))
+        
     }
 }

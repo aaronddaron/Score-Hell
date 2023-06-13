@@ -59,7 +59,7 @@ struct Game {
     
     mutating func setLeader(host: String, leaderFirst: Bool) -> Int{
         let leader = Int.random(in: 0...self.players.count-1)
-        var position = self.order(leader: leader, host: host)
+        let position = self.order(leader: leader, host: host)
         self.socket.emit("start", leader)
         return position
     }

@@ -11,29 +11,28 @@ import FirebaseFirestore
 
 struct HomeScreenView: View {
     @State private var game = Game(players: [])
-    @State private var games: [GameData] = []
-    @State private var playerName = ""
-    @State private var playerTheme = ""
     @State private var roomCode = ""
     @State private var userPosition = 0
     @State private var signedOut = false
     @State private var join = false
     @State private var start = false
-    @FocusState private var showStart: Bool
+    @FocusState private var hideStart: Bool
     @State private var showingProfile = false
     @State var leaderFirst = true
-    @State var playerPts = 0
-    @State var newTheme = ""
-    @State var newName = ""
-    @State var newLeaderFirst = true
+    @State private var selectedTab = "one"
+    @State private var bidsImage = "chart.bar.doc.horizontal"
+    @State private var leaderImage = "crown"
+    @State private var gamesImage = "house.fill"
+    @State var account = User(name: "", theme: "", leaderFirst: true, pts: 0)
     
     var body: some View {
         if signedOut {
             LoginView()
         } else if join {
-            PlayView(game: $game, playerName: playerName, playerTheme: playerTheme, roomCode: roomCode, userPosition: userPosition, leaderFirst: leaderFirst)
+            PlayView(game: $game, playerName: account.name, playerTheme: account.theme, roomCode: roomCode, userPosition: userPosition, leaderFirst: account.leaderFirst)
         } else if start {
-            HostView(game: $game, playerName: playerName, playerTheme: playerTheme, leaderFirst: leaderFirst, roomCode: roomCode)
+            HostView(game: $game, playerName: account.name, playerTheme: account.theme, leaderFirst: account.leaderFirst, roomCode: roomCode)
+            
         } else {
             homeScreen
         }
@@ -49,229 +48,104 @@ struct HomeScreenView: View {
                 )
                 .ignoresSafeArea()
                 VStack{
-                    Text("Score Hell")
-                    .font(.largeTitle)
-                    .foregroundColor(Color("buttercup"))
-                    Text("\(playerName) - \(playerPts)")
-                    Text(playerTheme)
-                    //Text(playerPts)
                     Spacer()
                 
-                    TabView{
-                        if !games.isEmpty{
-                            ScrollView(.vertical, showsIndicators: false){
-                                ForEach(games){game in
-                                    VStack {
-                                        ListGameView(game: game, playerTheme: playerTheme)
-                                            .cornerRadius(10)
-                                    }
-                                    .padding(.horizontal)
-                                    
-                                }
-                            }
-                        } else { Text("No games played yet")}
-                        BidsView()
-                        LeaderBoardView()
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                    
-                    VStack{
-                        Divider()
-                        Text("")
-                        HStack{
-                                
-                            TextField("Room Code:", text: $roomCode)
-                                .submitLabel(.join)
-                                //.focused($showStart)
-                                .padding(.horizontal)
+                    ZStack{
+                        VStack{
+                            Spacer()
+                            Rectangle()
+                                 .fill(Color("buttercup"))
+                                 .ignoresSafeArea()
+                                 .frame(maxHeight: 0.1)
+                        }
+                        TabView(selection: $selectedTab){
                             
-                        }
-                        Divider()
-                    }
-                    .padding(.horizontal)
-                    .background(Color("buttercup"))
-                    .onSubmit {
-                        if roomCode.count == 4 {
-                            game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
-                        }
-                    }
-                    
-                    .textFieldStyle(.roundedBorder)
-                        
-                }
-                .onTapGesture {
-                    let resign = #selector(UIResponder.resignFirstResponder)
-                            UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
-                    //roomCode = ""
-                }
-                .buttonStyle(.borderedProminent)
-                .font(.headline)
-                //.padding(.bottom, 60)
-                .foregroundColor(.black)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading){
-                        Button(action: {
-                            showingProfile = true
-                        }) {
-                            Image(systemName: "gear")
-                                .foregroundColor(Color("buttercup"))
+                            GamesView(game: $game, signedOut: $signedOut, user: $account)
+                            .tag("One")
 
+                            BidsView()
+                            .tag("Two")
+                           
+                            LeaderBoardView()
+                                .tag("Three")
                         }
-                    }
-                
-                    ToolbarItem(placement: .navigationBarTrailing){
-                        Button(action: {
-                            do {
-                                try Auth.auth().signOut()
-                            } catch let signOutError as NSError {
-                              print("Error signing out: %@", signOutError)
-                            }
-                            
-                            if Auth.auth().currentUser == nil {
-                                signedOut = true
-                            }
-                        }) {
-                            Text("Sign Out")
-                            .foregroundColor(Color("buttercup"))
-                        }
-                    }
-                    ToolbarItemGroup(placement: .bottomBar){
-                
-                        Spacer()
-                        Button(action: {
-                        
-                        }) {
-                            Image(systemName: "house.fill")
-                        }
-                        .tint(Color("orange"))
-                        
-                        Spacer()
-                        Button(action: {
-                            if roomCode.isEmpty {
-                                game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme])
-                            }
-                        }) {
-                            Image(systemName: "arrowtriangle.forward.fill")
-                        }
-                        .tint(Color("orange"))
-                        
-                        Spacer()
-                        Button(action: {
-                        
-                        }) {
-                            Image(systemName: "chart.bar.doc.horizontal.fill")
-                        }
-                        .tint(Color("orange"))
-                        
-                        
-                        Spacer()
-                        Button(action: {
-                        
-                        }) {
-                            Image(systemName: "crown.fill")
-                        }
-                        .tint(Color("orange"))
-                        
-                        Spacer()
-                    }
-                    
-                    
-                }
-            }
-            .sheet(isPresented: $showingProfile) {
-                NavigationStack{
-                    ProfileView(playerTheme: $playerTheme, playerName: $playerName, leaderFirst: $leaderFirst, newTheme: $newTheme, newName: $newName, newLeaderFirst: $newLeaderFirst)
-                    .toolbar{
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Save") {
-                                showingProfile = false
-                               
-                                let db = Database()
-                                if !newTheme.isEmpty && newTheme != playerTheme{
-                                    db.changeTheme(playerTheme: newTheme)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        .onChange(of: selectedTab) {newValue in
+                            if selectedTab == "One"{
+                                withAnimation{
+                                    bidsImage = "chart.bar.doc.horizontal"
+                                    leaderImage = "crown"
+                                    gamesImage = "house.fill"
                                 }
-                                if newLeaderFirst != leaderFirst{
-                                    db.changeLeaderFirst(leaderFirst: newLeaderFirst)
                                 
+                            } else if selectedTab == "Two" {
+                                withAnimation{
+                                    bidsImage = "chart.bar.doc.horizontal.fill"
+                                    leaderImage = "crown"
+                                    gamesImage = "house"
                                 }
-                                if !newName.isEmpty && newName != playerName{
-                                    db.changeName(playerName: newName)
+                                
+                            } else {
+                                withAnimation{
+                                    bidsImage = "chart.bar.doc.horizontal"
+                                    leaderImage = "crown.fill"
+                                    gamesImage = "house"
                                 }
                             }
-                            .tint(Color(newTheme))
-                            .buttonStyle(.borderedProminent)
-                            .foregroundColor(.black)
+                            let resign = #selector(UIResponder.resignFirstResponder)
+                            UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
                         }
+                        .foregroundColor(.black)
                         
-                        ToolbarItem(placement: .principal) {
-                            Text("Preferences")
-                                .font(.title)
-                        }
-                        
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                showingProfile = false
-                                    
-                            }
-                            .tint(.black)
-                        }
+                    
                     }
+                
                 }
+                .font(.headline)
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar){
+                        
+                        Spacer()
+                        Button(action: {
+                            withAnimation{
+                                selectedTab = "One"
+                            }
+                        }) {
+                            Image(systemName: gamesImage)
+                        }
+                        .tint(Color("orange"))
+                        
+                        Spacer()
+                        Button(action: {
+                            withAnimation{
+                                selectedTab = "Two"
+                            }
+                        }) {
+                            Image(systemName: bidsImage)
+                        }
+                        .tint(Color("orange"))
+                        
+                        
+                        Spacer()
+                        Button(action: {
+                            withAnimation{
+                                selectedTab = "Three"
+                            }
+                        }) {
+                            Image(systemName: leaderImage)
+                        }
+                        .tint(Color("orange"))
+                        
+                        Spacer()
+                    }
+                    
+                    
+                }
+                
             }
             
         }
         .onAppear{
-            let user = Auth.auth().currentUser
-            let db = Firestore.firestore()
-            var id = ""
-            // timestamp = NSDate().timeIntervalSince1970
-            //let myTimeInterval = TimeInterval(timestamp)
-            //time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
-
-            if let user = user{
-                //playerName = user.displayName ?? ""
-                id = user.uid
-            }
-            //playerTheme = db.getTheme()
-            if !id.isEmpty {
-                db.collection("Users").document(id)
-                    .addSnapshotListener { documentSnapshot, error in
-                      guard let document = documentSnapshot else {
-                        print("Error fetching document: \(error!)")
-                        return
-                      }
-                      guard let data = document.data() else {
-                        print("Document data was empty.")
-                        return
-                      }
-                      print("Current data: \(data)")
-                        playerTheme = data["theme"] as? String ?? ""
-                    leaderFirst = data["leaderFirst"] as? Bool ?? true
-                    playerName = data["name"] as? String ?? ""
-                        playerPts = data["pts"] as? Int ?? 0
-                    }
-                
-                
-                
-                db.collection("Users").document(id).collection("Games").order(by: "date", descending: true).limit(to: 5)
-                    .addSnapshotListener { collectionSnapshot, error in
-                      guard let collection = collectionSnapshot?.documents else {
-                        print("Error fetching collection: \(error!)")
-                        return
-                      }
-                        for doc in collection {
-                            let field = doc.data()
-                            let date = field["date"] as? String ?? ""
-                            let place = field["place"] as? Int ?? 0
-                            let score = field["score"] as? Int ?? 0
-                            let made = field["bids_made"] as? Int ?? 0
-                            let round = field["round"] as? Int ?? 0
-                            let finished = field["finished"] as? Bool ?? false
-                            games.append(GameData(date: date, place: place, score: score, made: made, finished: finished, round: round))
-                        }
-                    }
-                //let ref = db.collection("Users/").getDocuments()
-            }
             
             game.socket.on("players") { data, ack -> Void in
                     let names = data[0] as! [String]
@@ -284,7 +158,7 @@ struct HomeScreenView: View {
                         game.players.append(Game.Player(name: names[num], theme: themes[num]))
                         
                         //game.numPlayers+=1
-                        if playerName == game.players[num].name {
+                        if account.name == game.players[num].name {
                             userPosition = num
                         }
                 
@@ -303,8 +177,10 @@ struct HomeScreenView: View {
                     }
                 }
                 if !start {
-                    join = true
-                }
+                    withAnimation{
+                        join = true
+                    }
+            }
                     
             }
             
@@ -326,9 +202,11 @@ struct HomeScreenView: View {
             
             game.socket.on("code") { data, ack -> Void in
                 roomCode = data[0] as! String
-                game.players.append(Game.Player(name: playerName, theme: playerTheme))
+                game.players.append(Game.Player(name: account.name, theme: account.theme))
                 game.numPlayers+=1
-                start = true
+                withAnimation{
+                    start = true
+                }
             }
 
         }

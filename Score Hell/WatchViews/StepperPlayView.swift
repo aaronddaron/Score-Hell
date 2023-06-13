@@ -11,16 +11,39 @@ struct StepperPlayView: View {
     @Binding var game: Game
     @Binding var i: Int
     let deal: Int
+    @State private var image = "arrow.up.circle"
     
     var body: some View {
         VStack(alignment: .leading){
             HStack{
                 //Bid: \(game.players[i].bid)
-                if game.phase == 0 /*&& game.started*/{
+                if game.phase == 0 && game.started{
                     HStack{
+                        Button(action: {
+                            if game.players[i].bid == -1 {
+                                game.players[i].bid+=1
+                            }
+                            withAnimation{
+                                image = "arrow.up.circle"
+                            }
+                            game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
+                        }) {
+                            
+                                Image(systemName: image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                            
+                        }
+                        .tint(Color("buttercup"))
+                        
                         Stepper{Text("")} onIncrement: {
+                            withAnimation{
+                                image = "arrow.up.circle.fill"
+                            }
                             if game.players[i].bid == -1{
                                 game.players[i].bid += 1
+
                             } else {
                                 
                                 game.players[i].bid += 1
@@ -39,6 +62,9 @@ struct StepperPlayView: View {
                             //game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
                             
                         } onDecrement: {
+                            withAnimation{
+                                image = "arrow.up.circle.fill"
+                            }
                             game.players[i].bid -= 1
                             if game.players[i].bid  < 0 {
                                 game.players[i].bid = game.numCards
@@ -52,21 +78,15 @@ struct StepperPlayView: View {
                             }
                             //game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
                         }
-                        Spacer()
-                        Button(action: {
-                            if game.players[i].bid == -1 {
-                                game.players[i].bid+=1
-                            }
-                            game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
-                        }) {
-                            Image(systemName: "arrow.up.circle")
-                        }
                     }
                 }
                 else if game.phase == 1 {
                     HStack{
                         Stepper{Text("Trick: \(game.players[i].tricksTaken), Total: \(game.trickTotal)")} onIncrement: {
                             
+                            if game.players[i].tricksTaken == 0 {
+                                image = "arrow.up.circle"
+                            }
                             game.players[i].tricksTaken += 1
                             
                             if game.players[i].tricksTaken > game.numCards {
@@ -78,6 +98,9 @@ struct StepperPlayView: View {
                         game.socket.emit("trick", game.players[i].name, game.players[i].tricksTaken, game.trickTotal)
                             
                         } onDecrement: {
+                            if game.players[i].tricksTaken == 1 {
+                                image = "arrow.up.circle"
+                            }
                             
                             game.players[i].tricksTaken -= 1
                             

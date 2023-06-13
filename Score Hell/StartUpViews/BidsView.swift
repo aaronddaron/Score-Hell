@@ -49,6 +49,7 @@ struct BidsView: View {
             }
             .font(.title2)
         }
+        
         .task{
             let user = Auth.auth().currentUser
             let db = Firestore.firestore()

@@ -10,7 +10,10 @@ import SwiftUI
 struct LeaderBoardView: View {
     var body: some View {
         Text("Leaderboard")
+        
+        
     }
+    
 }
 
 struct LeaderBoardView_Previews: PreviewProvider {

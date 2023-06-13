@@ -18,6 +18,7 @@ struct GameFooterView: View {
     @State private var alert = ""
     
     @State private var lead = 0
+    @State private var bids = 0
     @State private var date = Date.now
     @State private var title = ""
     @State private var stringDate = ""
@@ -69,12 +70,10 @@ struct GameFooterView: View {
                         }
                         
                         let formatter = DateFormatter()
-                        formatter.dateFormat = "YYYY-MM-dd-HH-mm"
+                        formatter.dateFormat = "YYYY/MM/dd-HH:mm"
                         formatter.timeZone = TimeZone(secondsFromGMT: -18000)
                         
                         stringDate = formatter.string(from: date)
-                        let db = Database()
-                        title = db.createGameData(date: stringDate)
                         
                     }) {
                         Text("Start Game")
@@ -87,7 +86,7 @@ struct GameFooterView: View {
                         Text("Play Round")
                         
                     }
-                    .disabled(game.bidTotal == game.numCards)
+                        .disabled(game.bidTotal == game.numCards)
                 } else if game.phase == 1{
                     Button(action: {
                         let lastPosition = userPosition
@@ -114,6 +113,11 @@ struct GameFooterView: View {
                         }
                         //setBid()
                         let db = Database()
+                        
+                        if game.round == 2{
+                            let db = Database()
+                            title = db.createGameData(date: stringDate)
+                        }
                         db.setBid(bid: b, round: game.round, trick: t, result: result, role: role, title: title)
 
                         
@@ -143,8 +147,8 @@ struct GameFooterView: View {
                 lead = 1
             }
             
-            /*game.socket.on("start") { data, ack -> Void in
-                deal = game.numPlayers-1
+            /*game.socket.on("bid") { data, ack -> Void in
+                bids += 1
             }*/
         }
         .buttonStyle(.borderedProminent)

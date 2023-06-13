@@ -144,6 +144,7 @@ struct FinishGameView: View {
             game.socket.emit("finish")
             
             if game.round > 1{
+                let db = Database()
                 for player in game.players {
                     if player.name == playerName {
                         gameData.score = player.score
@@ -164,7 +165,7 @@ struct FinishGameView: View {
                     gameData.finished = true
                 }
                 
-                let db = Database()
+                
                 db.setGameData(game: gameData, title: title)
                 
                 var points = gameData.made
@@ -173,7 +174,7 @@ struct FinishGameView: View {
                 }
                 
                 db.changePts(pts: points)
-           }
+            } 
         }
     }
 }

@@ -161,7 +161,9 @@ struct PlayView: View {
                 let name = data[0] as! String
                 let theme = data[1] as! String
                 
-                game.players.append(Game.Player(name: name, theme: theme))
+                withAnimation{
+                    game.players.append(Game.Player(name: name, theme: theme))
+                }
                 game.numPlayers+=1
                 
             }
@@ -171,7 +173,7 @@ struct PlayView: View {
                 nextRound = true
                 date = Date.now
                 let formatter = DateFormatter()
-                formatter.dateFormat = "YYYY-MM-dd-HH-mm"
+                formatter.dateFormat = "YYYY/MM/dd-HH:mm"
                 formatter.timeZone = TimeZone(secondsFromGMT: -18000)
                 if !leaderFirst {
                     deal = 0
@@ -181,12 +183,12 @@ struct PlayView: View {
                 }
                 //var gameData = GameData(title: "", place: 0, score: 0, made: 0, finished: false, round: 0)
                 stringDate = formatter.string(from: date)
-                let db = Database()
-                title = db.createGameData(date: stringDate)
             }
             
             game.socket.on("finish") { data, ack -> Void in
-                game.finished = true
+                withAnimation{
+                    game.finished = true
+                }
             }
             
             game.socket.on("bid") { data, ack -> Void in
@@ -230,6 +232,11 @@ struct PlayView: View {
                     result = "over"
                 } else {
                     result = "under"
+                }
+                
+                if game.round == 2{
+                    let db = Database()
+                    title = db.createGameData(date: stringDate)
                 }
                 //setBid()
                 let db = Database()
