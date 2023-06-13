@@ -38,6 +38,7 @@ struct BidsView: View {
                     ForEach (indeces, id: \.self) {index in
                         HStack{
                             if totals[index] == 1 {
+                                
                                 Text("\(index): \(avgs[index], specifier: "%.2f")% on \(totals[index], specifier: "%.0f") attempt")
                             } else {
                                 Text("\(index): \(avgs[index], specifier: "%.2f")% on \(totals[index], specifier: "%.0f") attempts")
@@ -72,7 +73,9 @@ struct BidsView: View {
                 do {
                     let snapshot = try await made.getAggregation(source: .server)
                     totalMade = snapshot.count as? Double ?? 0.0
-                    totalAvg = (totalMade / bidTotal) * 100
+                    if bidTotal > 0 {
+                        totalAvg = (totalMade / bidTotal) * 100
+                    }
                 } catch {
                     print(error)
                 }
@@ -90,7 +93,9 @@ struct BidsView: View {
                     do {
                         let snapshot = try await tempMade.getAggregation(source: .server)
                         let made = snapshot.count as? Double ?? 0.0
-                        avgs[num] = (made / totals[num]) * 100
+                        if totals[num] > 0 {
+                            avgs[num] = (made / totals[num]) * 100
+                        }
                     } catch {
                         print(error)
                     }
