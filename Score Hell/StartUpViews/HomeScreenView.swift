@@ -11,13 +11,14 @@ import FirebaseFirestore
 
 struct HomeScreenView: View {
     @State private var game = Game(players: [])
+    @State private var games: [GameData] = []
     @State private var roomCode = ""
     @State private var userPosition = 0
     @State private var signedOut = false
     @State private var join = false
     @State private var start = false
-    @FocusState private var hideStart: Bool
-    @State private var showingProfile = false
+    //@FocusState private var hideStart: Bool
+   // @State private var showingProfile = false
     @State var leaderFirst = true
     @State private var selectedTab = "one"
     @State private var bidsImage = "chart.bar.doc.horizontal"
@@ -60,7 +61,7 @@ struct HomeScreenView: View {
                         }
                         TabView(selection: $selectedTab){
                             
-                            GamesView(game: $game, signedOut: $signedOut, user: $account)
+                            GamesView(game: $game, signedOut: $signedOut, user: $account, games: games)
                             .tag("One")
 
                             BidsView()
@@ -92,8 +93,6 @@ struct HomeScreenView: View {
                                     gamesImage = "house"
                                 }
                             }
-                            let resign = #selector(UIResponder.resignFirstResponder)
-                            UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
                         }
                         .foregroundColor(.black)
                         
@@ -146,7 +145,51 @@ struct HomeScreenView: View {
             
         }
         .onAppear{
-            
+            let user = Auth.auth().currentUser
+            let db = Firestore.firestore()
+            var id = ""
+
+            if let user = user{
+                id = user.uid
+            }
+            if !id.isEmpty {
+                db.collection("Users").document(id)
+                    .addSnapshotListener { documentSnapshot, error in
+                      guard let document = documentSnapshot else {
+                        print("Error fetching document: \(error!)")
+                        return
+                      }
+                      guard let data = document.data() else {
+                        print("Document data was empty.")
+                        return
+                      }
+                      print("Current data: \(data)")
+                        account.theme = data["theme"] as? String ?? ""
+                        account.leaderFirst = data["leaderFirst"] as? Bool ?? true
+                        account.name = data["name"] as? String ?? ""
+                        account.pts = data["pts"] as? Int ?? 0
+                    }
+                
+                
+                
+                db.collection("Users").document(id).collection("Games").order(by: "date", descending: true)/*.limit(to: 10)*/
+                    .addSnapshotListener { collectionSnapshot, error in
+                      guard let collection = collectionSnapshot?.documents else {
+                        print("Error fetching collection: \(error!)")
+                        return
+                      }
+                        for doc in collection {
+                            let field = doc.data()
+                            let date = field["date"] as? String ?? ""
+                            let place = field["place"] as? Int ?? 0
+                            let score = field["score"] as? Int ?? 0
+                            let made = field["bids_made"] as? Int ?? 0
+                            let round = field["round"] as? Int ?? 0
+                            let finished = field["finished"] as? Bool ?? false
+                            games.append(GameData(date: date, place: place, score: score, made: made, finished: finished, round: round))
+                        }
+                    }
+            }
             game.socket.on("players") { data, ack -> Void in
                     let names = data[0] as! [String]
                     let themes = data[1] as! [String]

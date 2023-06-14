@@ -233,16 +233,16 @@ struct PlayView: View {
                 } else {
                     result = "under"
                 }
-                
+                game.round += 1
+
+                let db = Database()
                 if game.round == 2{
-                    let db = Database()
                     title = db.createGameData(date: stringDate)
                 }
                 //setBid()
-                let db = Database()
+                //let db = Database()
                 db.setBid(bid: b, round: game.round, trick: t, result: result, role: role, title: title)
                 
-                game.round += 1
                 nextRound = true
             }
             

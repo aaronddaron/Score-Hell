@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListGameView: View {
     var game: GameData
-    @Binding var playerTheme: String
+    let playerTheme: String
     //@State private var playerSecondary
     var body: some View {
         ZStack{
@@ -52,7 +52,6 @@ struct ListGameView: View {
 struct ListGameView_Previews: PreviewProvider {
     
     static var previews: some View {
-        //let timestamp = NSDate().timeIntervalSince1970
-        ListGameView(game: GameData(date: "timestamp", place: 1, score: 65, made: 7, finished: false, round: 12), playerTheme: .constant("lavender"))
+        ListGameView(game: GameData(date: "timestamp", place: 1, score: 65, made: 7, finished: false, round: 12), playerTheme: "lavender")
     }
 }

@@ -21,43 +21,79 @@ struct WatchPlayerView: View {
             
     var body: some View {
         ZStack{
-            VStack {
-                
-                HStack {
-                    if game.started{
-                        if player.name == game.players[deal].name {
-                            Image(systemName: "flame.circle")
-                        } else if player.name == game.players[lead].name {
-                            Image(systemName: "arrowtriangle.forward.fill")
+            if player.bid >= 0 || !game.started{
+                VStack {
+                    
+                    HStack {
+                        if game.started{
+                            if player.name == game.players[deal].name {
+                                Image(systemName: "flame.circle")
+                            } else if player.name == game.players[lead].name {
+                                Image(systemName: "arrowtriangle.forward.fill")
+                            }
                         }
-                    }
-                    
-                    Text("\(player.name)")
-                        //.background(Color(Theme(name: player.theme).secondary))
-                        //.foregroundColor(Color("white"))
-                    if player.bid < 0 {
-                        Text("-")
-                    } else {
-                        Text("\(player.bid)")
                         
+                        Text("\(player.name)")
+                            //.background(Color(Theme(name: player.theme).secondary))
+                            //.foregroundColor(Color("white"))
+                        if player.bid < 0 {
+                            Text("-")
+                        } else {
+                            Text("\(player.bid)")
+                            
+                        }
+                        Spacer()
+                        
+                        if player.winner == true {
+                            Image(systemName: "crown")
+                        }
+                        Text("\(player.score)")
                     }
-                    Spacer()
+                    .foregroundColor(.black)
+                    if showingStats {
+                        StatsView(player: $player, game: $game)
+                    }
+                }
+                .opacity(1)
+            } else {
+                VStack {
                     
-                    if player.winner == true {
-                        Image(systemName: "crown")
+                    HStack {
+                        if game.started{
+                            if player.name == game.players[deal].name {
+                                Image(systemName: "flame.circle")
+                            } else if player.name == game.players[lead].name {
+                                Image(systemName: "arrowtriangle.forward.fill")
+                            }
+                        }
+                        
+                        Text("\(player.name)")
+                            //.background(Color(Theme(name: player.theme).secondary))
+                            //.foregroundColor(Color("white"))
+                        if player.bid < 0 {
+                            Text("-")
+                        } else {
+                            Text("\(player.bid)")
+                            
+                        }
+                        Spacer()
+                        
+                        if player.winner == true {
+                            Image(systemName: "crown")
+                        }
+                        Text("\(player.score)")
                     }
-                    Text("\(player.score)")
+                    .foregroundColor(.black)
+                    if showingStats {
+                        StatsView(player: $player, game: $game)
+                    }
                 }
-                .foregroundColor(.black)
-                if showingStats {
-                    StatsView(player: $player, game: $game)
-                }
+                .opacity(0.25)
             }
-            .font(.title)
-            //.opacity(opaque)
         }
+        .font(.title)
         .onAppear{
-            //deal = game.numPlayers-1
+            deal = game.numPlayers-1
             if !leaderFirst {
                 deal = 0
                 lead = 1
@@ -68,6 +104,8 @@ struct WatchPlayerView: View {
                 let name = data[0] as! String
                 if name == player.name {
                     player.bid = data[1] as! Int
+                    //player.newBid = data[1] as! Int
+                    game.checkBids()
                     //opaque = 1.0
                 }
                 
@@ -84,11 +122,11 @@ struct WatchPlayerView: View {
                     deal = 0
                     lead = 1
                 }
-                //opaque = 0.5
+               // opaque = 0.5
             }
             
             game.socket.on("nextRound") { data, ack -> Void in
-                //opaque = 0.5
+                player.newBid = -1
             }
         }
     }

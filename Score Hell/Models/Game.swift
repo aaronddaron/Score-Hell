@@ -24,6 +24,7 @@ struct Game {
     var numPlayers: Int
     var started: Bool
     var finished: Bool
+    var everyBidIn: Bool
     var manager: SocketManager
     var socket: SocketIOClient
     
@@ -38,6 +39,7 @@ struct Game {
         self.table = []
         self.started = false
         self.finished = false
+        self.everyBidIn = false
         self.numPlayers = self.players.count
         self.cards = [7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7]
         self.manager = SocketManager(socketURL: URL(string: "http://192.168.4.47:3030")!)
@@ -143,6 +145,7 @@ struct Game {
             self.bidTotal = 0
             self.trickTotal = 0
             self.ohellNum = self.numCards
+            everyBidIn = false
            
             position = self.order(leader: 1, host: host)
             
@@ -152,6 +155,18 @@ struct Game {
         }
         self.calcWinner()
         return position
+    }
+    
+    mutating func checkBids() {
+        var temp = true
+        for player in players {
+            if player.bid == -1
+            {
+                temp = false
+            }
+        }
+        everyBidIn = temp
+        
     }
 }
 
@@ -164,7 +179,7 @@ extension Game {
         var tricksTaken: Int
         var theme: String
         var winner: Bool
-        //var newBid: Int
+        var newBid: Int
         var newTricksTaken: Int
         var streak: Int
         var bidsMade: Int
@@ -177,7 +192,7 @@ extension Game {
             self.name = name
             self.score = 0
             self.bid = -1
-            //self.newBid = -1
+            self.newBid = -1
             self.newTricksTaken = 0
             self.tricksTaken = 0
             self.theme = theme

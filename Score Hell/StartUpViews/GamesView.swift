@@ -13,6 +13,7 @@ struct GamesView: View {
     @Binding var game: Game
     @Binding var signedOut: Bool
     @Binding var user: User
+    var games: [GameData]
     @FocusState private var hideStart: Bool
     @State private var roomCode = ""
     @State private var showingProfile = false
@@ -20,7 +21,6 @@ struct GamesView: View {
     @State var newTheme = ""
     @State var newName = ""
     @State var newLeaderFirst = true
-    @State private var games: [GameData] = []
     
     
     var body: some View {
@@ -56,7 +56,7 @@ struct GamesView: View {
                 }
                 .font(.title3)
                 HStack{
-                    Text("\(user.name) - \(user.pts)")
+                    Text("\(newName) - \(user.pts)")
                         .padding(.vertical)
                 }
                 Divider()
@@ -72,7 +72,7 @@ struct GamesView: View {
                 
                     }
                 }) {
-                    NewGameView(playerTheme: $user.theme)
+                    NewGameView(playerTheme: newTheme)
                         .cornerRadius(10)
                         .overlay(
                                 RoundedRectangle(cornerRadius: 10)
@@ -85,7 +85,7 @@ struct GamesView: View {
                                     
                 ForEach(games){game in
                     VStack {
-                        ListGameView(game: game, playerTheme: $user.theme)
+                        ListGameView(game: game, playerTheme: newTheme)
                             .cornerRadius(10)
                     }
                     .padding(.horizontal)
@@ -124,16 +124,16 @@ struct GamesView: View {
                                 let db = Database()
                                 if !newTheme.isEmpty && newTheme != user.theme{
                                     db.changeTheme(playerTheme: newTheme)
-                                    //user.theme = newTheme
+                                    user.theme = newTheme
                                 }
                                 if newLeaderFirst != user.leaderFirst{
                                     db.changeLeaderFirst(leaderFirst: newLeaderFirst)
-                                    //user.leaderFirst = newLeaderFirst
+                                    user.leaderFirst = newLeaderFirst
                                 
                                 }
                                 if !newName.isEmpty && newName != user.name{
                                     db.changeName(playerName: newName)
-                                    //user.name = newName
+                                    user.name = newName
                                 }
                             }
                             .tint(Color(newTheme))
@@ -169,10 +169,6 @@ struct GamesView: View {
         }
         
         .onAppear{
-            game.socket.on("N/A") { data, ack in
-                game.socket.disconnect()
-            }
-            
             let account = Auth.auth().currentUser
             let db = Firestore.firestore()
             var id = ""
@@ -180,52 +176,36 @@ struct GamesView: View {
             if let account = account{
                 id = account.uid
             }
-            //playerTheme = db.getTheme()
             if !id.isEmpty {
                 db.collection("Users").document(id)
                     .addSnapshotListener { documentSnapshot, error in
-                      guard let document = documentSnapshot else {
-                        print("Error fetching document: \(error!)")
-                        return
-                      }
-                      guard let data = document.data() else {
-                        print("Document data was empty.")
-                        return
-                      }
-                      print("Current data: \(data)")
-                        user.theme = data["theme"] as? String ?? ""
+                        guard let document = documentSnapshot else {
+                            print("Error fetching document: \(error!)")
+                            return
+                        }
+                        guard let data = document.data() else {
+                            print("Document data was empty.")
+                            return
+                        }
+                        print("Current data: \(data)")
+                        newTheme = data["theme"] as? String ?? ""
                         user.leaderFirst = data["leaderFirst"] as? Bool ?? true
-                        user.name = data["name"] as? String ?? ""
+                        newName = data["name"] as? String ?? ""
                         user.pts = data["pts"] as? Int ?? 0
                     }
-                
-                
-                
-                db.collection("Users").document(id).collection("Games").order(by: "date", descending: true)/*.limit(to: 10)*/
-                    .addSnapshotListener { collectionSnapshot, error in
-                      guard let collection = collectionSnapshot?.documents else {
-                        print("Error fetching collection: \(error!)")
-                        return
-                      }
-                        for doc in collection {
-                            let field = doc.data()
-                            let date = field["date"] as? String ?? ""
-                            let place = field["place"] as? Int ?? 0
-                            let score = field["score"] as? Int ?? 0
-                            let made = field["bids_made"] as? Int ?? 0
-                            let round = field["round"] as? Int ?? 0
-                            let finished = field["finished"] as? Bool ?? false
-                            games.append(GameData(date: date, place: place, score: score, made: made, finished: finished, round: round))
-                        }
-                    }
-                //let ref = db.collection("Users/").getDocuments()
             }
+                
+            game.socket.on("N/A") { data, ack in
+                game.socket.disconnect()
+            }
+            
+            
         }
     }
 }
 
 struct GamesView_Previews: PreviewProvider {
     static var previews: some View {
-        GamesView(game: .constant(Game.sampleData), signedOut: .constant(false), user: .constant(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0)))
+        GamesView(game: .constant(Game.sampleData), signedOut: .constant(false), user: .constant(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0)), games: [])
     }
 }

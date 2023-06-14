@@ -86,7 +86,7 @@ struct GameFooterView: View {
                         Text("Play Round")
                         
                     }
-                        .disabled(game.bidTotal == game.numCards)
+                        .disabled(game.bidTotal == game.numCards || !game.everyBidIn)
                 } else if game.phase == 1{
                     Button(action: {
                         let lastPosition = userPosition
@@ -115,7 +115,7 @@ struct GameFooterView: View {
                         let db = Database()
                         
                         if game.round == 2{
-                            let db = Database()
+                            //let db = Database()
                             title = db.createGameData(date: stringDate)
                         }
                         db.setBid(bid: b, round: game.round, trick: t, result: result, role: role, title: title)
@@ -141,7 +141,7 @@ struct GameFooterView: View {
         }
 
         .onAppear{
-            //deal = game.numPlayers-1
+            deal = game.numPlayers-1
             if !leaderFirst {
                 deal = 0
                 lead = 1

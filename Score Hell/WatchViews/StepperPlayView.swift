@@ -20,13 +20,15 @@ struct StepperPlayView: View {
                 if game.phase == 0 && game.started{
                     HStack{
                         Button(action: {
-                            if game.players[i].bid == -1 {
-                                game.players[i].bid+=1
+                            if game.players[i].newBid > -1 {
+                                withAnimation{
+                                    image = "arrow.up.circle"
+                                }
+                                
+                                game.players[i].bid = game.players[i].newBid
+                                game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
+                                game.checkBids()
                             }
-                            withAnimation{
-                                image = "arrow.up.circle"
-                            }
-                            game.socket.emit("bid", game.players[i].name, game.players[i].bid, game.ohellNum, game.bidTotal)
                         }) {
                             
                                 Image(systemName: image)
@@ -36,19 +38,25 @@ struct StepperPlayView: View {
                             
                         }
                         .tint(Color("buttercup"))
-                        
-                        Stepper{Text("")} onIncrement: {
+                        if game.players[i].newBid == -1{
+                            Text("Bid: -")
+                                .font(.title2)
+                        } else {
+                            Text("Bid: \(game.players[i].newBid)")
+                                .font(.title2)
+                        }
+                        Stepper{} onIncrement: {
                             withAnimation{
                                 image = "arrow.up.circle.fill"
                             }
-                            if game.players[i].bid == -1{
-                                game.players[i].bid += 1
+                            if game.players[i].newBid == -1{
+                                game.players[i].newBid += 1
 
                             } else {
                                 
-                                game.players[i].bid += 1
-                                if game.players[i].bid > game.numCards {
-                                    game.players[i].bid = 0
+                                game.players[i].newBid += 1
+                                if game.players[i].newBid > game.numCards {
+                                    game.players[i].newBid = 0
                                     game.bidTotal -= game.numCards
                                 } else {
                                     
@@ -65,9 +73,9 @@ struct StepperPlayView: View {
                             withAnimation{
                                 image = "arrow.up.circle.fill"
                             }
-                            game.players[i].bid -= 1
-                            if game.players[i].bid  < 0 {
-                                game.players[i].bid = game.numCards
+                            game.players[i].newBid -= 1
+                            if game.players[i].newBid  < 0 {
+                                game.players[i].newBid = game.numCards
                                 game.bidTotal += game.numCards
                             } else {
                                 game.bidTotal -= 1
@@ -82,7 +90,7 @@ struct StepperPlayView: View {
                 }
                 else if game.phase == 1 {
                     HStack{
-                        Stepper{Text("Trick: \(game.players[i].tricksTaken), Total: \(game.trickTotal)")} onIncrement: {
+                        Stepper{Text("Trick: \(game.players[i].tricksTaken), Total: \(game.trickTotal)").font(.title2)} onIncrement: {
                             
                             if game.players[i].tricksTaken == 0 {
                                 image = "arrow.up.circle"

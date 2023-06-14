@@ -77,9 +77,12 @@ struct HostView: View {
             game.socket.disconnect()
             game.socket.connect(withPayload: ["username": playerName, "theme": playerTheme, "code": roomCode])
             
-            if leaderFirst {
-                deal = game.numPlayers - 1
-            }
+            
+            //deal = game.numPlayers - 1
+            /*if !leaderFirst {
+                deal = 0
+                lead = 1
+            }*/
             
             game.socket.on("newPlayer") { data, ack -> Void in
                 let name = data[0] as! String

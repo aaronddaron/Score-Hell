@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewGameView: View {
-    @Binding var playerTheme: String
+    let playerTheme: String
     //@Binding var game: Game
     //let roomCode: String
     var body: some View {
@@ -41,6 +41,6 @@ struct NewGameView: View {
 
 struct NewGameView_Previews: PreviewProvider {
     static var previews: some View {
-        NewGameView(playerTheme: .constant("lavender"))
+        NewGameView(playerTheme: "lavender")
     }
 }
