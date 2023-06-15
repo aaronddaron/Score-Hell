@@ -60,10 +60,6 @@ struct GamesView: View {
                         .padding(.vertical)
                 }
                 Divider()
-            }
-            
-            Spacer()
-            ScrollView(.vertical, showsIndicators: true){
                 Button(action: {
                     if roomCode.isEmpty {
                 
@@ -79,10 +75,18 @@ struct GamesView: View {
                                     .stroke(.blue, lineWidth: 4)
                             )
                         .padding([.top, .horizontal])
+                        .frame(maxHeight: 100)
                 }
                 .foregroundColor(.black)
                 
-                                    
+                //Divider()
+            }
+            
+            Spacer()
+            
+            
+            ScrollView(.vertical, showsIndicators: true){
+                Text("")
                 ForEach(games){game in
                     VStack {
                         ListGameView(game: game, playerTheme: newTheme)
@@ -206,6 +210,6 @@ struct GamesView: View {
 
 struct GamesView_Previews: PreviewProvider {
     static var previews: some View {
-        GamesView(game: .constant(Game.sampleData), signedOut: .constant(false), user: .constant(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0)), games: [])
+        GamesView(game: .constant(Game.sampleData), signedOut: .constant(false), user: .constant(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0, wins: 0, place: 0)), games: [])
     }
 }

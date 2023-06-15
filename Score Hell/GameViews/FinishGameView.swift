@@ -174,6 +174,10 @@ struct FinishGameView: View {
                 }
                 
                 db.changePts(pts: points)
+                
+                if gameData.place == 1 {
+                    db.incrementWins()
+                }
             } 
         }
     }

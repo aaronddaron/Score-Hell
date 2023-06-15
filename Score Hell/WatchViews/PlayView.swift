@@ -103,17 +103,14 @@ struct PlayView: View {
                 deal = 0
                 lead = 1
             }
-            //userPosition = game.numPlayers-1
             game.socket.on("players") { data, ack -> Void in
                 let names = data[0] as! [String]
                 let themes = data[1] as! [String]
-                //var tempPlayer = Game.Player(name: "", theme: "")
                 game.players.removeAll()
                 game.numPlayers = names.count
                 for num in 0...game.numPlayers-1 {
                     game.players.append(Game.Player(name: names[num], theme: themes[num]))
                 
-                    //game.numPlayers+=1
                     if playerName == game.players[num].name {
                         userPosition = num
                     }
@@ -181,7 +178,6 @@ struct PlayView: View {
                 } else {
                     deal = game.numPlayers-1
                 }
-                //var gameData = GameData(title: "", place: 0, score: 0, made: 0, finished: false, round: 0)
                 stringDate = formatter.string(from: date)
             }
             
@@ -228,7 +224,7 @@ struct PlayView: View {
                 
                 if t == b {
                     result = "made"
-                } else if t > b {
+                } else if t < b {
                     result = "over"
                 } else {
                     result = "under"

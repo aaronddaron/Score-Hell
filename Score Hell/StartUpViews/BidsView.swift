@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import Charts
 
 
 struct BidsView: View {
@@ -15,17 +16,21 @@ struct BidsView: View {
     @State private var bidTotal: Double = 0
     @State private var totalMade: Double = 0
     @State private var totalAvg: Double = 0
-    @State private var zeroMade: Double = 0
-    @State private var zeroAvg: Double = 0
+    //@State private var zeroMade: Double = 0
+    //@State private var zeroAvg: Double = 0
     
     @State private var totals: [Double] = [0, 0, 0, 0, 0, 0, 0, 0]
     @State private var avgs: [Double] = [0, 0, 0, 0, 0, 0, 0, 0]
     @State private var indeces: [Int] = [0, 1, 2, 3, 4, 5, 6, 7]
+    @State private var bids: [BidData] = []
+    @State private var rounds: [BidData] = []
+    @State private var cards: [BidData] = []
+    @State private var roles: [BidData] = []
+    @State private var emptyText = ""
+    //@State private var attempts: Double = 0
     
     var body: some View {
-        NavigationStack{
-            //Text("\(idd)")
-            HStack{
+       
                 VStack{
                     HStack{
                         if bidTotal == 1 {
@@ -34,24 +39,46 @@ struct BidsView: View {
                             Text("Total: \(totalAvg, specifier: "%.2f")% on \(bidTotal, specifier: "%.0f") attempts")
                         }
                     }
-                
-                    ForEach (indeces, id: \.self) {index in
-                        HStack{
-                            if totals[index] == 1 {
-                                
-                                Text("\(index): \(avgs[index], specifier: "%.2f")% on \(totals[index], specifier: "%.0f") attempt")
-                            } else {
-                                Text("\(index): \(avgs[index], specifier: "%.2f")% on \(totals[index], specifier: "%.0f") attempts")
+                    .font(.title2)
+                    Chart {
+                                ForEach(bids, id: \.bid) { data in
+                                    BarMark(
+                                        x: .value("Bid", data.bid),
+                                        y: .value("Attempts", data.attempted)
+                                    )
+                                    .foregroundStyle(by: .value("Result", data.result))
+                                }
                             }
+                    .chartForegroundStyleScale([
+                        "made": .green,
+                        "over": .red,
+                        "under": .blue
+                        ])
+                    .padding()
+                   
+                    VStack{
+                        Divider()
+                        Text("")
+                        HStack{
+                                
+                            TextField("Room Code:", text: $emptyText)
+                                .padding(.horizontal)
+                                .padding(.horizontal)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .hidden()
+                            Text("Change x axis")
+                            Spacer()
+                            
                         }
+                        Text("")
+                        Divider()
                     }
+                    .background(Color("buttercup"))
                     
                 }
-            }
-            .font(.title2)
-        }
         
         .task{
+            bids.removeAll()
             let user = Auth.auth().currentUser
             let db = Firestore.firestore()
             var id = ""
@@ -60,6 +87,7 @@ struct BidsView: View {
             }
             
             if !id.isEmpty {
+
                 
                 let total = db.collectionGroup("Bids").whereField("id", isEqualTo: id ).count
                 do {
@@ -81,24 +109,41 @@ struct BidsView: View {
                 }
                 
                 for num in 0...7 {
-                    let tempTotal = db.collectionGroup("Bids").whereField("id", isEqualTo: id ).whereField("bid", isEqualTo: num).count
-                    do {
-                        let snapshot = try await tempTotal.getAggregation(source: .server)
-                        totals[num] = snapshot.count as? Double ?? 0.0
-                    } catch {
-                        print(error)
-                    }
+                    var made = 0
+                    var over = 0
+                    var under = 0
+                  
                     
                     let tempMade = db.collectionGroup("Bids").whereField("id", isEqualTo: id ).whereField("bid", isEqualTo: num).whereField("result", isEqualTo: "made").count
                     do {
                         let snapshot = try await tempMade.getAggregation(source: .server)
-                        let made = snapshot.count as? Double ?? 0.0
-                        if totals[num] > 0 {
-                            avgs[num] = (made / totals[num]) * 100
-                        }
+                        made = snapshot.count as? Int ?? 0
+                        bids.append(BidData(bid: num, attempted: made, result: "made"))
+                       
                     } catch {
                         print(error)
                     }
+                    
+                    let tempOver = db.collectionGroup("Bids").whereField("id", isEqualTo: id ).whereField("bid", isEqualTo: num).whereField("result", isEqualTo: "over").count
+                    do {
+                        let snapshot = try await tempOver.getAggregation(source: .server)
+                        over = snapshot.count as? Int ?? 0
+                        bids.append(BidData(bid: num, attempted: over, result: "over"))
+                        
+                    } catch {
+                        print(error)
+                    }
+                    
+                    let tempUnder = db.collectionGroup("Bids").whereField("id", isEqualTo: id ).whereField("bid", isEqualTo: num).whereField("result", isEqualTo: "under").count
+                    do {
+                        let snapshot = try await tempUnder.getAggregation(source: .server)
+                        under = snapshot.count as? Int ?? 0
+                        bids.append(BidData(bid: num, attempted: under, result: "under"))
+                    
+                    } catch {
+                        print(error)
+                    }
+                    
                 }
             }
         }

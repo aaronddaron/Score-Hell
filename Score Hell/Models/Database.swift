@@ -68,6 +68,19 @@ class Database {
         }
     }
     
+    func incrementWins() {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+        
+        if let user = user{
+            let id = user.uid
+            
+            if !id.isEmpty {
+                db.collection("Users").document(id).updateData(["wins": FieldValue.increment(Int64(1))])
+            }
+        }
+    }
+    
     func changeLeaderFirst(leaderFirst: Bool) {
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser

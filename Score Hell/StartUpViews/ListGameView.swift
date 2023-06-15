@@ -10,7 +10,6 @@ import SwiftUI
 struct ListGameView: View {
     var game: GameData
     let playerTheme: String
-    //@State private var playerSecondary
     var body: some View {
         ZStack{
             LinearGradient(

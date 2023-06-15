@@ -31,12 +31,12 @@ struct ProfileView: View {
                                 .padding(.horizontal)
                             Divider()
                                 .padding(.horizontal)
-                            Toggle("", isOn: $newLeaderFirst)
+                            Toggle("Leader shown first", isOn: $newLeaderFirst)
                                 .padding()
                                 .tint(Color(Theme(name: newTheme).secondary))
                         
-                            Text("Color")
-                            Picker("Leader shown first", selection: $newTheme) {
+                            //Text("Color")
+                            Picker("", selection: $newTheme) {
                                 ForEach(Theme.colors, id: \.self) { color in
                                     ColorView(color: color)
                                 }
@@ -62,7 +62,7 @@ struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView(newTheme: .constant(""), newName: .constant(""), newLeaderFirst: .constant(true))
-            .environmentObject(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0))
+            .environmentObject(User(name: "Aaron", theme: "lavender", leaderFirst: true, pts: 0, wins: 0, place: 0))
         
     }
 }

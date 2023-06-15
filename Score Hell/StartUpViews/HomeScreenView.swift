@@ -12,11 +12,13 @@ import FirebaseFirestore
 struct HomeScreenView: View {
     @State private var game = Game(players: [])
     @State private var games: [GameData] = []
+    @State private var users: [User] = []
     @State private var roomCode = ""
     @State private var userPosition = 0
     @State private var signedOut = false
     @State private var join = false
     @State private var start = false
+    @State private var leaderboardPosition = 0
     //@FocusState private var hideStart: Bool
    // @State private var showingProfile = false
     @State var leaderFirst = true
@@ -24,7 +26,7 @@ struct HomeScreenView: View {
     @State private var bidsImage = "chart.bar.doc.horizontal"
     @State private var leaderImage = "crown"
     @State private var gamesImage = "house.fill"
-    @State var account = User(name: "", theme: "", leaderFirst: true, pts: 0)
+    @State var account = User(name: "", theme: "", leaderFirst: true, pts: 0, wins: 0, place: 0)
     
     var body: some View {
         if signedOut {
@@ -49,7 +51,7 @@ struct HomeScreenView: View {
                 )
                 .ignoresSafeArea()
                 VStack{
-                    Spacer()
+                    //Spacer()
                 
                     ZStack{
                         VStack{
@@ -67,7 +69,7 @@ struct HomeScreenView: View {
                             BidsView()
                             .tag("Two")
                            
-                            LeaderBoardView()
+                            LeaderBoardView(users: users, account: account)
                                 .tag("Three")
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -148,36 +150,37 @@ struct HomeScreenView: View {
             let user = Auth.auth().currentUser
             let db = Firestore.firestore()
             var id = ""
-
+            
             if let user = user{
                 id = user.uid
             }
             if !id.isEmpty {
                 db.collection("Users").document(id)
                     .addSnapshotListener { documentSnapshot, error in
-                      guard let document = documentSnapshot else {
-                        print("Error fetching document: \(error!)")
-                        return
-                      }
-                      guard let data = document.data() else {
-                        print("Document data was empty.")
-                        return
-                      }
-                      print("Current data: \(data)")
+                        guard let document = documentSnapshot else {
+                            print("Error fetching document: \(error!)")
+                            return
+                        }
+                        guard let data = document.data() else {
+                            print("Document data was empty.")
+                            return
+                        }
+                        print("Current data: \(data)")
                         account.theme = data["theme"] as? String ?? ""
                         account.leaderFirst = data["leaderFirst"] as? Bool ?? true
                         account.name = data["name"] as? String ?? ""
                         account.pts = data["pts"] as? Int ?? 0
+                        account.wins = data["wins"] as? Int ?? 0
                     }
                 
                 
                 
-                db.collection("Users").document(id).collection("Games").order(by: "date", descending: true)/*.limit(to: 10)*/
+                db.collection("Users").document(id).collection("Games").order(by: "date", descending: true).limit(to: 10)
                     .addSnapshotListener { collectionSnapshot, error in
-                      guard let collection = collectionSnapshot?.documents else {
-                        print("Error fetching collection: \(error!)")
-                        return
-                      }
+                        guard let collection = collectionSnapshot?.documents else {
+                            print("Error fetching collection: \(error!)")
+                            return
+                        }
                         for doc in collection {
                             let field = doc.data()
                             let date = field["date"] as? String ?? ""
@@ -189,7 +192,29 @@ struct HomeScreenView: View {
                             games.append(GameData(date: date, place: place, score: score, made: made, finished: finished, round: round))
                         }
                     }
+            
+            
+            var i = 1
+            db.collection("Users").order(by: "pts", descending: true).order(by: "wins", descending: true) .addSnapshotListener { collectionSnapshot, error in
+                guard let collection = collectionSnapshot?.documents else {
+                    print("Error fetching collection: \(error!)")
+                    return
+                }
+                for doc in collection {
+                    let field = doc.data()
+                    let name = field["name"] as? String ?? ""
+                    let theme = field["theme"] as? String ?? ""
+                    let pts = field["pts"] as? Int ?? 0
+                    let wins = field["wins"] as? Int ?? 0
+                    users.append(User(name: name, theme: theme, leaderFirst: true, pts: pts, wins: wins, place: i))
+                    if doc.documentID == id {
+                        account.place = i
+                    }
+                    i+=1
+                }
             }
+        }
+            
             game.socket.on("players") { data, ack -> Void in
                     let names = data[0] as! [String]
                     let themes = data[1] as! [String]

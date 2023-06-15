@@ -12,30 +12,30 @@ struct NewGameView: View {
     //@Binding var game: Game
     //let roomCode: String
     var body: some View {
-        ZStack{
-            LinearGradient(
-                colors: [Color(playerTheme), Color(Theme(name: playerTheme).secondary)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("New Game")
-                    Image(systemName: "arrowtriangle.right.fill")
-                    HStack{
-                        Text("0")
-                        Text("0")
-                        Text("0")
-                        
+            ZStack{
+                LinearGradient(
+                    colors: [Color(playerTheme), Color(Theme(name: playerTheme).secondary)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("New Game")
+                        Image(systemName: "arrowtriangle.right.fill")
+                        HStack{
+                            Text("0")
+                            Text("0")
+                            Text("0")
+                            
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.leading)
+                .font(.title2)
+                   
             }
-            .padding(.leading)
-            .font(.title2)
-               
-        }
     }
 }
 
