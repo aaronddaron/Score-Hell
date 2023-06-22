@@ -27,23 +27,23 @@ struct GamesView: View {
         VStack {
             VStack{
                 HStack{
-                Button(action: {
-                    do {
-                        try Auth.auth().signOut()
-                    } catch let signOutError as NSError {
-                        print("Error signing out: %@", signOutError)
-                    }
+                    Button(action: {
+                        do {
+                            try Auth.auth().signOut()
+                        } catch let signOutError as NSError {
+                            print("Error signing out: %@", signOutError)
+                        }
                     
-                    if Auth.auth().currentUser == nil {
-                        signedOut = true
+                        if Auth.auth().currentUser == nil {
+                            signedOut = true
+                        }
+                    }) {
+                        Text("Sign Out")
+                            .foregroundColor(.black)
                     }
-                }) {
-                    Text("Sign Out")
-                        .foregroundColor(.black)
-                }
-                .padding(.leading)
+                    .padding(.leading)
             
-                Spacer()
+                    Spacer()
                 
                     Button(action: {
                         showingProfile = true
@@ -55,11 +55,11 @@ struct GamesView: View {
                     .padding(.trailing)
                 }
                 .font(.title3)
-                HStack{
-                    Text("\(newName) - \(user.pts)")
-                        .padding(.vertical)
-                }
-                Divider()
+                
+                Text("\(newName) - \(user.pts)")
+                    .padding(.vertical)
+                
+                //Divider()
                 Button(action: {
                     if roomCode.isEmpty {
                 

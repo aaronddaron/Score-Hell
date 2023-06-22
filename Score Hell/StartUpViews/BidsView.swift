@@ -39,7 +39,10 @@ struct BidsView: View {
                             Text("Total: \(totalAvg, specifier: "%.2f")% on \(bidTotal, specifier: "%.0f") attempts")
                         }
                     }
-                    .font(.title2)
+                    .font(.title3)
+                    .padding()
+                    
+                   // Divider()
                     Chart {
                                 ForEach(bids, id: \.bid) { data in
                                     BarMark(

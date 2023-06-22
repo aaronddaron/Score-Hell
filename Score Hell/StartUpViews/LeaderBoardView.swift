@@ -17,9 +17,10 @@ struct LeaderBoardView: View {
                 .cornerRadius(10)
                 .padding()
                 .frame(maxHeight: 100)
+    
                 
-            Divider()
-            Spacer()
+            //Divider()
+            //Spacer()
             ScrollView(.vertical, showsIndicators: true){
                 ForEach(users) { user in
                     VStack{
