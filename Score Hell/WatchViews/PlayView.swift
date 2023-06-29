@@ -150,7 +150,7 @@ struct PlayView: View {
                         alert = "deal"
                     }
                 }
-
+                print(game.players)
                     
             }
                 
@@ -201,7 +201,9 @@ struct PlayView: View {
             }
             
             game.socket.on("nextRound") { data, ack -> Void in
-                game.ohellNum = game.cards[game.round]
+                if game.round != 14{
+                    game.ohellNum = game.cards[game.round]
+                }
                 game.numCards = game.ohellNum
                 
                 game.phase = 0
@@ -248,13 +250,17 @@ struct PlayView: View {
                 if tempRound > 0 {
                     game.started = true
                     game.round = data[0] as! Int
-                    game.numCards = game.cards[game.round-1]
+                    if game.round != 14
+                    {
+                        game.numCards = game.cards[game.round-1]
+                    }
                 } 
                 
                 game.phase = data[1] as! Int
                 game.ohellNum = data[2] as! Int
                 game.bidTotal = data[3] as! Int
                 game.trickTotal = data[4] as! Int
+                print(game)
                 
             }
             
